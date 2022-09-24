@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 
 //start server and DB
 const boot = async () => {
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI, {dbName: "react-native"});
 
   app.listen(PORT, () => {
     console.log(`Running on http://localhost:${PORT} \nDB connected succesfully`);
