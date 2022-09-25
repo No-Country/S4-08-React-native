@@ -26,4 +26,9 @@ export const devSchema = new mongoose.Schema({
   },
   social: devSocialSchema,
   info: devInfoSchema,
+  team: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Team",
+  },
+  
 });

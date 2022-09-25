@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import devRoutes from "./routes/dev-routes.js";
+import teamRoutes from "./routes/team-routes.js";
 
 //basic config
 dotenv.config();
@@ -14,6 +15,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(express.text());
 app.use("/dev", devRoutes);
+app.use("/team", teamRoutes);
 
 //test home
 app.get("/", (req, res) => {

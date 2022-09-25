@@ -1,9 +1,9 @@
 import { DevModel } from "../../models/dev/dev-model.js";
 
 const devRegisterController = async (req, res) => {
-  const { name, email, password, role, avatar, social, info } = req.body;
+  const { name, email, password, role, avatar, social, info, team } = req.body;
 
-  if (!name || !email || !password || !role ||!avatar ||!social ||!info ) return res.status(400).send();
+  if (!name || !email || !password || !role ||!avatar ||!social ||!info ||!team ) return res.status(400).send();
 
   const newDev = new DevModel({
     name,
@@ -12,7 +12,8 @@ const devRegisterController = async (req, res) => {
     role,
     avatar,
     social,
-    info
+    info,
+    team
   });
 
   await newDev.save();
