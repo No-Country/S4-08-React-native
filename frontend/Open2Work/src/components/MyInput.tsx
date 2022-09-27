@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
-import { TextInput } from 'react-native-paper'
-import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput'
-import Icon from 'react-native-vector-icons/Ionicons'
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 interface Props extends Omit<TextInputProps, 'theme'> {

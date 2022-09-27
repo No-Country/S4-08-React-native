@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
-import { MyInput } from './components/MyInput';
+import { MyInput } from '../components/MyInput';
 
 
 
