@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { Formik } from 'formik'
-import { Text, View } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { MyInput } from './components/MyInput'
+import React, { useState } from 'react';
+import { Formik } from 'formik';
+import { Text, View } from 'react-native';
+import { Button } from 'react-native-paper';
+import { MyInput } from './components/MyInput';
 
 
 

@@ -17,14 +17,14 @@ export const MyInput = ({ iconName, onClick, secureTextEntry, ...props }: Props)
 
 
     return (
-        <>
             <View style={{
-                flexDirection: 'row'
+                flexDirection: 'row',
+                marginVertical: 10,
             }}>
                 {
                     iconName &&
                     (<TouchableOpacity 
-                        style={{ position: 'absolute', top: 15, left: 0, zIndex: 999 }}
+                        style={{ position: 'absolute', top: 27, left: 10, zIndex: 999 }}
                         onPress={ ( )=> onClick && onClick( !secureTextEntry )}
                         >
 
@@ -35,18 +35,17 @@ export const MyInput = ({ iconName, onClick, secureTextEntry, ...props }: Props)
 
                 <TextInput
                     {...props}
+                    mode='outlined'
                     secureTextEntry={secureTextEntry}
                     style={{
                         flex: 1,
                         paddingLeft: 40,
-                        backgroundColor: 'transparent',
+                        paddingVertical: 10
                     }}
-
-                    textContentType='emailAddress'
+                    
                 />
 
             </View>
-        </>
     )
 }
 
