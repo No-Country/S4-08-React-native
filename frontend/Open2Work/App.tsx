@@ -4,13 +4,13 @@ import { LoginScreen } from './src/screens/LoginScreen'
 
 const theme = {
   ...DefaultTheme,
-  roundness: 2,
+  roundness: 10,
   colors: {
     ...DefaultTheme.colors,
     primary: '#17f1de',
     accent: 'yellow',
-    background: '#1f1a30',
-    surface: '#39304d',
+    background: '#39304d',
+    surface: '#1f1a30',
     text: '#fff',
     placeholder: '#fff'
   },
