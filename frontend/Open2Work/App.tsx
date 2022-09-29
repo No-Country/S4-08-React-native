@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const theme = {
   ...DefaultTheme,
-  roundness: 10,
+  roundness: 5,
   colors: {
     ...DefaultTheme.colors,
     primary: '#17f1de',
