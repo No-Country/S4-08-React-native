@@ -4,7 +4,7 @@ import { LoginScreen } from './src/screens/LoginScreen'
 
 const theme = {
   ...DefaultTheme,
-  roundness: 10,
+  roundness: 5,
   colors: {
     ...DefaultTheme.colors,
     primary: '#17f1de',
