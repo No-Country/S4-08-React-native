@@ -12,7 +12,7 @@ interface Props extends Omit<TextInputProps, 'theme'> {
 }
 
 
-export const MyInput = ({ iconName, onClick, secureTextEntry, ...props }: Props) => {
+export const MyInput = ({ iconName, onClick, secureTextEntry, error, ...props }: Props) => {
 
 
 
@@ -28,7 +28,7 @@ export const MyInput = ({ iconName, onClick, secureTextEntry, ...props }: Props)
                         onPress={ ( )=> onClick && onClick( !secureTextEntry )}
                         >
 
-                        <Icon name={ iconName } size={30} color='#fff' />
+                        <Icon name={ iconName } size={30} color={ error ? 'red' : 'white'} />
                     </TouchableOpacity>)
                 }
 
@@ -36,6 +36,7 @@ export const MyInput = ({ iconName, onClick, secureTextEntry, ...props }: Props)
                 <TextInput
                     {...props}
                     mode='outlined'
+                    error={error}
                     secureTextEntry={secureTextEntry}
                     style={{
                         flex: 1,
