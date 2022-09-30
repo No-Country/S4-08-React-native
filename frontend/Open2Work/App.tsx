@@ -4,6 +4,7 @@ import {LoginScreen} from './src/screens/LoginScreen';
 import Register from './src/screens/Register';
 import {SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import IsDev from './src/screens/IsDev';
 
 const theme = {
   ...DefaultTheme,
@@ -27,7 +28,8 @@ const App = () => {
         icon: props => <Icon {...props} />,
       }}>
       <SafeAreaView style={{height: '100%'}}>
-        <LoginScreen />
+        {/* <LoginScreen /> */}
+        {/* <IsDev /> */}
         <Register />
       </SafeAreaView>
     </PaperProvider>
