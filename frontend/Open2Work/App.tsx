@@ -1,6 +1,8 @@
-import React from 'react'
+import 'react-native-gesture-handler';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
-import { LoginScreen } from './src/screens/LoginScreen'
+import { Navigation } from './src/navigation/Navigation';
 
 const theme = {
   ...DefaultTheme,
@@ -18,10 +20,13 @@ const theme = {
 
 const App = () => {
   return (
-    <PaperProvider theme={ theme }>
-      <LoginScreen />
-    </PaperProvider>
+    <NavigationContainer>
+      <PaperProvider theme={theme}>
+        <Navigation />
+      </PaperProvider>
+    </NavigationContainer>
   )
 }
 
 export default App;
+
