@@ -1,10 +1,10 @@
-import { DevModel } from "../../models/dev/dev-model.js";
-import passport from "passport";
-import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+const passport = require("passport");
+const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { DevModel } = require("../../models/dev/dev-model");
 
 //register
-export const devRegisterController = async (req, res) => {
+const devRegisterController = async (req, res) => {
   const { name, email, password, role, avatar, social, info, team } = req.body;
 
   if (
@@ -38,7 +38,7 @@ export const devRegisterController = async (req, res) => {
 };
 
 //login
-export const devLoginController = async (req, res, next) => {
+const devLoginController = async (req, res, next) => {
   passport.authenticate("login", async (err, user, info) => {
     try {
       if (!user) {
@@ -54,7 +54,9 @@ export const devLoginController = async (req, res, next) => {
           email: user.email,
         };
 
-        const token = jwt.sign({ user: body }, "JWT_SECRET", { expiresIn: "45m" });
+        const token = jwt.sign({ user: body }, "JWT_SECRET", {
+          expiresIn: "45m",
+        });
         res.json({ message: info.message, token });
       });
     } catch (err) {
@@ -80,3 +82,5 @@ export const devLoginController = async (req, res, next) => {
 
   //generar TOken
 };
+
+module.exports = { devRegisterController, devLoginController };

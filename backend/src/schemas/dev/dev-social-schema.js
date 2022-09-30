@@ -1,6 +1,8 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-export const devSocialSchema = new mongoose.Schema({
+const devSocialSchema = new Schema(
+  {
     linkedin: {
       type: String,
       required: true,
@@ -13,4 +15,8 @@ export const devSocialSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-  }, {collection: false});
+  },
+  { collection: false }
+);
+
+module.exports = { devSocialSchema };

@@ -1,4 +1,6 @@
-import mongoose from "mongoose";
-import { teamSchema } from "../../schemas/team/team-schema.js";
+const mongoose = require("mongoose");
+const { teamSchema } = require("../../schemas/team/team-schema");
 
-export const TeamModel = mongoose.model("Team", teamSchema);
+const TeamModel = mongoose.model("Team", teamSchema);
+
+module.exports = { TeamModel };

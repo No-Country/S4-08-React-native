@@ -1,8 +1,10 @@
-import mongoose from "mongoose";
-import { devInfoSchema } from "./dev-info-schema.js";
-import { devSocialSchema } from "./dev-social-schema.js";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-export const devSchema = new mongoose.Schema({
+const { devInfoSchema } = require("./dev-info-schema");
+const { devSocialSchema } = require("./dev-social-schema");
+
+const devSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -30,5 +32,6 @@ export const devSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
   },
-  
 });
+
+module.exports = { devSchema };

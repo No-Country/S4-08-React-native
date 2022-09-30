@@ -1,12 +1,13 @@
-import passport from "passport";
-import { Strategy } from "passport-local";
+const passport = require("passport");
+const bcryptjs = require("bcryptjs");
+const localStrategy = require("passport-local").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
+const { DevModel } = require("../../models/dev/dev-model");
 
-import bcryptjs from "bcryptjs";
-import { DevModel } from "../../models/dev/dev-model.js";
 
 passport.use(
   "login",
-  new Strategy(
+  new localStrategy(
     {
       usernameField: "email",
       passwordField: "password",
@@ -30,7 +31,8 @@ passport.use(
     }
   )
 );
-
+/*
 passport.use(new JwtStrategy({
-    secretOrK
+    secretOrKey: "JWT_SECRET",
 }))
+*/

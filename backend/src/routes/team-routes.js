@@ -1,13 +1,12 @@
-import express from "express";
-import teamProfilesController from "../controllers/team/team-profiles-controller.js";
-import teamRegisterController from "../controllers/team/team-register-controller.js";
+const { Router } = require("express");
+const controllers = require("../controllers");
 
-const teamRoutes = express.Router();
+const teamRoutes = Router();
 
 //create team
-teamRoutes.post("/register", teamRegisterController);
+teamRoutes.post("/register", controllers.authTeam.teamRegisterController);
 
 //get All team profiles
-teamRoutes.get("/profile", teamProfilesController);
+teamRoutes.get("/profile", controllers.team.teamProfilesController);
 
-export default teamRoutes;
+module.exports =  teamRoutes;

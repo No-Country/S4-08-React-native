@@ -1,6 +1,8 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-export const devInfoSchema = new mongoose.Schema({
+const devInfoSchema = new Schema(
+  {
     /*language: {
       type: String,
       required: true,
@@ -17,4 +19,8 @@ export const devInfoSchema = new mongoose.Schema({
       type: Number,
       required: true,
     },
-  }, {collection: false});
+  },
+  { collection: false }
+);
+
+module.exports = { devInfoSchema };

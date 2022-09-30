@@ -1,7 +1,8 @@
-import { DevModel } from "../../models/dev/dev-model.js";
+const { DevModel } = require("../../models/dev/dev-model");
+
 
 //get all profiles
-export const devProfilesController = async (req, res) => {
+const devProfilesController = async (req, res) => {
   try {
     const Devs = await DevModel.find().populate("team", "-_id");
     return res.send(Devs);
@@ -11,7 +12,7 @@ export const devProfilesController = async (req, res) => {
 };
 
 //get one profile
-export const devProfileController = async (req, res) => {
+const devProfileController = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -23,7 +24,7 @@ export const devProfileController = async (req, res) => {
 };
 
 //update profile
-export const devUpdateController = async (req, res) => {
+const devUpdateController = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -45,7 +46,7 @@ export const devUpdateController = async (req, res) => {
 };
 
 //delete profile
-export const devDeleteController = async (req, res) => {
+const devDeleteController = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -56,4 +57,12 @@ export const devDeleteController = async (req, res) => {
 
   const Devs = await DevModel.findOneAndDelete(id);
   return res.send("Dev deleted succesfully");
+};
+
+module.exports = {
+  devProfilesController,
+  devProfileController,
+  devUpdateController,
+  devUpdateController,
+  devDeleteController
 };

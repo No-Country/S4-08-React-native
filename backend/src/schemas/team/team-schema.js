@@ -1,8 +1,11 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-export const teamSchema = new mongoose.Schema({
-    name: {
-      type: String,
-      required: true,
-    },
+const teamSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
 });
+
+module.exports = { teamSchema };

@@ -1,26 +1,24 @@
-import express from "express";
-import { devRegisterController, devLoginController } from "../controllers/dev/dev-auth-controller.js";
-import { devProfilesController, devProfileController, devUpdateController, devDeleteController } from "../controllers/dev/dev-controller.js"
+const { Router } = require("express");
+const controllers = require("../controllers");
 
-
-const devRoutes = express.Router();
+const devRoutes = Router();
 
 //new Dev profile
-devRoutes.post("/register", devRegisterController);
+devRoutes.post("/register", controllers.authDev.devRegisterController);
 
 //login dev profile
-devRoutes.post("/login", devLoginController);
+devRoutes.post("/login", controllers.authDev.devLoginController);
 
 //get All dev profiles
-devRoutes.get("/profile", devProfilesController);
+devRoutes.get("/profile", controllers.dev.devProfilesController);
 
 //get One dev profile
-devRoutes.get("/profile/:id", devProfileController);
+devRoutes.get("/profile/:id", controllers.dev.devProfileController);
 
 //update dev profile
-devRoutes.put("/profile/:id", devUpdateController);
+devRoutes.put("/profile/:id", controllers.dev.devUpdateController);
 
 //delete dev profile
-devRoutes.delete("/profile/:id", devDeleteController);
+devRoutes.delete("/profile/:id", controllers.dev.devDeleteController);
 
-export default devRoutes;
+module.exports =  devRoutes;
