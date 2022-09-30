@@ -155,7 +155,7 @@ export const FormRegister = ({ setIsRegister }: Props) => {
                             >
                                 <Text style={{
                                     fontSize: 25
-                                }}>REGISTER</Text>
+                                }}>Next</Text>
                             </Button>
                         </View>
 

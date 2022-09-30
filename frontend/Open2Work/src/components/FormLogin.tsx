@@ -49,8 +49,11 @@ export const FormLogin = ({ setIsRegister }: Props) => {
                         .email('It is not a valid email')
                         .required('The email is required'),
                     password: Yup.string()
-                        .max(11, 'Must be 15 caracters or less')
-                        .required('The password is required'),
+                        .required('The password is required')
+                        // .matches(
+                        //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+                        //     "Must Contain 8 Characters, One Uppercase, One Lowercase and one Number"
+                        // ),
                 })}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
