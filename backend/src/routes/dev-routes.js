@@ -1,15 +1,15 @@
 import express from "express";
-import devRegisterController from "../controllers/dev/dev-register-controller.js";
-import devProfilesController from "../controllers/dev/dev-profiles-controller.js"
-import devProfileController from "../controllers/dev/dev-profile-controller.js";
-import devUpdateController from "../controllers/dev/dev-update-controller.js";
-import devDeleteController from "../controllers/dev/dev-delete-controller.js";
+import { devRegisterController, devLoginController } from "../controllers/dev/dev-auth-controller.js";
+import { devProfilesController, devProfileController, devUpdateController, devDeleteController } from "../controllers/dev/dev-controller.js"
 
 
 const devRoutes = express.Router();
 
 //new Dev profile
 devRoutes.post("/register", devRegisterController);
+
+//login dev profile
+devRoutes.post("/login", devLoginController);
 
 //get All dev profiles
 devRoutes.get("/profile", devProfilesController);
