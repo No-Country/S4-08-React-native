@@ -3,9 +3,10 @@ import {List} from 'react-native-paper';
 import {View} from 'react-native';
 interface Props {
   onPress: (field: string, value: any) => void;
+  error: boolean;
 }
 
-const Languages = ({onPress}: Props) => {
+const Languages = ({onPress, error}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState(['']);
 
@@ -35,12 +36,13 @@ const Languages = ({onPress}: Props) => {
     <List.Section>
       <View
         style={{
-          borderColor: 'white',
+          borderColor: error ? 'rgb(180,0,0)' : 'white',
           borderRadius: 5,
           borderWidth: 1,
           marginVertical: 5,
         }}>
         <List.Accordion
+          titleStyle={{color: error ? 'rgb(180,0,0)' : 'white'}}
           title="Languages"
           left={props => (
             <List.Icon {...props} color="white" icon="language-outline" />

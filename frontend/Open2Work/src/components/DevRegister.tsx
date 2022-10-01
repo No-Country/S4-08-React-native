@@ -16,7 +16,7 @@ const DevRegister = () => {
   return (
     <Formik
       validationSchema={Yup.object({
-        languages: Yup.string().required('Required'),
+        languages: Yup.array().min(1, 'Provide at least 1 option'),
         timezone: Yup.string().required('Required'),
         role: Yup.string().required('Required'),
         seniority: Yup.string().required('Required'),
@@ -50,30 +50,88 @@ const DevRegister = () => {
             marginBottom: 25,
             width: '90%',
           }}>
-          <Languages onPress={setFieldValue} />
-          <Timezones onPress={setFieldValue} />
-          <Roles onPress={setFieldValue} />
-          <Seniority onPress={setFieldValue} />
-          <Availability onPress={setFieldValue} />
+          <Languages
+            onPress={setFieldValue}
+            error={!!errors.languages && !!touched.languages}
+          />
+          {errors.languages && touched.languages && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="languages" />
+            </Text>
+          )}
+          <Timezones
+            onPress={setFieldValue}
+            error={!!errors.timezone && !!touched.timezone}
+          />
+          {errors.timezone && touched.timezone && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="timezone" />
+            </Text>
+          )}
+          <Roles
+            onPress={setFieldValue}
+            error={!!errors.role && !!touched.role}
+          />
+          {errors.role && touched.role && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="role" />
+            </Text>
+          )}
+          <Seniority
+            onPress={setFieldValue}
+            error={!!errors.seniority && !!touched.seniority}
+          />
+          {errors.seniority && touched.seniority && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="seniority" />
+            </Text>
+          )}
+          <Availability
+            onPress={setFieldValue}
+            error={!!errors.availability && !!touched.availability}
+          />
+          {errors.availability && touched.availability && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="availability" />
+            </Text>
+          )}
 
           <MyInput
             iconName="logo-github"
             label={'GitHub'}
             value={values.github}
+            error={!!errors.github && !!touched.github}
             onChangeText={handleChange('github')}
           />
+          {errors.github && touched.github && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="github" />
+            </Text>
+          )}
           <MyInput
             iconName="logo-linkedin"
             label={'Linkedin'}
             value={values.linkedin}
+            error={!!errors.linkedin && !!touched.linkedin}
             onChangeText={handleChange('linkedin')}
           />
+          {errors.linkedin && touched.linkedin && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="linkedin" />
+            </Text>
+          )}
           <MyInput
             iconName="globe-outline"
             label={'Portfolio / Web'}
             value={values.web}
+            error={!!errors.web && !!touched.web}
             onChangeText={handleChange('web')}
           />
+          {errors.web && touched.web && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="web" />
+            </Text>
+          )}
 
           <Button
             onPress={handleSubmit}

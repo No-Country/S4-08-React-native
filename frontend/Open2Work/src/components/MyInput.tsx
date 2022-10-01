@@ -14,6 +14,7 @@ export const MyInput = ({
   iconName,
   onClick,
   secureTextEntry,
+  error,
   ...props
 }: Props) => {
   return (
