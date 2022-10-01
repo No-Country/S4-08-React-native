@@ -94,14 +94,14 @@ const MyAvatar = () => {
                 borderRightWidth: 1,
               }}
               onPress={() => handleAvatar('image')}>
-              <Icon name="images" size={21} color="black" />
-              <Text>Gallery</Text>
+              <Icon name="images" size={29} color="black" />
+              <Text style={{color: 'black'}}>Gallery</Text>
             </Pressable>
             <Pressable
               style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
               onPress={() => handleAvatar('camera')}>
-              <Icon name="camera" size={25} color="black" />
-              <Text>Camera</Text>
+              <Icon name="camera" size={34} color="black" />
+              <Text style={{color: 'black'}}>Camera</Text>
             </Pressable>
           </View>
         </Pressable>

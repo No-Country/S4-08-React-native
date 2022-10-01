@@ -3,9 +3,6 @@ import {View, Text} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Formik} from 'formik';
 import {MyInput} from '../components/MyInput';
-import Roles from '../components/Roles';
-import Seniority from '../components/Seniority';
-import Availability from '../components/Availability';
 import Timezones from '../components/Timezones';
 import Languages from '../components/Languages';
 
@@ -13,30 +10,29 @@ const OrgRegister = () => {
   return (
     <Formik
       initialValues={{
-        role: '',
-        last: '',
-        pass: '',
-        name: '',
-        stack: '',
-        language: '',
-        location: '',
+        languages: [],
+        timezone: '',
+        organization: '',
+        linkedin: '',
+        web: '',
+        github: '',
       }}
       onSubmit={values => console.log(values)}>
-      {({handleChange, handleSubmit, values}) => (
+      {({handleChange, handleSubmit, values, setFieldValue}) => (
         <View
           style={{
             minHeight: '100%',
             marginBottom: 25,
             width: '90%',
           }}>
-          <Languages />
-          <Timezones />
+          <Languages onPress={setFieldValue} />
+          <Timezones onPress={setFieldValue} />
 
           <MyInput
             iconName="briefcase-outline"
-            label={'Organization Name'}
-            value={values.github}
-            onChangeText={handleChange('github')}
+            label={'Organization'}
+            value={values.organization}
+            onChangeText={handleChange('organization')}
           />
           <MyInput
             iconName="logo-linkedin"

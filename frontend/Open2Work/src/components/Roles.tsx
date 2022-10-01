@@ -1,13 +1,23 @@
 import * as React from 'react';
 import {List} from 'react-native-paper';
 import {View} from 'react-native';
+interface Props {
+  onPress: (field: string, value: any) => void;
+}
 
-const Roles = () => {
+const Roles = ({onPress}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState('');
+
   const handlePress = () => {
     setExpanded(!expanded);
   };
+
+  const handleSelect = (role: string) => {
+    setSelected(role);
+    onPress('role', role);
+  };
+
   return (
     <List.Section>
       <View
@@ -49,7 +59,7 @@ const Roles = () => {
                   }
                 />
               )}
-              onPress={() => setSelected('front')}
+              onPress={() => handleSelect('front')}
             />
             <List.Item
               title="Back End"
@@ -63,7 +73,7 @@ const Roles = () => {
                   }
                 />
               )}
-              onPress={() => setSelected('back')}
+              onPress={() => handleSelect('back')}
             />
             <List.Item
               title="UIX"
@@ -77,7 +87,7 @@ const Roles = () => {
                   }
                 />
               )}
-              onPress={() => setSelected('uix')}
+              onPress={() => handleSelect('uix')}
             />
             <List.Item
               title="QA"

@@ -1,13 +1,23 @@
 import * as React from 'react';
 import {List} from 'react-native-paper';
 import {View} from 'react-native';
+interface Props {
+  onPress: (field: string, value: any) => void;
+}
 
-const Seniority = () => {
+const Seniority = ({onPress}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState('');
+
   const handlePress = () => {
     setExpanded(!expanded);
   };
+
+  const handleSelect = (seniority: string) => {
+    setSelected(seniority);
+    onPress('seniority', seniority);
+  };
+
   return (
     <List.Section>
       <View
@@ -44,13 +54,13 @@ const Seniority = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'front'
+                    selected === '0'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('front')}
+              onPress={() => handleSelect('0')}
             />
             <List.Item
               title="Junior ( 1+ Year )"
@@ -58,13 +68,13 @@ const Seniority = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'back'
+                    selected === '1'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('back')}
+              onPress={() => handleSelect('1')}
             />
             <List.Item
               title="Junior Advanced ( 2+ Year )"
@@ -72,13 +82,13 @@ const Seniority = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'uix'
+                    selected === '2'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('uix')}
+              onPress={() => handleSelect('2')}
             />
             <List.Item
               title="Semi-Senior ( 3+ Year )"
@@ -86,13 +96,13 @@ const Seniority = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'qa'
+                    selected === '3'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('qa')}
+              onPress={() => handleSelect('3')}
             />
             <List.Item
               title="Semi-Senior Advanced ( 4+ Year )"
@@ -100,13 +110,13 @@ const Seniority = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'qa'
+                    selected === '4'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('qa')}
+              onPress={() => handleSelect('4')}
             />
             <List.Item
               title="Senior ( 5+ Year )"
@@ -114,13 +124,13 @@ const Seniority = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'qa'
+                    selected === '5'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('qa')}
+              onPress={() => handleSelect('5')}
             />
           </View>
         </List.Accordion>

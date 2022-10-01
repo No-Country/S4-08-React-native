@@ -1,13 +1,36 @@
 import * as React from 'react';
 import {List} from 'react-native-paper';
 import {View} from 'react-native';
+interface Props {
+  onPress: (field: string, value: any) => void;
+}
 
-const Languages = () => {
+const Languages = ({onPress}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState(['']);
+
   const handlePress = () => {
     setExpanded(!expanded);
   };
+
+  const handleSelect = (lang: string) => {
+    if (selected.includes(lang)) {
+      setSelected(selected.filter(item => item !== lang));
+      onPress(
+        'languages',
+        selected.filter(item => item !== lang),
+      );
+    } else {
+      if (selected.length === 1 && selected[0] === '') {
+        setSelected([lang]);
+        onPress('languages', [lang]);
+      } else {
+        setSelected([...selected, lang]);
+        onPress('languages', [...selected, lang]);
+      }
+    }
+  };
+
   return (
     <List.Section>
       <View
@@ -50,7 +73,7 @@ const Languages = () => {
                   }
                 />
               )}
-              onPress={() => setSelected([...selected, 'ES'])}
+              onPress={() => handleSelect('ES')}
             />
             <List.Item
               title="English"
@@ -64,7 +87,7 @@ const Languages = () => {
                   }
                 />
               )}
-              onPress={() => setSelected([...selected, 'EN'])}
+              onPress={() => handleSelect('EN')}
             />
             <List.Item
               title="Portuguese"
@@ -78,7 +101,7 @@ const Languages = () => {
                   }
                 />
               )}
-              onPress={() => setSelected([...selected, 'PT'])}
+              onPress={() => handleSelect('PT')}
             />
           </View>
         </List.Accordion>

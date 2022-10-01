@@ -9,13 +9,13 @@ const IsDev = () => {
     <>
       <LinearGradient
         style={{width: '100%', height: '50%', position: 'absolute'}}
-        locations={[0.1, 0.6, 0.8]}
+        locations={[0.1, 0.55, 0.8]}
         useAngle={true}
         angle={180}
         colors={[
-          'rgba(31, 26, 48,0.99)',
-          'rgba(31, 26, 48,0.4)',
-          'rgba(31, 26, 48,0.97)',
+          'rgba(31, 26, 48,0.9)',
+          'rgba(31, 26, 48,0.5)',
+          'rgba(31, 26, 48,1)',
         ]}>
         <ImageBackground
           resizeMode="cover"
@@ -31,13 +31,13 @@ const IsDev = () => {
       </LinearGradient>
       <LinearGradient
         style={{width: '100%', top: '50%', height: '50%', position: 'absolute'}}
-        locations={[0.05, 0.6, 0.95]}
+        locations={[0.05, 0.6, 1]}
         useAngle={true}
         angle={180}
         colors={[
           'rgba(31, 26, 48,0.99)',
-          'rgba(31, 26, 48,0.25)',
-          'rgba(31, 26, 48,0.95)',
+          'rgba(31, 26, 48,0.1)',
+          'rgba(31, 26, 48,0.9)',
         ]}>
         <ImageBackground
           resizeMode="cover"

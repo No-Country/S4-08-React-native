@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  ImageBackground,
-  StatusBar,
-  Text,
-} from 'react-native';
+import {ScrollView, ImageBackground, StatusBar, Text} from 'react-native';
 import {Headline} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import MyAvatar from '../components/MyAvatar';
@@ -13,7 +7,7 @@ import DevRegister from '../components/DevRegister';
 import OrgRegister from '../components/OrgRegister';
 
 const Register = ({}) => {
-  const [isDev, setIsDev] = React.useState(false);
+  const [isDev, setIsDev] = React.useState(true);
   return (
     <ScrollView
       contentContainerStyle={{
@@ -33,7 +27,7 @@ const Register = ({}) => {
         colors={[
           'rgba(0, 0, 0,0.65)',
           'rgba(31, 26, 48,0.8)',
-          'rgba(31, 26, 48,0.9)',
+          'rgba(31, 26, 48,1)',
         ]}>
         <ImageBackground
           resizeMode="cover"

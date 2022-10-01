@@ -1,13 +1,22 @@
 import * as React from 'react';
 import {List} from 'react-native-paper';
 import {View} from 'react-native';
+interface Props {
+  onPress: (field: string, value: any) => void;
+}
 
-const Availability = () => {
+const Availability = ({onPress}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState('');
   const handlePress = () => {
     setExpanded(!expanded);
   };
+
+  const handleSelect = (avail: string) => {
+    setSelected(avail);
+    onPress('availability', avail);
+  };
+
   return (
     <List.Section>
       <View
@@ -43,13 +52,13 @@ const Availability = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'front'
+                    selected === 'full'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('front')}
+              onPress={() => handleSelect('full')}
             />
             <List.Item
               title="Part-Time ( 4 - 6 hs )"
@@ -57,13 +66,13 @@ const Availability = () => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected === 'back'
+                    selected === 'part'
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => setSelected('back')}
+              onPress={() => handleSelect('part')}
             />
           </View>
         </List.Accordion>

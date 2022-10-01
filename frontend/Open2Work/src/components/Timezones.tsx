@@ -29,13 +29,23 @@ const timezonesData = {
   'GMT+11': {tz: 'GMT +11', location: 'Sakhalin Time (SAKT)'},
   'GMT+12': {tz: 'GMT +12', location: 'New Zealand Standard Time (NZST)'},
 };
+interface Props {
+  onPress: (field: string, value: any) => void;
+}
 
-const Timezones = () => {
+const Timezones = ({onPress}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState('');
+
   const handlePress = () => {
     setExpanded(!expanded);
   };
+
+  const handleSelect = (tz: string) => {
+    setSelected(tz);
+    onPress('timezone', tz);
+  };
+
   return (
     <List.Section>
       <View
@@ -84,7 +94,7 @@ const Timezones = () => {
                       }
                     />
                   )}
-                  onPress={() => setSelected(index)}
+                  onPress={() => handleSelect(index)}
                 />
               );
             })}
