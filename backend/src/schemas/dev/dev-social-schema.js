@@ -1,21 +1,16 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
 
-const devSocialSchema = new Schema(
-  {
+export const devSocialSchema = new mongoose.Schema({
     linkedin: {
       type: String,
       required: true,
     },
     portfolio: {
-      type: String
+      type: String,
+      required: true,
     },
     github: {
       type: String,
       required: true,
     },
-  },
-  { collection: false }
-);
-
-module.exports = { devSocialSchema };
+  }, {collection: false});

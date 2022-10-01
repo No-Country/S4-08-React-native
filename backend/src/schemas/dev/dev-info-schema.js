@@ -1,8 +1,10 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
 
-const devInfoSchema = new Schema(
-  {
+export const devInfoSchema = new mongoose.Schema({
+    language: {
+      type: String,
+      required: true,
+    },
     time_availability: {
       type: String,
       required: true,
@@ -11,16 +13,4 @@ const devInfoSchema = new Schema(
       type: String,
       required: true,
     },
-    experience: {
-      type: Number,
-      required: true,
-    },
-    language: {
-      type: Array,
-      required: true,
-    }
-  },
-  { collection: false }
-);
-
-module.exports = { devInfoSchema };
+  }, {collection: false});

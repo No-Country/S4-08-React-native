@@ -1,15 +1,9 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+import mongoose from "mongoose";
+import { devInfoSchema } from "./dev-info-schema.js";
+import { devSocialSchema } from "./dev-social-schema.js";
 
-const { devInfoSchema } = require("./dev-info-schema");
-const { devSocialSchema } = require("./dev-social-schema");
-
-const devSchema = new Schema({
+export const devSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true,
-  },
-  surname: {
     type: String,
     required: true,
   },
@@ -27,15 +21,9 @@ const devSchema = new Schema({
     required: true,
   },
   avatar: {
-    type: String
+    type: String,
+    required: true,
   },
   social: devSocialSchema,
   info: devInfoSchema,
-  team: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Team",
-    require: false,
-  },
 });
-
-module.exports = { devSchema };

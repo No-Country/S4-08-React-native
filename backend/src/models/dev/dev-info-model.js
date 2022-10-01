@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-const { devInfoSchema } = require("../../schemas/dev/dev-info-schema");
+import mongoose from "mongoose";
+import { devInfoSchema } from "../../schemas/dev/dev-info-schema.js";
 
-const DevInfoModel = mongoose.model("DevInfo", devInfoSchema);
-
-module.exports = { DevInfoModel };
+export const DevSocialModel = mongoose.model("DevSocial", devInfoSchema);
