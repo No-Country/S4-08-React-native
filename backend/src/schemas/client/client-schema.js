@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const { devInfoSchema } = require("./dev-info-schema");
-const { devSocialSchema } = require("./dev-social-schema");
+const { clientInfoSchema } = require("./client-info-schema");
+const { clientSocialSchema } = require("./client-social-schema");
 
-const devSchema = new Schema({
+const clientSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -22,15 +22,11 @@ const devSchema = new Schema({
     type: String,
     required: true,
   },
-  role: {
-    type: String,
-    required: true,
-  },
   avatar: {
     type: String
   },
-  social: devSocialSchema,
-  info: devInfoSchema,
+  social: clientSocialSchema,
+  info: clientInfoSchema,
   team: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
@@ -38,4 +34,4 @@ const devSchema = new Schema({
   },
 });
 
-module.exports = { devSchema };
+module.exports = { clientSchema };
