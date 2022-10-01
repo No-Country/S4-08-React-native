@@ -2,7 +2,8 @@ import React from 'react'
 import { Image, View, StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-export const ImageLogin = () => {
+export const ImageLogin = React.memo(() => {
+
     return (
         <View style={{ flex: 1 }}>
             <Image
@@ -22,6 +23,6 @@ export const ImageLogin = () => {
             />
         </View>
     )
-}
+})
 
 

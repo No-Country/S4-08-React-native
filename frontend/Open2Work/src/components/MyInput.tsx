@@ -24,7 +24,7 @@ export const MyInput = ({
       }}>
       {iconName && (
         <TouchableOpacity
-          style={{position: 'absolute', top: 29.25, left: 10, zIndex: 999}}
+          style={{position: 'absolute', top: 27, left: 10, zIndex: 999}}
           onPress={() => onClick && onClick(!secureTextEntry)}>
           <Icon name={iconName} size={30} color="#fff" />
         </TouchableOpacity>
@@ -33,6 +33,7 @@ export const MyInput = ({
       <TextInput
         {...props}
         mode="outlined"
+        error={error}
         secureTextEntry={secureTextEntry}
         style={{
           flex: 1,
