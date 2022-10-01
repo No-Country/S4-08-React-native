@@ -15,6 +15,7 @@ require("./middlewares/auth/passport.js");
 app.use(express.json());
 app.use(express.text());
 app.use("/dev", routers.dev);
+app.use("/client", routers.client);
 app.use("/team", routers.team);
 
 //test home

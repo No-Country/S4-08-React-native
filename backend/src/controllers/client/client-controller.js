@@ -1,12 +1,12 @@
-const { DevModel } = require("../../models/dev/dev-model");
+const { ClientModel } = require("../../models/client/client-model");
 
 //get all profiles
 const ProfilesController = async (req, res) => {
   try {
-    const Devs = await DevModel.find().populate("team", "-_id");
-    return res.send(Devs);
+    const Clients = await ClientModel.find().populate("team", "-_id");
+    return res.send(Clients);
   } catch (error) {
-    return res.status(400).send("NO Devs found");
+    return res.status(400).send("No clients found");
   }
 };
 
@@ -15,10 +15,10 @@ const ProfileController = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const Devs = await DevModel.findById(id);
-    return res.send(Devs);
+    const Client = await ClientModel.findById(id);
+    return res.send(Client);
   } catch (error) {
-    return res.status(400).send("NO Devs found");
+    return res.status(400).send("NO Client found");
   }
 };
 
@@ -27,9 +27,9 @@ const UpdateController = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const data = await DevModel.findById(id);
+    const data = await ClientModel.findById(id);
   } catch (error) {
-    return res.status(400).send("No Dev found");
+    return res.status(400).send("No Client found");
   }
 
   const { name, email, password, role, avatar, social, info } = req.body;
@@ -39,9 +39,9 @@ const UpdateController = async (req, res) => {
   const filter = req.params;
   const update = req.body;
 
-  const Dev = await DevModel.findOneAndUpdate(filter, update);
+  const Client = await ClientModel.findOneAndUpdate(filter, update);
 
-  return res.send("Dev updated succesfully");
+  return res.send("Client updated succesfully");
 };
 
 //delete profile
@@ -49,13 +49,13 @@ const DeleteController = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const data = await DevModel.findById(id);
+    const data = await ClientModel.findById(id);
   } catch (error) {
     return res.status(400).send("No Dev found");
   }
 
   const Devs = await DevModel.findOneAndDelete(id);
-  return res.send("Dev deleted succesfully");
+  return res.send("Client deleted succesfully");
 };
 
 module.exports = {

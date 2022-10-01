@@ -4,25 +4,20 @@ const jwt = require("jsonwebtoken");
 const { DevModel } = require("../../models/dev/dev-model");
 
 //register
-const devRegisterController = async (req, res) => {
-  const { name, email, password, role, avatar, social, info, team } = req.body;
+const RegisterController = async (req, res) => {
+  const { name, surname, email, password, role, avatar, social, info, team } =
+    req.body;
 
-  if (
-    !name ||
-    !email ||
-    !password ||
-    !role ||
-    !avatar ||
-    !social ||
-    !info ||
-    !team
-  )
+  if (!name || !surname || !email || !password || !role || !social || !info)
+    //asignar team random con query a la bbdd. crear funcion
+
     return res.status(400).send();
 
   const hashPassword = await bcryptjs.hash(password, 8);
 
   const newDev = new DevModel({
     name,
+    surname,
     email,
     password: hashPassword,
     role,
@@ -38,8 +33,8 @@ const devRegisterController = async (req, res) => {
 };
 
 //login
-const devLoginController = async (req, res, next) => {
-  passport.authenticate("login", async (err, user, info) => {
+const LoginController = async (req, res, next) => {
+  passport.authenticate("loginDev", async (err, user, info) => {
     try {
       if (!user) {
         return res.status(404).json(info);
@@ -63,24 +58,6 @@ const devLoginController = async (req, res, next) => {
       return next(err);
     }
   })(req, res, next);
-
-  /* const { email, password } = req.body;
-  
-    if (!email || !password ) return res.status(400).send();
-
-
-    const devEmail = await DevModel.findOne({email}).exec();
-
-    if(!devEmail) return res.status(401).send("email is not registered");
-
-    const checkPassword = await bcryptjs.compare(password, devEmail.password);
-
-    if(!checkPassword) return res.status(401).send("try again. wrong password");
-
-    return res.send(`Welcome ${devEmail.name}`);
-    */
-
-  //generar TOken
 };
 
-module.exports = { devRegisterController, devLoginController };
+module.exports = { RegisterController, LoginController };
