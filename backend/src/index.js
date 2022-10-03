@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const mongoose = require("mongoose");
 const routers = require("./routes");
+const cors = require("cors");
 
 //basic config
 dotenv.config();
@@ -13,6 +14,7 @@ const PORT = process.env.PORT;
 //middlewares
 require("./middlewares/auth/passport.js");
 app.use(express.json());
+app.use(cors());
 app.use(express.text());
 app.use("/dev", routers.dev);
 app.use("/client", routers.client);
