@@ -9,9 +9,22 @@ import Availability from '../components/Availability';
 import Timezones from '../components/Timezones';
 import Languages from '../components/Languages';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const DevRegister = () => {
-  const [devForm, setDevForm] = React.useState({});
+  const [devForm, setDevForm] = React.useState({
+    name: 'Nahuel',
+    surname: 'Fanego Paz',
+    email: 'nfanego@mail.com',
+    password: 'Admin1234!',
+  });
+
+  const submitPOST = (values: {}) => {
+    axios.get('http://localhost:8080/');
+    /* .post('http://localhost:8080/dev/register', {...devForm, ...values})
+      .then(res => console.log(res))
+      .catch(err => console.log(err)); */
+  };
 
   return (
     <Formik
@@ -35,7 +48,7 @@ const DevRegister = () => {
         linkedin: '',
         web: '',
       }}
-      onSubmit={values => console.log(values)}>
+      onSubmit={values => submitPOST(values)}>
       {({
         handleChange,
         handleSubmit,

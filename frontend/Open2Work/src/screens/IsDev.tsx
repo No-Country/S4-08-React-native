@@ -1,10 +1,16 @@
 import * as React from 'react';
 import {View, Text, ImageBackground} from 'react-native';
 import {Button} from 'react-native-paper';
-import Register from './Register';
 import LinearGradient from 'react-native-linear-gradient';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigation/Navigation';
 
-const IsDev = () => {
+interface Props {
+  navigation: StackNavigationProp<RootStackParamList, 'IsDev'>;
+}
+
+const IsDev = ({navigation}: Props) => {
+  const userName = 'Nahuel';
   return (
     <>
       <LinearGradient
@@ -53,14 +59,41 @@ const IsDev = () => {
       </LinearGradient>
 
       <View
+        style={{position: 'absolute', zIndex: 1, top: 45, marginLeft: '3%'}}>
+        <Text
+          style={{
+            color: '#17f1de',
+            fontSize: 40,
+          }}>
+          Hi, {userName}!
+        </Text>
+        <Text
+          style={{
+            color: '#6d6387',
+            fontSize: 30,
+          }}>
+          Please, tell us who you are
+        </Text>
+      </View>
+
+      <View
         style={{
           flex: 1,
           backgroundColor: 'rgba(31, 26, 48,0.7)',
           justifyContent: 'center',
         }}>
         <View style={{height: '55%', justifyContent: 'space-around'}}>
+          <View style={{top: 35, left: 15}}>
+            <Text
+              style={{
+                color: '#6d6387',
+                fontSize: 30,
+              }}>
+              I am part of an ...
+            </Text>
+          </View>
           <Button
-            onPress={() => <Register isDev={false} />}
+            onPress={() => navigation.navigate('Register', {isDev: false})}
             mode="contained"
             style={{
               width: '60%',
@@ -75,8 +108,17 @@ const IsDev = () => {
               Organization
             </Text>
           </Button>
+          <View style={{top: 40, left: 35}}>
+            <Text
+              style={{
+                color: '#6d6387',
+                fontSize: 30,
+              }}>
+              I'm a ...
+            </Text>
+          </View>
           <Button
-            onPress={() => <Register isDev={true} />}
+            onPress={() => navigation.navigate('Register', {isDev: true})}
             mode="contained"
             style={{
               width: '60%',

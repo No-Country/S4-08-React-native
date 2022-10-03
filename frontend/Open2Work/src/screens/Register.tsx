@@ -5,9 +5,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import MyAvatar from '../components/MyAvatar';
 import DevRegister from '../components/DevRegister';
 import OrgRegister from '../components/OrgRegister';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../navigation/Navigation';
+interface Props {
+  navigation: StackNavigationProp<RootStackParamList, 'Register'>;
+  route: {params: {isDev?: boolean}};
+}
 
-const Register = ({}) => {
-  const [isDev, setIsDev] = React.useState(true);
+const Register = ({navigation, route: {params}}: Props) => {
+  const [isDev, setIsDev] = React.useState(params.isDev);
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -53,9 +60,6 @@ const Register = ({}) => {
         Create Account
       </Headline>
       <MyAvatar />
-      <Text onPress={() => setIsDev(!isDev)} style={{color: 'white'}}>
-        ToggleDev
-      </Text>
       {isDev ? <DevRegister /> : <OrgRegister />}
     </ScrollView>
   );

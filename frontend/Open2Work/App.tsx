@@ -1,10 +1,9 @@
 import React from 'react';
 import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
-import {LoginScreen} from './src/screens/LoginScreen';
-import Register from './src/screens/Register';
 import {SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import IsDev from './src/screens/IsDev';
+import {StackNavigation} from './src/navigation/Navigation';
+import {NavigationContainer} from '@react-navigation/native';
 
 const theme = {
   ...DefaultTheme,
@@ -22,19 +21,18 @@ const theme = {
 
 const App = () => {
   return (
-    <PaperProvider
-      theme={theme}
-      settings={{
-        icon: props => <Icon {...props} />,
-      }}>
-      <SafeAreaView style={{height: '100%'}}>
-        {/* <LoginScreen /> */}
-        {/* <IsDev /> */}
-        <Register />
-      </SafeAreaView>
-    </PaperProvider>
+    <NavigationContainer>
+      <PaperProvider
+        theme={theme}
+        settings={{
+          icon: props => <Icon {...props} />,
+        }}>
+        <SafeAreaView style={{height: '100%'}}>
+          <StackNavigation />
+        </SafeAreaView>
+      </PaperProvider>
+    </NavigationContainer>
   );
 };
 
 export default App;
-

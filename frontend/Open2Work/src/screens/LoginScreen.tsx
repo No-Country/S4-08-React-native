@@ -6,13 +6,15 @@ import {
   Keyboard,
   StatusBar,
 } from 'react-native';
-import {StackScreenProps} from '@react-navigation/stack';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {ImageLogin} from '../components/ImageLogin';
 import {FormLogin} from '../components/FormLogin';
 import {FormRegister} from '../components/FormRegister';
 import {RootStackParamList} from '../navigation/Navigation';
 
-type Props = StackScreenProps<RootStackParamList, 'LoginScreen'>;
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
+};
 
 export const LoginScreen = ({navigation}: Props) => {
   const [isRegister, setIsRegister] = useState(true);
@@ -41,7 +43,10 @@ export const LoginScreen = ({navigation}: Props) => {
             {isRegister ? (
               <FormLogin setIsRegister={setIsRegister} />
             ) : (
-              <FormRegister setIsRegister={setIsRegister} />
+              <FormRegister
+                setIsRegister={setIsRegister}
+                navigation={navigation}
+              />
             )}
           </View>
         </>
