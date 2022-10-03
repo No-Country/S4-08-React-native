@@ -20,7 +20,10 @@ const DevRegister = () => {
   });
 
   const submitPOST = (values: {}) => {
-    axios.get('http://localhost:8080/');
+    axios
+      .get('http://192.168.1.43:8080/')
+      .then(res => console.log(res.status))
+      .catch(err => console.log(err.message));
     /* .post('http://localhost:8080/dev/register', {...devForm, ...values})
       .then(res => console.log(res))
       .catch(err => console.log(err)); */
