@@ -15,7 +15,7 @@ interface Props {
 	navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
 }
 
-export interface FormValues {
+interface FormValues {
     name: string;
     surname: string;
     email: string;

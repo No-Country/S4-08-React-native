@@ -5,6 +5,7 @@ import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconLogin } from './IconLogin';
 import { MyInput } from './MyInput';
+import { apiDevelopers } from '../axios/apiDevelopers';
 
 interface Props {
     setIsRegister: (value: boolean) => void;
@@ -17,6 +18,15 @@ interface FormValues {
 export const FormLogin = ({ setIsRegister }: Props) => {
 
     const [hidden, setHidden] = useState(true);
+
+    const handleSubmit = async( values: FormValues )=>{
+
+        Keyboard.dismiss();
+        console.log(values)
+
+        await apiDevelopers.post('/', values);
+
+    }
 
     return (
         <>
@@ -36,13 +46,12 @@ export const FormLogin = ({ setIsRegister }: Props) => {
 
             <Formik
                 initialValues={{
-                    email: '',
-                    password: ''
+                    email: 'abel@test.com',
+                    password: '123456Ab'
                 }}
                 onSubmit={(values: FormValues, { resetForm }) => {
-                    console.log(values);
+                    handleSubmit(values);
                     resetForm();
-                    Keyboard.dismiss();
                 }}
                 validationSchema={Yup.object({
                     email: Yup.string()
@@ -50,10 +59,10 @@ export const FormLogin = ({ setIsRegister }: Props) => {
                         .required('The email is required'),
                     password: Yup.string()
                         .required('The password is required')
-                        // .matches(
-                        //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
-                        //     "Must Contain 8 Characters, One Uppercase, One Lowercase and one Number"
-                        // ),
+                    // .matches(
+                    //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+                    //     "Must Contain 8 Characters, One Uppercase, One Lowercase and one Number"
+                    // ),
                 })}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
