@@ -1,9 +1,11 @@
 import React from 'react';
-import {Provider as PaperProvider, DefaultTheme} from 'react-native-paper';
-import {SafeAreaView} from 'react-native';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {StackNavigation} from './src/navigation/Navigation';
-import {NavigationContainer} from '@react-navigation/native';
+import { StackNavigation } from './src/navigation/Navigation';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
 
 const theme = {
   ...DefaultTheme,
@@ -22,15 +24,17 @@ const theme = {
 const App = () => {
   return (
     <NavigationContainer>
-      <PaperProvider
-        theme={theme}
-        settings={{
-          icon: props => <Icon {...props} />,
-        }}>
-        <SafeAreaView style={{height: '100%'}}>
-          <StackNavigation />
-        </SafeAreaView>
-      </PaperProvider>
+      <Provider store={ store }>
+        <PaperProvider
+          theme={theme}
+          settings={{
+            icon: props => <Icon {...props} />,
+          }}>
+          <SafeAreaView style={{ height: '100%' }}>
+            <StackNavigation />
+          </SafeAreaView>
+        </PaperProvider>
+      </Provider>
     </NavigationContainer>
   );
 };

@@ -10,20 +10,48 @@ import Timezones from '../components/Timezones';
 import Languages from '../components/Languages';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useAppSelector, useAppDispatch } from '../redux/hook';
+import { register } from '../redux/features/register/registerSlice';
+
+interface FormValues {
+  languages: string [],
+  timezone: string,
+  role: string,
+  seniority: string,
+  availability: string,
+  github: string,
+  linkedin: string,
+  web: string,
+}
 
 const DevRegister = () => {
-  const [devForm, setDevForm] = React.useState({
-    name: 'Nahuel',
-    surname: 'Fanego Paz',
-    email: 'nfanego@mail.com',
-    password: 'Admin1234!',
-  });
 
-  const submitPOST = (values: {}) => {
-    axios
-      .get('http://192.168.1.43:8080/')
-      .then(res => console.log(res.status))
-      .catch(err => console.log(err.message));
+  const formValues = useAppSelector(state=> state.register);
+  const dispatch = useAppDispatch();
+
+  const submitPOST = (values: FormValues) => {
+    const createForm = {
+      role: values.role,
+      avatar: "",
+      social: {
+        linkedin: values.linkedin,
+        portfolio: values.web,
+        github: values.github
+      },
+      info: {
+        time_availability: values.availability,
+        time_zone: values.timezone,
+        experience: values.seniority,
+        language: values.languages
+      }
+    }
+
+    dispatch( register( createForm ));
+
+    // axios
+    //   .get('http://192.168.1.43:8080/')
+    //   .then(res => console.log(res.status))
+    //   .catch(err => console.log(err.message));
     /* .post('http://localhost:8080/dev/register', {...devForm, ...values})
       .then(res => console.log(res))
       .catch(err => console.log(err)); */
@@ -41,17 +69,32 @@ const DevRegister = () => {
         linkedin: Yup.string().url('Invalid URL format').required('Required'),
         web: Yup.string().url('Invalid URL format'),
       })}
-      initialValues={{
-        languages: [],
-        timezone: '',
-        role: '',
-        seniority: '',
-        availability: '',
-        github: '',
-        linkedin: '',
-        web: '',
-      }}
+      initialValues={
+        {
+          "languages": [
+            "ES"
+          ],
+          "timezone": "GMT-3",
+          "role": "front",
+          "seniority": "5",
+          "availability": "part",
+          "github": "http://a.com",
+          "linkedin": "Http://a.com",
+          "web": ""
+        }
+      //   {
+      //   languages: [],
+      //   timezone: '',
+      //   role: '',
+      //   seniority: '',
+      //   availability: '',
+      //   github: '',
+      //   linkedin: '',
+      //   web: '',
+      // }
+    }
       onSubmit={values => submitPOST(values)}>
+        
       {({
         handleChange,
         handleSubmit,

@@ -5,15 +5,20 @@ import LinearGradient from 'react-native-linear-gradient';
 import MyAvatar from '../components/MyAvatar';
 import DevRegister from '../components/DevRegister';
 import OrgRegister from '../components/OrgRegister';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import {RootStackParamList} from '../navigation/Navigation';
-interface Props {
-  navigation: StackNavigationProp<RootStackParamList, 'Register'>;
-  route: {params: {isDev?: boolean}};
-}
+// interface Props {
+//   navigation: StackNavigationProp<RootStackParamList, 'Register'>;
+//   route: {params: {isDev?: boolean}};
+// }
 
-const Register = ({navigation, route: {params}}: Props) => {
-  const [isDev, setIsDev] = React.useState(params.isDev);
+type Props = StackScreenProps<RootStackParamList, 'Register'>;
+
+const Register = ({navigation, route: { params }}: Props) => {
+  
+  const { isDev } = params;
+
+  // const [isDev, setIsDev] = React.useState(params.isDev);
 
   return (
     <ScrollView

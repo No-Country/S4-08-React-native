@@ -6,8 +6,8 @@ import Register from '../screens/Register';
 import IsDev from '../screens/IsDev';
 
 export type RootStackParamList = {
-  LoginScreen: () => JSX.Element;
-  IsDev: () => JSX.Element;
+  LoginScreen: undefined;
+  IsDev: undefined;
   Register: {isDev: boolean};
 };
 
