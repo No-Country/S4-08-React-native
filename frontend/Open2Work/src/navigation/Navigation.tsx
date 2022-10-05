@@ -4,11 +4,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {LoginScreen} from '../screens/LoginScreen';
 import Register from '../screens/Register';
 import IsDev from '../screens/IsDev';
+import Profile from '../screens/Profile';
 
 export type RootStackParamList = {
-  LoginScreen: () => JSX.Element;
-  IsDev: () => JSX.Element;
+  LoginScreen: undefined;
+  IsDev: undefined;
   Register: {isDev: boolean};
+  Profile: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -19,6 +21,7 @@ export const StackNavigation = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="IsDev" component={IsDev} />
       <Stack.Screen name="Register" component={Register} />
