@@ -5,31 +5,34 @@ const { DevModel } = require("../../models/dev/dev-model");
 
 //register
 const RegisterController = async (req, res) => {
-  const { name, surname, email, password, role, avatar, social, info, team } =
-    req.body;
+  try {
+    const { name, surname, email, password, role, avatar, social, info, team } =
+      req.body;
 
-  if (!name || !surname || !email || !password || !role || !social || !info)
-    //asignar team random con query a la bbdd. crear funcion
+    if (!name || !surname || !email || !password || !role || !social || !info)
+      
+      return res.status(400).send();
 
-    return res.status(400).send();
+    const hashPassword = await bcryptjs.hash(password, 8);
 
-  const hashPassword = await bcryptjs.hash(password, 8);
+    const newDev = new DevModel({
+      name,
+      surname,
+      email,
+      password: hashPassword,
+      role,
+      avatar,
+      social,
+      info,
+      team,
+    });
 
-  const newDev = new DevModel({
-    name,
-    surname,
-    email,
-    password: hashPassword,
-    role,
-    avatar,
-    social,
-    info,
-    team,
-  });
+    await newDev.save();
 
-  await newDev.save();
-
-  return res.send("Dev registered succesfully");
+    return res.send("Dev registered succesfully");
+  } catch (error) {
+    return res.status(400).send("Error in register");
+  }
 };
 
 //login

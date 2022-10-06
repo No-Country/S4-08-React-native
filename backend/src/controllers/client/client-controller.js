@@ -51,10 +51,10 @@ const DeleteController = async (req, res) => {
   try {
     const data = await ClientModel.findById(id);
   } catch (error) {
-    return res.status(400).send("No Dev found");
+    return res.status(400).send("No client found");
   }
 
-  const Devs = await DevModel.findOneAndDelete(id);
+  const Client = await ClientModel.findOneAndDelete(id);
   return res.send("Client deleted succesfully");
 };
 
