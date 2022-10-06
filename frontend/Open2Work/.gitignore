@@ -49,9 +49,9 @@ frontend/Open2Work/android/.gradle/file-system.probe
 frontend/Open2Work/android/.gradle/7.5.1/checksums/checksums.lock
 frontend/Open2Work/android/.gradle/7.5.1/executionHistory/executionHistory.bin
 frontend/Open2Work/android/.gradle/7.5.1/executionHistory/executionHistory.lock
-android/.gradle/7.5.1/fileHashes/fileHashes.bin
-android/.gradle/7.5.1/fileHashes/fileHashes.lock
-android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+frontend/Open2Work/android/.gradle/7.5.1/fileHashes/fileHashes.bin
+frontend/Open2Work/android/.gradle/7.5.1/fileHashes/fileHashes.lock
+frontend/Open2Work/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock
 frontend/Open2Work/android/app/build/intermediates/incremental/debug/mergeDebugResources/compile-file-map.properties
 frontend/Open2Work/android/app/build/intermediates/incremental/debug/mergeDebugResources/merger.xml
 frontend/Open2Work/android/app/build/intermediates/incremental/mergeDebugAssets/merger.xml
@@ -62,8 +62,8 @@ frontend/Open2Work/android/app/build/intermediates/packaged_manifests/debug/Andr
 frontend/Open2Work/android/app/build/intermediates/source_set_path_map/debug/file-map.txt
 frontend/Open2Work/android/app/build/outputs/logs/manifest-merger-debug-report.txt
 frontend/Open2Work/node_modules/react-native-gradle-plugin/.gradle/file-system.probe
-node_modules/react-native-gradle-plugin/.gradle/7.5.1/executionHistory/executionHistory.lock
-node_modules/react-native-gradle-plugin/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+frontend/Open2Work/node_modules/react-native-gradle-plugin/.gradle/7.5.1/executionHistory/executionHistory.lock
+frontend/Open2Work/node_modules/react-native-gradle-plugin/.gradle/buildOutputCleanup/buildOutputCleanup.lock
 
 # fastlane
 #
