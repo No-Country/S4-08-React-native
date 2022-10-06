@@ -6,7 +6,40 @@ const ExtractJWT = require("passport-jwt").ExtractJwt;
 const { DevModel } = require("../../models/dev/dev-model");
 const { ClientModel } = require("../../models/client/client-model");
 
+passport.use(
+  "login",
+  new localStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+    },
+    async (email, password, done) => {
+      try {
+        let user = await DevModel.findOne({ email });
 
+        if (!user) {
+          user = await ClientModel.findOne({ email });
+          if (!user) {
+            return done(null, false, { message: "User not found" });
+          }
+        }
+
+        const checkPasswordUser = await bcryptjs.compare(
+          password,
+          user.password
+        );
+
+        if (!checkPasswordUser) {
+          return done(null, false, { message: "Wrong password" });
+        }
+
+        return done(null, user, { message: "Login successfull" });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
 
 passport.use(
   "loginDev",
@@ -18,19 +51,18 @@ passport.use(
     async (email, password, done) => {
       try {
         const dev = await DevModel.findOne({ email });
-       
+
         if (!dev) {
           return done(null, false, { message: "Dev not found" });
         }
 
         const checkPasswordDev = await bcryptjs.compare(password, dev.password);
-        
+
         if (!checkPasswordDev) {
           return done(null, false, { message: "Wrong password" });
         }
 
-        return done(null, dev , { message: "Login successfull" });
-      
+        return done(null, dev, { message: "Login successfull" });
       } catch (error) {
         return done(error);
       }
@@ -47,20 +79,20 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        
         const client = await ClientModel.findOne({ email });
         if (!client) {
           return done(null, false, { message: "Client not found" });
         }
 
-        
-        const checkPasswordClient = await bcryptjs.compare(password, client.password);
-        if ( !checkPasswordClient) {
+        const checkPasswordClient = await bcryptjs.compare(
+          password,
+          client.password
+        );
+        if (!checkPasswordClient) {
           return done(null, false, { message: "Wrong password" });
         }
 
-        return done(null, client , { message: "Login successfull" });
-      
+        return done(null, client, { message: "Login successfull" });
       } catch (error) {
         return done(error);
       }

@@ -7,7 +7,7 @@ const devRoutes = Router();
 devRoutes.post("/register", controllers.authDev.RegisterController);
 
 //login dev profile
-devRoutes.post("/login", controllers.authDev.LoginController);
+//devRoutes.post("/login", controllers.authDev.LoginController);
 
 //get All dev profiles
 devRoutes.get("/profile", controllers.dev.ProfilesController);

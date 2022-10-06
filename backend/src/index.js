@@ -19,6 +19,7 @@ app.use(express.text());
 app.use("/dev", routers.dev);
 app.use("/client", routers.client);
 app.use("/team", routers.team);
+app.use("/", routers.login);
 
 //test home
 app.get("/", (req, res) => {

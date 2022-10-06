@@ -9,7 +9,6 @@ const RegisterController = async (req, res) => {
       req.body;
 
     if (!name || !surname || !email || !password || !social || !info)
-      
       return res.status(400).send();
 
     const hashPassword = await bcryptjs.hash(password, 8);
@@ -25,16 +24,16 @@ const RegisterController = async (req, res) => {
       team,
     });
 
-    await newClient.save();
+    const client = await newClient.save();
 
-    return res.send("Client registered succesfully");
+    return res.send({ message: "Client registered succesfully", client });
   } catch (error) {
     return res.status(400).send("Error in register");
   }
 };
 
 const LoginController = async (req, res, next) => {
-  passport.authenticate("loginClient", async (err, user, info) => {
+  passport.authenticate("login", async (err, user, info) => {
     try {
       if (!user) {
         return res.status(404).json(info);
@@ -52,7 +51,7 @@ const LoginController = async (req, res, next) => {
         const token = jwt.sign({ user: body }, "JWT_SECRET", {
           expiresIn: "45m",
         });
-        res.json({ message: info.message, token });
+        res.json({ message: info.message, token, user });
       });
     } catch (err) {
       return next(err);

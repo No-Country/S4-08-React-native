@@ -35,6 +35,10 @@ const devSchema = new Schema({
     ref: "Team",
     require: false,
   },
+  isDev: {
+    type: Boolean,
+    default: true,
+  }
 });
 
 module.exports = { devSchema };

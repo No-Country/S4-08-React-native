@@ -32,6 +32,10 @@ const clientSchema = new Schema({
     ref: "Team",
     require: false,
   },
+  isDev: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 module.exports = { clientSchema };

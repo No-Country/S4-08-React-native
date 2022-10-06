@@ -7,7 +7,7 @@ const clientRoutes = Router();
 clientRoutes.post("/register", controllers.authClient.RegisterController);
 
 //login client profile
-clientRoutes.post("/login", controllers.authClient.LoginController);
+//clientRoutes.post("/login", controllers.authClient.LoginController);
 
 //get All client profiles
 clientRoutes.get("/profile", controllers.client.ProfilesController);

@@ -6,6 +6,12 @@ const teamSchema = new Schema({
     type: String,
     required: true,
   },
+  devs: {
+    type: Array,
+    required: true,
+  },
 });
 
 module.exports = { teamSchema };
+
+//introducir algoritmo y agregar devs en este filtro?

@@ -10,7 +10,6 @@ const RegisterController = async (req, res) => {
       req.body;
 
     if (!name || !surname || !email || !password || !role || !social || !info)
-      
       return res.status(400).send();
 
     const hashPassword = await bcryptjs.hash(password, 8);
@@ -27,9 +26,9 @@ const RegisterController = async (req, res) => {
       team,
     });
 
-    await newDev.save();
+    const dev = await newDev.save();
 
-    return res.send("Dev registered succesfully");
+    return res.send({ message: "Dev registered succesfully", dev });
   } catch (error) {
     return res.status(400).send("Error in register");
   }
@@ -37,7 +36,7 @@ const RegisterController = async (req, res) => {
 
 //login
 const LoginController = async (req, res, next) => {
-  passport.authenticate("loginDev", async (err, user, info) => {
+  passport.authenticate("login", async (err, user, info) => {
     try {
       if (!user) {
         return res.status(404).json(info);
@@ -55,7 +54,7 @@ const LoginController = async (req, res, next) => {
         const token = jwt.sign({ user: body }, "JWT_SECRET", {
           expiresIn: "45m",
         });
-        res.json({ message: info.message, token });
+        res.json({ message: info.message, token, user });
       });
     } catch (err) {
       return next(err);
