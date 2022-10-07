@@ -2,12 +2,12 @@ import * as React from 'react';
 import {View, Text, Keyboard} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Formik, ErrorMessage} from 'formik';
-import {MyInput} from '../components/MyInput';
-import Roles from '../components/Roles';
-import Seniority from '../components/Seniority';
-import Availability from '../components/Availability';
-import Timezones from '../components/Timezones';
-import Languages from '../components/Languages';
+import {MyInput} from '../MyInput';
+import Roles from './Roles';
+import Seniority from './Seniority';
+import Availability from './Availability';
+import Timezones from './Timezones';
+import Languages from './Languages';
 import * as Yup from 'yup';
 import axios from 'axios';
 

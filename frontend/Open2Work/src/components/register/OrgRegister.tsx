@@ -2,9 +2,9 @@ import * as React from 'react';
 import {View, Text} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Formik, ErrorMessage} from 'formik';
-import {MyInput} from '../components/MyInput';
-import Timezones from '../components/Timezones';
-import Languages from '../components/Languages';
+import {MyInput} from '../MyInput';
+import Timezones from './Timezones';
+import Languages from './Languages';
 import * as Yup from 'yup';
 
 const OrgRegister = () => {
