@@ -3,7 +3,7 @@ const { DevModel } = require("../../models/dev/dev-model");
 //get all profiles
 const ProfilesController = async (req, res) => {
   try {
-    const Devs = await DevModel.find().populate("team", "-_id");
+    const Devs = await DevModel.find()/*.populate("team", "-_id")*/;
     return res.send(Devs);
   } catch (error) {
     return res.status(400).send("NO Devs found");

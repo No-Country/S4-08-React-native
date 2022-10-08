@@ -30,15 +30,22 @@ const devSchema = new Schema({
   },
   social: devSocialSchema,
   info: devInfoSchema,
-  team: {
+  isDev: {
+    type: Boolean,
+    default: true,
+  },
+  //validar si dev pertenece a un equipo actualmente
+  currentTeam: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
     require: false,
   },
-  isDev: {
-    type: Boolean,
-    default: true,
-  }
+  //test! equipos a los que anteriormente pertenecio
+  oldTeams: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Team",
+    require: false,
+  }]
 });
 
 module.exports = { devSchema };

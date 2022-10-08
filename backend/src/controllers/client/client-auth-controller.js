@@ -51,7 +51,11 @@ const LoginController = async (req, res, next) => {
         const token = jwt.sign({ user: body }, "JWT_SECRET", {
           expiresIn: "45m",
         });
-        res.json({ message: info.message, token, user });
+        res.json({
+          message: info.message,
+          token: "Bearer" + " " + token,
+          user,
+        });
       });
     } catch (err) {
       return next(err);

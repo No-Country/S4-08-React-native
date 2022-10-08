@@ -28,6 +28,8 @@ const RegisterController = async (req, res) => {
 
     const dev = await newDev.save();
 
+    //funcion del algoritmo que autoasigna dev a un team
+
     return res.send({ message: "Dev registered succesfully", dev });
   } catch (error) {
     return res.status(400).send("Error in register");
@@ -54,7 +56,11 @@ const LoginController = async (req, res, next) => {
         const token = jwt.sign({ user: body }, "JWT_SECRET", {
           expiresIn: "45m",
         });
-        res.json({ message: info.message, token, user });
+        res.json({
+          message: info.message,
+          token: "Bearer" + " " + token,
+          user,
+        });
       });
     } catch (err) {
       return next(err);

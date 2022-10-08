@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const controllers = require("../controllers");
+const { validateToken } = require("../middlewares/auth/passport");
 
 const devRoutes = Router();
 
@@ -10,15 +11,15 @@ devRoutes.post("/register", controllers.authDev.RegisterController);
 //devRoutes.post("/login", controllers.authDev.LoginController);
 
 //get All dev profiles
-devRoutes.get("/profile", controllers.dev.ProfilesController);
+devRoutes.get("/profile", validateToken, controllers.dev.ProfilesController);
 
 //get One dev profile
-devRoutes.get("/profile/:id", controllers.dev.ProfileController);
+devRoutes.get("/profile/:id", validateToken, controllers.dev.ProfileController);
 
 //update dev profile
-devRoutes.put("/profile/:id", controllers.dev.UpdateController);
+devRoutes.put("/profile/:id", validateToken, controllers.dev.UpdateController);
 
 //delete dev profile
-devRoutes.delete("/profile/:id", controllers.dev.DeleteController);
+devRoutes.delete("/profile/:id", validateToken, controllers.dev.DeleteController);
 
 module.exports = devRoutes;

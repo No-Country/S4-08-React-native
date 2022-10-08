@@ -2,13 +2,29 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const teamSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
+  devs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Dev",
+      require: false,
+    },
+  ],
+  language: {
+    type: Array,
   },
-  devs: {
+  stack: {
+    type: String,
+  },
+  isComplete: {
+    type: Boolean,
+    default: false,
+  },
+  time_zone: {
     type: Array,
     required: true,
+  },
+  working: {
+    type: Boolean,
   },
 });
 
