@@ -5,6 +5,10 @@ const JWTStrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
 const { DevModel } = require("../../models/dev/dev-model");
 const { ClientModel } = require("../../models/client/client-model");
+const dotenv = require("dotenv");
+dotenv.config();
+
+
 
 passport.use(
   "login",
@@ -45,7 +49,7 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      secretOrKey: "JWT_SECRET",
+      secretOrKey: process.env.JWT_SECRET,
     },
     async (token, done) => {
       try {
