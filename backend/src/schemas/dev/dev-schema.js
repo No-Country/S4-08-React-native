@@ -16,7 +16,6 @@ const devSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   password: {
     type: String,
@@ -35,11 +34,22 @@ const devSchema = new Schema({
   },
   social: devSocialSchema,
   info: devInfoSchema,
-  team: {
+  isDev: {
+    type: Boolean,
+    default: true,
+  },
+  //validar si dev pertenece a un equipo actualmente
+  currentTeam: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
-    require: false,
+    required: false,
   },
+  //test! equipos a los que anteriormente pertenecio
+  oldTeams: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Team",
+    required: false,
+  }]
 });
 
 module.exports = { devSchema };

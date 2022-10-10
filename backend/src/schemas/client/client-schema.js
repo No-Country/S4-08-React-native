@@ -34,8 +34,12 @@ const clientSchema = new Schema({
   team: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
-    require: false,
+    required: false,
   },
+  isDev: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 module.exports = { clientSchema };

@@ -3,7 +3,7 @@ const { ClientModel } = require("../../models/client/client-model");
 //get all profiles
 const ProfilesController = async (req, res) => {
   try {
-    const Clients = await ClientModel.find().populate("team", "-_id");
+    const Clients = await ClientModel.find().populate("team");
     return res.send(Clients);
   } catch (error) {
     return res.status(400).send("No clients found");
@@ -32,8 +32,8 @@ const UpdateController = async (req, res) => {
     return res.status(400).send("No Client found");
   }
 
-  const { name, email, password, role, avatar, social, info } = req.body;
-  if (!name && !email && !password && !role && !avatar && !social && !info)
+  const { name, email, password, role, avatar, social, info, isDev, team } = req.body;
+  if (!name && !email && !password && !role && !avatar && !social && !info && !isDev && !team)
     return res.status(400).send("Error. empty body request");
 
   const filter = req.params;
@@ -51,10 +51,10 @@ const DeleteController = async (req, res) => {
   try {
     const data = await ClientModel.findById(id);
   } catch (error) {
-    return res.status(400).send("No Dev found");
+    return res.status(400).send("No client found");
   }
 
-  const Devs = await DevModel.findOneAndDelete(id);
+  const Client = await ClientModel.findOneAndDelete(id);
   return res.send("Client deleted succesfully");
 };
 

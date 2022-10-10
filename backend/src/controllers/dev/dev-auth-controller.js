@@ -5,36 +5,40 @@ const { DevModel } = require("../../models/dev/dev-model");
 
 //register
 const RegisterController = async (req, res) => {
-  const { name, surname, email, password, role, avatar, social, info, team } =
-    req.body;
+  try {
+    const { name, surname, email, password, role, avatar, social, info, team } =
+      req.body;
 
-  if (!name || !surname || !email || !password || !role || !social || !info)
-    //asignar team random con query a la bbdd. crear funcion
+    if (!name || !surname || !email || !password || !role || !social || !info)
+      return res.status(400).send();
 
-    return res.status(400).send();
+    const hashPassword = await bcryptjs.hash(password, 8);
 
-  const hashPassword = await bcryptjs.hash(password, 8);
+    const newDev = new DevModel({
+      name,
+      surname,
+      email,
+      password: hashPassword,
+      role,
+      avatar,
+      social,
+      info,
+      team,
+    });
 
-  const newDev = new DevModel({
-    name,
-    surname,
-    email,
-    password: hashPassword,
-    role,
-    avatar,
-    social,
-    info,
-    team,
-  });
+    const dev = await newDev.save();
 
-  const dev = await newDev.save();
+    //funcion del algoritmo que autoasigna dev a un team
 
-  return res.json({ msg:"Dev registered succesfully", dev});
+    return res.send({ message: "Dev registered succesfully", dev });
+  } catch (error) {
+    return res.status(400).send("Error in register");
+  }
 };
 
 //login
 const LoginController = async (req, res, next) => {
-  passport.authenticate("loginDev", async (err, user, info) => {
+  passport.authenticate("login", async (err, user, info) => {
     try {
       if (!user) {
         return res.status(404).json(info);
@@ -49,10 +53,14 @@ const LoginController = async (req, res, next) => {
           email: user.email,
         };
 
-        const token = jwt.sign({ user: body }, "JWT_SECRET", {
+        const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {
           expiresIn: "45m",
         });
-        res.json({ message: info.message, token, user });
+        res.json({
+          message: info.message,
+          token: "Bearer" + " " + token,
+          user,
+        });
       });
     } catch (err) {
       return next(err);

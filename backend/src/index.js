@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const routers = require("./routes");
 const cors = require("cors");
+const passport = require("passport");
 
 //basic config
 dotenv.config();
@@ -12,13 +13,20 @@ const app = express();
 const PORT = process.env.PORT;
 
 //middlewares
-require("./middlewares/auth/passport.js");
 app.use(express.json());
-app.use(cors());
+app.use(express.urlencoded({extended:true}));
 app.use(express.text());
+app.use(cors());
+
+//passport
+app.use(passport.initialize());
+require("./middlewares/auth/passport.js");
+
+//routes
 app.use("/dev", routers.dev);
 app.use("/client", routers.client);
 app.use("/team", routers.team);
+app.use("/", routers.login);
 
 //test home
 app.get("/", (req, res) => {
