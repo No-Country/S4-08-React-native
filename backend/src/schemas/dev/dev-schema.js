@@ -38,13 +38,13 @@ const devSchema = new Schema({
   currentTeam: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
-    require: false,
+    required: false,
   },
   //test! equipos a los que anteriormente pertenecio
   oldTeams: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Team",
-    require: false,
+    required: false,
   }]
 });
 

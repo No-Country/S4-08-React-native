@@ -3,7 +3,7 @@ const { DevModel } = require("../../models/dev/dev-model");
 //get all profiles
 const ProfilesController = async (req, res) => {
   try {
-    const Devs = await DevModel.find()/*.populate("team", "-_id")*/;
+    const Devs = await DevModel.find().populate("currentTeam");
     return res.send(Devs);
   } catch (error) {
     return res.status(400).send("NO Devs found");
@@ -32,8 +32,9 @@ const UpdateController = async (req, res) => {
     return res.status(400).send("No Dev found");
   }
 
-  const { name, email, password, role, avatar, social, info } = req.body;
-  if (!name && !email && !password && !role && !avatar && !social && !info)
+  const { name, email, password, role, avatar, social, info, isDev,
+    currentTeam, oldTeams } = req.body;
+  if (!name && !email && !password && !role && !avatar && !social && !info && !isDev && !currentTeam && oldTeams)
     return res.status(400).send("Error. empty body request");
 
   const filter = req.params;
