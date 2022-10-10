@@ -1,26 +1,25 @@
-import express from "express";
-import devRegisterController from "../controllers/dev/dev-register-controller.js";
-import devProfilesController from "../controllers/dev/dev-profiles-controller.js"
-import devProfileController from "../controllers/dev/dev-profile-controller.js";
-import devUpdateController from "../controllers/dev/dev-update-controller.js";
-import devDeleteController from "../controllers/dev/dev-delete-controller.js";
+const { Router } = require("express");
+const controllers = require("../controllers");
+const { validateToken } = require("../middlewares/auth/passport");
 
-
-const devRoutes = express.Router();
+const devRoutes = Router();
 
 //new Dev profile
-devRoutes.post("/register", devRegisterController);
+devRoutes.post("/register", controllers.authDev.RegisterController);
+
+//login dev profile
+//devRoutes.post("/login", controllers.authDev.LoginController);
 
 //get All dev profiles
-devRoutes.get("/profile", devProfilesController);
+devRoutes.get("/profile", validateToken, controllers.dev.ProfilesController);
 
 //get One dev profile
-devRoutes.get("/profile/:id", devProfileController);
+devRoutes.get("/profile/:id", validateToken, controllers.dev.ProfileController);
 
 //update dev profile
-devRoutes.put("/profile/:id", devUpdateController);
+devRoutes.put("/profile/:id", validateToken, controllers.dev.UpdateController);
 
 //delete dev profile
-devRoutes.delete("/profile/:id", devDeleteController);
+devRoutes.delete("/profile/:id", validateToken, controllers.dev.DeleteController);
 
-export default devRoutes;
+module.exports = devRoutes;

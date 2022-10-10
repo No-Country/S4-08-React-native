@@ -1,8 +1,10 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import mongoose from 'mongoose';
-import devRoutes from './routes/dev-routes.js';
-import cors from 'cors';
+const dotenv = require('dotenv');
+const express = require('express');
+const mongoose = require('mongoose');
+const routers = require('./routes');
+const cors = require('cors');
+const passport = require('passport');
+
 //basic config
 dotenv.config();
 
@@ -12,9 +14,19 @@ const PORT = process.env.PORT;
 
 //middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.text());
-app.use('/dev', devRoutes);
 app.use(cors());
+
+//passport
+app.use(passport.initialize());
+require('./middlewares/auth/passport.js');
+
+//routes
+app.use('/dev', routers.dev);
+app.use('/client', routers.client);
+app.use('/team', routers.team);
+app.use('/', routers.login);
 
 //test home
 app.get('/', (req, res) => {
