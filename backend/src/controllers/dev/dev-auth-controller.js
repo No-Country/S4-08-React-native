@@ -27,9 +27,9 @@ const RegisterController = async (req, res) => {
     team,
   });
 
-  await newDev.save();
+  const dev = await newDev.save();
 
-  return res.send("Dev registered succesfully");
+  return res.json({ msg:"Dev registered succesfully", dev});
 };
 
 //login
@@ -52,7 +52,7 @@ const LoginController = async (req, res, next) => {
         const token = jwt.sign({ user: body }, "JWT_SECRET", {
           expiresIn: "45m",
         });
-        res.json({ message: info.message, token });
+        res.json({ message: info.message, token, user });
       });
     } catch (err) {
       return next(err);

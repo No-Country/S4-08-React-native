@@ -29,6 +29,10 @@ const devSchema = new Schema({
   avatar: {
     type: String
   },
+  isDev:{
+    type: Boolean,
+    default: true
+  },
   social: devSocialSchema,
   info: devInfoSchema,
   team: {

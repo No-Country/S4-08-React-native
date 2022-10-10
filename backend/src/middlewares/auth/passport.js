@@ -17,19 +17,23 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const dev = await DevModel.findOne({ email });
+
+        let user = await DevModel.findOne({ email });
        
-        if (!dev) {
-          return done(null, false, { message: "Dev not found" });
+        if (!user) {
+          console.log(email)
+          user =  await ClientModel.findOne({ email });
+          if(!user){
+            return done(null, false, { message: "User not found" });
+          }
         }
 
-        const checkPasswordDev = await bcryptjs.compare(password, dev.password);
+        const checkPasswordDev = await bcryptjs.compare(password, user.password);
         
         if (!checkPasswordDev) {
           return done(null, false, { message: "Wrong password" });
         }
-
-        return done(null, dev , { message: "Login successfull" });
+        return done(null, user , { message: "Login successfull" });
       
       } catch (error) {
         return done(error);
