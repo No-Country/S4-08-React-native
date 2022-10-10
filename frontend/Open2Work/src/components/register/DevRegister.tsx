@@ -5,12 +5,12 @@ import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { apiDevelopers } from '../axios/apiDevelopers';
-import { MyInput } from '../components/MyInput';
-import Roles from '../components/Roles';
-import Seniority from '../components/Seniority';
-import Availability from '../components/Availability';
-import Timezones from '../components/Timezones';
-import Languages from '../components/Languages';
+import { MyInput } from '../MyInput';
+import Roles from './Roles';
+import Seniority from './Seniority';
+import Availability from './Availability';
+import Timezones from './Timezones';
+import Languages from './Languages';
 import { logUser } from '../redux/slices/user/userSlice';
 
 interface FormValues {

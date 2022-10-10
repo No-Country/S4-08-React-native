@@ -1,10 +1,10 @@
 import React from 'react';
-import {ScrollView, ImageBackground, StatusBar, Text} from 'react-native';
+import {ScrollView, ImageBackground, StatusBar} from 'react-native';
 import {Headline} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import MyAvatar from '../components/MyAvatar';
-import DevRegister from '../components/DevRegister';
-import OrgRegister from '../components/OrgRegister';
+import DevRegister from '../components/register/DevRegister';
+import OrgRegister from '../components/register/OrgRegister';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import {RootStackParamList} from '../navigation/Navigation';
 // interface Props {
