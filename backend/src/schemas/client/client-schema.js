@@ -25,6 +25,10 @@ const clientSchema = new Schema({
   avatar: {
     type: String
   },
+  isDev:{
+    type: Boolean,
+    default: false
+  },
   social: clientSocialSchema,
   info: clientInfoSchema,
   team: {

@@ -5,6 +5,10 @@ import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconLogin } from './IconLogin';
 import { MyInput } from './MyInput';
+import { useAppDispatch, useAppSelector } from '../redux/hook';
+import { logUser } from '../redux/features/user/userSlice';
+import axios from 'axios';
+
 
 interface Props {
     setIsRegister: (value: boolean) => void;
@@ -16,7 +20,24 @@ interface FormValues {
 }
 export const FormLogin = ({ setIsRegister }: Props) => {
 
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(state => state.user );
+
     const [hidden, setHidden] = useState(true);
+
+    const handleSubmit = async( values: FormValues )=>{
+
+        Keyboard.dismiss();
+        try {
+            
+            const resp = await axios.post('http://192.168.0.244:8080/login', values);
+            console.log(`${resp.data.message}: ${resp.data.user.name} ${resp.data.user.surname}, ${resp.data.user.email}`)
+            dispatch(logUser( resp.data.user ))
+
+        } catch (error) {
+            console.log('error', JSON.stringify(error, null, 2))
+        }
+    }
 
     return (
         <>
@@ -40,9 +61,8 @@ export const FormLogin = ({ setIsRegister }: Props) => {
                     password: ''
                 }}
                 onSubmit={(values: FormValues, { resetForm }) => {
-                    console.log(values);
+                    handleSubmit(values);
                     resetForm();
-                    Keyboard.dismiss();
                 }}
                 validationSchema={Yup.object({
                     email: Yup.string()
@@ -50,10 +70,10 @@ export const FormLogin = ({ setIsRegister }: Props) => {
                         .required('The email is required'),
                     password: Yup.string()
                         .required('The password is required')
-                        // .matches(
-                        //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
-                        //     "Must Contain 8 Characters, One Uppercase, One Lowercase and one Number"
-                        // ),
+                    // .matches(
+                    //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/,
+                    //     "Must Contain 8 Characters, One Uppercase, One Lowercase and one Number"
+                    // ),
                 })}
             >
                 {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
@@ -157,6 +177,9 @@ export const FormLogin = ({ setIsRegister }: Props) => {
                     >Sign up</Text>
                 </TouchableOpacity>
             </View>
+                <Text style={{color:'white'}}>{
+                    user.name && JSON.stringify(user, null, 4)
+                }</Text>
         </>
     )
 }

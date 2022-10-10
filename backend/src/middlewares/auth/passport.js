@@ -63,4 +63,18 @@ passport.use(
 
 const validateToken = passport.authenticate("jwt", { session: false });
 
+/*
+passport.use(new JWTStrategy({ 
+    secretOrKey: "JWT_SECRET",
+    jwtFromRequest: ExtractJWT.fromAuthHeader("SECRET_TOKEN")
+}, async (token, done) => {
+  try {
+    return done(null, token.user)
+  } catch (err) {
+    return next(err)
+  }
+}
+))
+*/
+
 module.exports = { validateToken };

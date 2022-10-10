@@ -7,13 +7,15 @@ import DevRegister from '../components/register/DevRegister';
 import OrgRegister from '../components/register/OrgRegister';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigation/Navigation';
-interface Props {
-  navigation: StackNavigationProp<RootStackParamList, 'Register'>;
-  route: {params: {isDev?: boolean}};
-}
+// interface Props {
+//   navigation: StackNavigationProp<RootStackParamList, 'Register'>;
+//   route: {params: {isDev?: boolean}};
+// }
+
+type Props = StackScreenProps<RootStackParamList, 'Register'>;
 
 const Register = ({navigation, route: {params}}: Props) => {
-  const [isDev, setIsDev] = React.useState(params.isDev);
+  const {isDev} = params;
 
   return (
     <ScrollView

@@ -6,8 +6,51 @@ import {MyInput} from '../MyInput';
 import Timezones from './Timezones';
 import Languages from './Languages';
 import * as Yup from 'yup';
+import {useAppSelector} from '../redux/hook';
+import {apiClient} from '../axios/apiClient';
+
+interface FormValues {
+  languages: string[];
+  timezone: string;
+  organization: string;
+  linkedin: string;
+  web: string;
+  github: string;
+}
 
 const OrgRegister = () => {
+  const formValues = useAppSelector(state => state.register);
+
+  const submitPOST = async (values: FormValues) => {
+    const form = {
+      ...formValues,
+      social: {
+        linkedin: values.linkedin,
+        portfolio: values.web,
+        github: values.github,
+      },
+      info: {
+        organization: values.organization,
+        time_zone: values.timezone,
+        language: values.languages,
+      },
+    };
+
+    try {
+      const resp = await apiClient.post('/register', form);
+      console.log(resp.data);
+    } catch (error) {
+      console.log('error', JSON.stringify(error, null, 2));
+    }
+
+    // axios
+    //   .get('http://192.168.1.43:8080/')
+    //   .then(res => console.log(res.status))
+    //   .catch(err => console.log(err.message));
+    /* .post('http://localhost:8080/dev/register', {...devForm, ...values})
+		  .then(res => console.log(res))
+		  .catch(err => console.log(err)); */
+  };
   return (
     <Formik
       validationSchema={Yup.object({
@@ -28,7 +71,7 @@ const OrgRegister = () => {
         web: '',
         github: '',
       }}
-      onSubmit={values => console.log(values)}>
+      onSubmit={(values: FormValues) => submitPOST(values)}>
       {({
         handleChange,
         handleSubmit,
