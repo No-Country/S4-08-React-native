@@ -8,7 +8,7 @@ import { IconLogin } from './IconLogin';
 import { RootStackParamList } from '../navigation/Navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useAppDispatch } from '../redux/hook';
-import { register } from '../redux/features/register/registerSlice';
+import { register } from '../redux/slices/register/registerSlice';
 
 interface Props {
 	setIsRegister: (value: boolean) => void;

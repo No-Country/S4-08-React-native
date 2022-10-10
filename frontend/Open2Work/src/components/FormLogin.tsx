@@ -6,7 +6,7 @@ import { Button } from 'react-native-paper';
 import { IconLogin } from './IconLogin';
 import { MyInput } from './MyInput';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
-import { logUser } from '../redux/features/user/userSlice';
+import { logUser } from '../redux/slices/user/userSlice';
 import axios from 'axios';
 
 
