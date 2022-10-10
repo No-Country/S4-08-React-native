@@ -5,7 +5,6 @@ import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconLogin } from './IconLogin';
 import { MyInput } from './MyInput';
-import { apiDevelopers } from '../axios/apiDevelopers';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { logUser } from '../redux/features/user/userSlice';
 import axios from 'axios';
@@ -32,7 +31,7 @@ export const FormLogin = ({ setIsRegister }: Props) => {
         try {
             
             const resp = await axios.post('http://192.168.0.244:8080/login', values);
-            console.log(resp.data.message)
+            console.log(`${resp.data.message}: ${resp.data.user.name} ${resp.data.user.surname}, ${resp.data.user.email}`)
             dispatch(logUser( resp.data.user ))
 
         } catch (error) {
