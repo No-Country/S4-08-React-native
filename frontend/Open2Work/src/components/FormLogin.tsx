@@ -8,6 +8,7 @@ import { MyInput } from './MyInput';
 import { apiDevelopers } from '../axios/apiDevelopers';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { logUser } from '../redux/features/user/userSlice';
+import axios from 'axios';
 
 
 interface Props {
@@ -30,7 +31,7 @@ export const FormLogin = ({ setIsRegister }: Props) => {
         Keyboard.dismiss();
         try {
             
-            const resp = await apiDevelopers.post('/login', values);
+            const resp = await axios.post('http://192.168.0.244:8080/login', values);
             console.log(resp.data.message)
             dispatch(logUser( resp.data.user ))
 
