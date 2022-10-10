@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, Keyboard } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Formik, ErrorMessage } from 'formik';
@@ -28,11 +28,8 @@ const DevRegister = () => {
 
 	const formValues = useAppSelector(state => state.register);
 	
-	const userValues = useAppSelector(state => state.user);
+	const user = useAppSelector(state => state.user);
 
-	useEffect(() => {
-	  console.log('redux', JSON.stringify(userValues, null, 2))
-	}, [userValues])
 	
 	const dispatch = useAppDispatch();
 
@@ -94,9 +91,9 @@ const DevRegister = () => {
 					role: '',
 					seniority: '',
 					availability: '',
-					github: 'http://a.com',
-					linkedin: 'http://a.com',
-					web: 'http://a.com',
+					github: '',
+					linkedin: '',
+					web: '',
 				}}
 				onSubmit={values => submitPOST(values)}>
 
@@ -213,17 +210,13 @@ const DevRegister = () => {
 								SUBMIT
 							</Text>
 						</Button>
+						<Text style={{color:'white', zIndex: 999}}>{
+							JSON.stringify(user, null, 4)
+						}</Text>
 					</View>
 				)}
 			</Formik>
-			<Text style={{color:'red', zIndex: 999}}>Hoola</Text>
-			{
-				<Text style={{color: 'white', zIndex: 9999, elevation: 9999}}>
-					{JSON.stringify(userValues, null, 4)}
-					hola
-				</Text>
-			}
-		</>
+			</>
 	);
 };
 

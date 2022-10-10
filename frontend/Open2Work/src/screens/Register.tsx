@@ -18,7 +18,6 @@ const Register = ({navigation, route: { params }}: Props) => {
   
   const { isDev } = params;
 
-  // const [isDev, setIsDev] = React.useState(params.isDev);
 
   return (
     <ScrollView

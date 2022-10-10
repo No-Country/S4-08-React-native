@@ -55,11 +55,11 @@ export const FormRegister = ({ setIsRegister, navigation }: Props) => {
 
 			<Formik
 				initialValues={{
-					name: 'abel',
-					surname: 'amieva',
-					email: 'abel@test.com',
-					password: '123456Ab',
-					confirPass: '123456Ab',
+					name: '',
+					surname: '',
+					email: '',
+					password: '',
+					confirPass: '',
 				}}
 				onSubmit={(values: FormValues, { resetForm }) => {
 					resetForm();

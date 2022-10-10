@@ -6,6 +6,9 @@ import { Button } from 'react-native-paper';
 import { IconLogin } from './IconLogin';
 import { MyInput } from './MyInput';
 import { apiDevelopers } from '../axios/apiDevelopers';
+import { useAppDispatch, useAppSelector } from '../redux/hook';
+import { logUser } from '../redux/features/user/userSlice';
+
 
 interface Props {
     setIsRegister: (value: boolean) => void;
@@ -17,15 +20,23 @@ interface FormValues {
 }
 export const FormLogin = ({ setIsRegister }: Props) => {
 
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(state => state.user );
+
     const [hidden, setHidden] = useState(true);
 
     const handleSubmit = async( values: FormValues )=>{
 
         Keyboard.dismiss();
-        console.log(values)
+        try {
+            
+            const resp = await apiDevelopers.post('/login', values);
+            console.log(resp.data.message)
+            dispatch(logUser( resp.data.user ))
 
-        await apiDevelopers.post('/', values);
-
+        } catch (error) {
+            console.log('error', JSON.stringify(error, null, 2))
+        }
     }
 
     return (
@@ -46,8 +57,8 @@ export const FormLogin = ({ setIsRegister }: Props) => {
 
             <Formik
                 initialValues={{
-                    email: 'abel@test.com',
-                    password: '123456Ab'
+                    email: '',
+                    password: ''
                 }}
                 onSubmit={(values: FormValues, { resetForm }) => {
                     handleSubmit(values);
@@ -166,6 +177,9 @@ export const FormLogin = ({ setIsRegister }: Props) => {
                     >Sign up</Text>
                 </TouchableOpacity>
             </View>
+                <Text style={{color:'white'}}>{
+                    user.name && JSON.stringify(user, null, 4)
+                }</Text>
         </>
     )
 }

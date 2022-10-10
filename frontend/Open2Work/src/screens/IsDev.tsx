@@ -13,6 +13,7 @@ interface Props {
 const IsDev = ({ navigation }: Props) => {
 
 	const { name } = useAppSelector(state => state.register)
+	
 	return (
 		<>
 			<LinearGradient

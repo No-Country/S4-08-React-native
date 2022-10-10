@@ -39,12 +39,11 @@ const OrgRegister = () => {
 			}
 		}
 
-		console.log(form)
 		try {
-			const resp = await apiClient.post('/register', JSON.stringify(form));
-			console.log(resp)
+			const resp = await apiClient.post('/register', form);
+			console.log(resp.data)
 		} catch (error) {
-			console.log(error)
+			console.log('error', JSON.stringify(error, null, 2))
 		}
 
 
