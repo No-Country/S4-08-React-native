@@ -42,11 +42,10 @@ export const TabNavClient = () => {
 						name="Home"
 						component={HomeClient}
 					/>
-					{/* <Tab.Screen
+					<Tab.Screen
 						name="Profile"
-						component={Profile}
-						initialParams={{ render: 'dev' }}
-					/> */}
+						component={ Profile }
+					/>
 		</Tab.Navigator>
 	);
 };
