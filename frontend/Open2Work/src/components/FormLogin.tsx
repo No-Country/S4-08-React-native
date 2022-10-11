@@ -5,34 +5,40 @@ import { Keyboard, Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { IconLogin } from './IconLogin';
 import { MyInput } from './MyInput';
-import { useAppDispatch, useAppSelector } from '../redux/hook';
+import { useAppDispatch } from '../redux/hook';
 import { logUser } from '../redux/slices/user/userSlice';
 import axios from 'axios';
+import { RootStackParamList } from '../navigation/Navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { UserLogued } from '../interfaces/loginInterface';
+import { setToken } from '../redux/slices/auth/authSlice';
 
 
 interface Props {
     setIsRegister: (value: boolean) => void;
+    navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
 }
 
 interface FormValues {
     email: string;
     password: string;
 }
-export const FormLogin = ({ setIsRegister }: Props) => {
+export const FormLogin = ({ setIsRegister, navigation }: Props) => {
 
     const dispatch = useAppDispatch();
-    const user = useAppSelector(state => state.user );
 
     const [hidden, setHidden] = useState(true);
 
-    const handleSubmit = async( values: FormValues )=>{
+    const handleSubmit = async (values: FormValues) => {
 
         Keyboard.dismiss();
         try {
-            
-            const resp = await axios.post('http://192.168.0.244:8080/login', values);
-            console.log(`${resp.data.message}: ${resp.data.user.name} ${resp.data.user.surname}, ${resp.data.user.email}`)
-            dispatch(logUser( resp.data.user ))
+
+            const { data } = await axios.post<UserLogued>('http://192.168.0.244:8080/login', values);
+            console.log(`${data.message}: ${data.user.name} ${data.user.surname}, ${data.user.email}`)
+
+            dispatch(setToken(data.token))
+            dispatch(logUser(data.user))
 
         } catch (error) {
             console.log('error', JSON.stringify(error, null, 2))
@@ -57,8 +63,8 @@ export const FormLogin = ({ setIsRegister }: Props) => {
 
             <Formik
                 initialValues={{
-                    email: '',
-                    password: ''
+                    email: 'abel@test.com',
+                    password: '123456Ab'
                 }}
                 onSubmit={(values: FormValues, { resetForm }) => {
                     handleSubmit(values);
@@ -177,9 +183,6 @@ export const FormLogin = ({ setIsRegister }: Props) => {
                     >Sign up</Text>
                 </TouchableOpacity>
             </View>
-                <Text style={{color:'white'}}>{
-                    user.name && JSON.stringify(user, null, 4)
-                }</Text>
         </>
     )
 }
