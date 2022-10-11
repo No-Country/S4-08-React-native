@@ -11,6 +11,7 @@ import { apiClient } from '../../axios/apiClient';
 import { setError } from '../../redux/slices/error/errorSlice';
 import { logUser } from '../../redux/slices/user/userSlice';
 import { setToken } from '../../redux/slices/auth/authSlice';
+import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
 
 interface FormValues {
 	languages: string[],
@@ -28,7 +29,7 @@ const OrgRegister = () => {
 	const dispatch = useAppDispatch();
 
 	const submitPOST = async (values: FormValues) => {
-
+		dispatch(loading())
 		const form = {
 			...formValues,
 			social: {
@@ -46,8 +47,10 @@ const OrgRegister = () => {
 		try {
 			const resp = await apiClient.post('/register', form);
 			console.log(resp.data)
+			dispatch( logUser(resp.data.client))
 			dispatch( logUser( resp.data.message ))
 			dispatch( setToken('hola mundo'))
+			dispatch(removeLoading())
 		} catch (error: any) {
 			console.log('error', JSON.stringify(error, null, 2))
 			dispatch( setError(error.response.data.message))
