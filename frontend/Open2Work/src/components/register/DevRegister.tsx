@@ -3,15 +3,15 @@ import {View, Text, Keyboard} from 'react-native';
 import {Button} from 'react-native-paper';
 import {Formik, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
-import {useAppDispatch, useAppSelector} from '../redux/hook';
-import {apiDevelopers} from '../axios/apiDevelopers';
-import {MyInput} from '../components/MyInput';
-import Roles from '../components/Roles';
-import Seniority from '../components/Seniority';
-import Availability from '../components/Availability';
-import Timezones from '../components/Timezones';
-import Languages from '../components/Languages';
-import {logUser} from '../redux/features/user/userSlice';
+import {useAppDispatch, useAppSelector} from '../../redux/hook';
+import {apiDevelopers} from '../../axios/apiDevelopers';
+import {MyInput} from '../MyInput';
+import Roles from '../register/Roles';
+import Seniority from '../register/Seniority';
+import Availability from '../register/Availability';
+import Timezones from '../register/Timezones';
+import Languages from '../register/Languages';
+import {logUser} from '../../redux/features/user/userSlice';
 
 interface FormValues {
   languages: string[];

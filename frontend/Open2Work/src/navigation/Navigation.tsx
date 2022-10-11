@@ -10,7 +10,7 @@ import {TabNav} from './TabNav';
 export type RootStackParamList = {
   LoginScreen: undefined;
   IsDev: undefined;
-  Register: {isDev: boolean};
+  Register: {isDev?: boolean};
   Profile: undefined;
   TabNav: undefined;
 };
@@ -24,10 +24,10 @@ export const StackNavigation = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="TabNav" component={TabNav} />
+      <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="IsDev" component={IsDev} />
-      <Stack.Screen name="Register" component={Register} />
     </Stack.Navigator>
   );
 };

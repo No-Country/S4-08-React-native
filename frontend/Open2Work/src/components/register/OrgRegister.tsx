@@ -6,8 +6,8 @@ import {MyInput} from '../MyInput';
 import Timezones from './Timezones';
 import Languages from './Languages';
 import * as Yup from 'yup';
-import {useAppSelector} from '../redux/hook';
-import {apiClient} from '../axios/apiClient';
+import {useAppSelector} from '../../redux/hook';
+import {apiClient} from '../../axios/apiClient';
 
 interface FormValues {
   languages: string[];
@@ -80,12 +80,7 @@ const OrgRegister = () => {
         touched,
         setFieldValue,
       }) => (
-        <View
-          style={{
-            minHeight: '100%',
-            marginBottom: 25,
-            width: '90%',
-          }}>
+        <View style={{minHeight: '100%', marginBottom: 25, width: '90%'}}>
           <Languages
             onPress={setFieldValue}
             error={!!errors.languages && !!touched.languages}
