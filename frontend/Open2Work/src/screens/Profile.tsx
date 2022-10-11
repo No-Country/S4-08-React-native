@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Image } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import BannerProfile from '../components/profile/BannerProfile';
 import { useAppSelector } from '../redux/hook';
+import { ButtonLogout } from '../components/ButtonLogout';
 
 // DATAGROUP = {
 //   name: 'Group #023',
@@ -28,8 +29,18 @@ const Profile = () => {
         backgroundColor: 'rgb(31,26,48)',
         flex: 1,
       }}>
+      <View
+        style={{
+          position: 'absolute',
+          left: 10,
+          top,
+          zIndex: 1,
+        }}
+      >
+        <ButtonLogout />
+      </View>
       <Image
-        style={{ width: '100%', height: 180 }}
+        style={{ width: '100%', height: 220 }}
         source={require('../assets/imgs/laptop-programming-coding-macbook.jpg')}
       />
       <Headline
@@ -49,7 +60,7 @@ const Profile = () => {
         }}>
         {`${user.name} ${user.surname}`}
       </Headline>
-      
+
       <BannerProfile />
     </ScrollView>
   );
