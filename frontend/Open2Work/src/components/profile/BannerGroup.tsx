@@ -1,15 +1,29 @@
 import * as React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import Array from './Array';
+import { useAppSelector } from '../../redux/hook';
 
 interface Props {
   renderScreen: string;
   data: any;
 }
 
-const Banner = ({renderScreen, data}: Props): JSX.Element => {
+const BannerGroup = ({ renderScreen, data }: Props): JSX.Element => {
+
+  const user = useAppSelector(state => state.user);
+
+
+  const getInitials = (name: string) => {
+    const names = name.split(' ');
+    let iniciales = '';
+    for (let i = 0; i <= names.length - 1; i++) {
+      iniciales = iniciales + names[i].substring(0, 1);
+    }
+    return iniciales.toUpperCase();
+  }
+
   return (
     <View
       style={{
@@ -33,7 +47,7 @@ const Banner = ({renderScreen, data}: Props): JSX.Element => {
             backgroundColor: 'black',
             alignItems: 'center',
           }}>
-          <Avatar.Text label="NF" size={74} style={{marginTop: 15}} />
+          <Avatar.Text label={getInitials(data.name)} size={74} style={{ marginTop: 15 }} />
         </View>
       )}
       <Text style={styles.item}>
@@ -41,7 +55,7 @@ const Banner = ({renderScreen, data}: Props): JSX.Element => {
         {renderScreen === 'group' ? (
           <Array data={data.techs} symbol={', '} />
         ) : (
-          data.role
+          user.role
         )}
       </Text>
       <Text style={styles.item}>
@@ -86,7 +100,7 @@ const Banner = ({renderScreen, data}: Props): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  item: {color: 'darkgrey', fontSize: 17, marginVertical: 4},
+  item: { color: 'darkgrey', fontSize: 17, marginVertical: 4 },
 });
 
-export default Banner;
+export default BannerGroup;
