@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StackNavigation } from './src/navigation/Navigation';
 import { NavigationContainer } from '@react-navigation/native';
@@ -25,13 +25,18 @@ const theme = {
 const App = () => {
   return (
     <NavigationContainer>
-      <Provider store={ store }>
+      <Provider store={store}>
         <PaperProvider
           theme={theme}
           settings={{
             icon: props => <Icon {...props} />,
           }}>
           <SafeAreaView style={{ height: '100%' }}>
+            <StatusBar
+              translucent
+              backgroundColor={'transparent'}
+              barStyle="light-content"
+            />
             <StackNavigation />
             <ErrorModal />
           </SafeAreaView>
