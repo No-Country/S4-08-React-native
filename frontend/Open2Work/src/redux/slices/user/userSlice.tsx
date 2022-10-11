@@ -1,52 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
+import { User } from '../../../interfaces/loginInterface';
 import type { RootState } from '../../store';
-
-// Define a type for the slice state
-interface userState {
-    avatar: string,
-    email: string,
-    info: {
-        experience: number,
-        language: string[],
-        time_availability: string,
-        time_zone: string
-    },
-    name: string,
-    password: string,
-    role: string,
-    social: {
-        github: string,
-        linkedin: string,
-        portfolio: string,
-    },
-    surname: string
-}
-
-// Define the initial state using that type
-const initialState: userState = {
-    name: "",
-    surname: "",
-    email: "",
-    password: "",
-    role: "",
-    avatar: "",
-    social: {
-        linkedin: "",
-        portfolio: "",
-        github: ""
-    },
-    info: {
-        time_availability: "",
-        time_zone: "",
-        experience: 0,
-        language: []
-    }
-}
 
 export const userSlice = createSlice({
     name: 'user',
     // `createSlice` will infer the state type from the `initialState` argument
-    initialState,
+    initialState: {} as User,
     reducers: {
         logUser: (state, action) => {
             return {
