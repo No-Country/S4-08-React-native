@@ -41,7 +41,6 @@ export const StackNavigation = () => {
         ) : (
           <>
             <Stack.Screen name="TabNav" component={ isDev ? TabNavDev : TabNavClient} />
-            {/* <Stack.Screen name="Profile" component={Profile} /> */}
           </>
         )
       }
