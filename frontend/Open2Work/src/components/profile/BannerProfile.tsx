@@ -70,7 +70,7 @@ const BannerProfile = (): JSX.Element => {
           fontSize: 17,
           textAlignVertical: 'center',
         }}>
-        <Icon name="alert-circle-outline" size={20} color="white" />{' '}
+        <Icon name="mail-outline" size={20} color="white" />{' '}
         {user.email}
       </Text>
       <>
