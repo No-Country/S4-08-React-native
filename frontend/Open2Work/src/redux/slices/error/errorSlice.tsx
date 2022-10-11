@@ -24,11 +24,7 @@ export const errorSlice = createSlice({
             }
         },
         removeError: (state: ErrorState ): ErrorState => {
-            return {
-                ...state,
-                showModal: false,
-                error: null
-            }
+            return initialState
         }
     }
 })

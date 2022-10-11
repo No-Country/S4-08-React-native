@@ -10,9 +10,9 @@ interface RegisterState {
   role: string,
   avatar: string,
   social: {
-    linkedin: string ,
-    portfolio: string ,
-    github: string ,
+    linkedin: string,
+    portfolio: string,
+    github: string,
   },
   info: {
     time_availability: string,
@@ -48,23 +48,12 @@ export const registerSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    register: ( state, action ) => {
-      return{
+    register: (state, action) => {
+      return {
         ...state,
         ...action.payload
       }
-
-    }
-    // increment: state => {
-    //   state.value += 1
-    // },
-    // decrement: state => {
-    //   state.value -= 1
-    // },
-    // // Use the PayloadAction type to declare the contents of `action.payload`
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // }
+    },
   }
 })
 
