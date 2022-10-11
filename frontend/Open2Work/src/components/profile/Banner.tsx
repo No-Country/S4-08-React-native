@@ -3,6 +3,7 @@ import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Avatar} from 'react-native-paper';
 import Array from './Array';
+import MyAvatar from '../MyAvatar';
 
 interface Props {
   renderScreen: string;
@@ -33,7 +34,11 @@ const Banner = ({renderScreen, data}: Props): JSX.Element => {
             backgroundColor: 'black',
             alignItems: 'center',
           }}>
-          <Avatar.Text label="NF" size={74} style={{marginTop: 15}} />
+          {data.uri ? (
+            <MyAvatar uri={data.uri} />
+          ) : (
+            <Avatar.Text label="NF" size={90} style={{marginTop: 7}} />
+          )}
         </View>
       )}
       <Text style={styles.item}>
