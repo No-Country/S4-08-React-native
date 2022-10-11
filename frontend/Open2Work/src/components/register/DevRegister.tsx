@@ -12,6 +12,8 @@ import Availability from './Availability';
 import Timezones from './Timezones';
 import Languages from './Languages';
 import { logUser } from '../../redux/slices/user/userSlice';
+import { setError } from '../../redux/slices/error/errorSlice';
+import { setToken } from '../../redux/slices/auth/authSlice';
 
 interface FormValues {
 	languages: string[],
@@ -55,21 +57,14 @@ const DevRegister = () => {
 		try {
 			// const resp = await apiDevelopers.post('/register', JSON.stringify(form));
 			const resp = await apiDevelopers.post('/register', form);
-			console.log(resp.data.msg);
+			console.log(resp.data.message);
 			dispatch( logUser( resp.data.dev ))
-		} catch (error) {
+			dispatch( setToken('hola mundo'))
+		} catch (error: any) {
 			console.log('error', JSON.stringify(error, null, 2))
+			dispatch( setError(error.response.data.message))
 		}
 
-
-
-		// axios
-		//   .get('http://192.168.1.43:8080/')
-		//   .then(res => console.log(res.status))
-		//   .catch(err => console.log(err.message));
-		/* .post('http://localhost:8080/dev/register', {...devForm, ...values})
-		  .then(res => console.log(res))
-		  .catch(err => console.log(err)); */
 	};
 
 	return (

@@ -12,6 +12,7 @@ import { RootStackParamList } from '../navigation/Navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UserLogued } from '../interfaces/loginInterface';
 import { setToken } from '../redux/slices/auth/authSlice';
+import { setError } from '../redux/slices/error/errorSlice';
 
 
 interface Props {
@@ -40,8 +41,9 @@ export const FormLogin = ({ setIsRegister, navigation }: Props) => {
             dispatch(setToken(data.token))
             dispatch(logUser(data.user))
 
-        } catch (error) {
-            console.log('error', JSON.stringify(error, null, 2))
+        } catch (error: any ) {
+            console.log(error.response.data.message)
+            dispatch( setError(error.response.data.message))
         }
     }
 

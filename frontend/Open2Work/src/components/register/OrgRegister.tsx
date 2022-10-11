@@ -6,8 +6,11 @@ import { MyInput } from '../MyInput';
 import Timezones from './Timezones';
 import Languages from './Languages';
 import * as Yup from 'yup';
-import { useAppSelector } from '../../redux/hook';
+import { useAppSelector, useAppDispatch } from '../../redux/hook';
 import { apiClient } from '../../axios/apiClient';
+import { setError } from '../../redux/slices/error/errorSlice';
+import { logUser } from '../../redux/slices/user/userSlice';
+import { setToken } from '../../redux/slices/auth/authSlice';
 
 interface FormValues {
 	languages: string[],
@@ -22,6 +25,7 @@ interface FormValues {
 const OrgRegister = () => {
 
 	const formValues = useAppSelector(state => state.register);
+	const dispatch = useAppDispatch();
 
 	const submitPOST = async (values: FormValues) => {
 
@@ -42,19 +46,12 @@ const OrgRegister = () => {
 		try {
 			const resp = await apiClient.post('/register', form);
 			console.log(resp.data)
-		} catch (error) {
+			dispatch( logUser( resp.data.message ))
+			dispatch( setToken('hola mundo'))
+		} catch (error: any) {
 			console.log('error', JSON.stringify(error, null, 2))
+			dispatch( setError(error.response.data.message))
 		}
-
-
-
-		// axios
-		//   .get('http://192.168.1.43:8080/')
-		//   .then(res => console.log(res.status))
-		//   .catch(err => console.log(err.message));
-		/* .post('http://localhost:8080/dev/register', {...devForm, ...values})
-		  .then(res => console.log(res))
-		  .catch(err => console.log(err)); */
 	};
 	return (
 		<Formik
