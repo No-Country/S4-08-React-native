@@ -27,7 +27,7 @@ const RegisterController = async (req, res) => {
     });
 
     const dev = await newDev.save();
-
+    
     //funcion del algoritmo que autoasigna dev a un team
 
     return res.send({ message: "Dev registered succesfully", dev });

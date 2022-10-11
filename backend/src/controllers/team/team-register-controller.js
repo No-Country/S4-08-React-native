@@ -1,12 +1,18 @@
 const { TeamModel } = require("../../models/team/team-model");
 
 const teamRegisterController = async (req, res) => {
-  const { name } = req.body;
+  const { name, devs, language, time_zone, isComplete, stack, working } = req.body;
 
-  if (!name) return res.status(400).send();
+  if (!name || !devs || !language || !time_zone) return res.status(400).send();
 
   const newTeam = new TeamModel({
     name,
+    devs,
+    language,
+    time_zone,
+    isComplete,
+    stack,
+    working
   });
 
   await newTeam.save();

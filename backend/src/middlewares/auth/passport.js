@@ -60,7 +60,11 @@ passport.use(
     }
   )
 );
+/*
+passport.use(
 
+)
+*/
 const validateToken = passport.authenticate("jwt", { session: false });
 
 module.exports = { validateToken };

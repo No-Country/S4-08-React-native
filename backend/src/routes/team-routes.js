@@ -7,6 +7,9 @@ const teamRoutes = Router();
 teamRoutes.post("/register", controllers.authTeam.teamRegisterController);
 
 //get All team profiles
-teamRoutes.get("/profile", controllers.team.teamProfilesController);
+//teamRoutes.get("/profile", controllers.team.teamProfilesController);
+
+//get All team profiles
+teamRoutes.get("/profile", controllers.team.teamsIncomplete);
 
 module.exports =  teamRoutes;
