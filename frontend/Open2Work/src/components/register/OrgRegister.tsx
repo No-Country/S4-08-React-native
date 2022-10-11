@@ -6,8 +6,8 @@ import { MyInput } from '../MyInput';
 import Timezones from './Timezones';
 import Languages from './Languages';
 import * as Yup from 'yup';
-import { useAppSelector } from '../redux/hook';
-import { apiClient } from '../axios/apiClient';
+import { useAppSelector } from '../../redux/hook';
+import { apiClient } from '../../axios/apiClient';
 
 interface FormValues {
 	languages: string[],
