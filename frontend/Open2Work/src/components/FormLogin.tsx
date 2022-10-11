@@ -13,6 +13,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { UserLogued } from '../interfaces/loginInterface';
 import { setToken } from '../redux/slices/auth/authSlice';
 import { setError } from '../redux/slices/error/errorSlice';
+import { loading, removeLoading } from '../redux/slices/loading/loadingSlice';
 
 
 interface Props {
@@ -31,7 +32,7 @@ export const FormLogin = ({ setIsRegister, navigation }: Props) => {
     const [hidden, setHidden] = useState(true);
 
     const handleSubmit = async (values: FormValues) => {
-
+        dispatch(loading())
         Keyboard.dismiss();
         try {
 
@@ -40,8 +41,9 @@ export const FormLogin = ({ setIsRegister, navigation }: Props) => {
 
             dispatch(setToken(data.token))
             dispatch(logUser(data.user))
-
+            dispatch( removeLoading())
         } catch (error: any ) {
+            dispatch( removeLoading())
             console.log(error.response.data.message)
             dispatch( setError(error.response.data.message))
         }
@@ -65,8 +67,8 @@ export const FormLogin = ({ setIsRegister, navigation }: Props) => {
 
             <Formik
                 initialValues={{
-                    email: 'abel@test.com',
-                    password: '123456Ab'
+                    email: '',
+                    password: ''
                 }}
                 onSubmit={(values: FormValues, { resetForm }) => {
                     handleSubmit(values);
