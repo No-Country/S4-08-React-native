@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import { ErrorModal } from './src/components/ErrorModal';
+import { LoadingModal } from './src/components/LoadingModal';
 
 const theme = {
   ...DefaultTheme,
@@ -39,6 +40,7 @@ const App = () => {
             />
             <StackNavigation />
             <ErrorModal />
+            <LoadingModal />
           </SafeAreaView>
         </PaperProvider>
       </Provider>
