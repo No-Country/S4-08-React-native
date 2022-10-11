@@ -13,21 +13,14 @@ export const userSlice = createSlice({
                 ...action.payload
             }
 
+        },
+        clearUser: (state) => {
+            return {} as User
         }
-        // increment: state => {
-        //   state.value += 1
-        // },
-        // decrement: state => {
-        //   state.value -= 1
-        // },
-        // // Use the PayloadAction type to declare the contents of `action.payload`
-        // incrementByAmount: (state, action: PayloadAction<number>) => {
-        //   state.value += action.payload
-        // }
     }
 })
 
-export const { logUser } = userSlice.actions
+export const { logUser, clearUser } = userSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.register;
