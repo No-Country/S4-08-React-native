@@ -29,8 +29,9 @@ const teamSchema = new Schema({
   working: {
     type: Boolean,
   },
+  availability: {
+    type: String,
+  }
 });
 
 module.exports = { teamSchema };
-
-//introducir algoritmo y agregar devs en este filtro?
