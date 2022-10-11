@@ -3,13 +3,15 @@ import registerReducer from './slices/register/registerSlice';
 import userReducer from './slices/user/userSlice';
 import authReducer from './slices/auth/authSlice';
 import errorReducer from './slices/error/errorSlice';
+import loadingReducer from './slices/loading/loadingSlice';
 
 export const store = configureStore({
   reducer: {
     register: registerReducer,
     user: userReducer,
     auth: authReducer,
-    error: errorReducer
+    error: errorReducer,
+    loading: loadingReducer,
   }
 })
 
