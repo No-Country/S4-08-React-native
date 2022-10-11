@@ -2,6 +2,7 @@ import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import Profile from '../screens/Profile';
+import OrgHome from '../screens/OrgHome';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -19,6 +20,7 @@ export const TabNav = () => {
                   name={focused ? 'home' : 'home-outline'}
                   size={30}
                   color={focused ? 'lightgrey' : 'darkgrey'}
+                  style={{width: 30}}
                 />
               );
             case 'Profile':
@@ -27,6 +29,7 @@ export const TabNav = () => {
                   name={focused ? 'person' : 'person-outline'}
                   size={30}
                   color={focused ? 'lightgrey' : 'darkgrey'}
+                  style={{width: 30}}
                 />
               );
           }
@@ -40,7 +43,7 @@ export const TabNav = () => {
       })}>
       <Tab.Screen
         name="Home"
-        component={Profile}
+        component={OrgHome}
         initialParams={{render: 'group'}}
       />
       <Tab.Screen
