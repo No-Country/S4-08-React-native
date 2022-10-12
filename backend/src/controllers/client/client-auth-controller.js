@@ -26,7 +26,18 @@ const RegisterController = async (req, res) => {
 
     const client = await newClient.save();
 
-    return res.send({ message: "Client registered succesfully", client });
+    //datos a encriptar con jwt
+    const body = {
+      _id: client._id,
+      email: client.email,
+      role: client.role
+    };
+
+    const token = jwt.sign({ client: body }, process.env.JWT_SECRET, {
+      expiresIn: "45m",
+    });
+
+    return res.send({ message: "Client registered succesfully", token: "Bearer" + " " + token, client});
   } catch (error) {
     return res.status(400).send("Error in register");
   }

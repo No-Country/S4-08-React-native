@@ -8,8 +8,6 @@ const { ClientModel } = require("../../models/client/client-model");
 const dotenv = require("dotenv");
 dotenv.config();
 
-
-
 passport.use(
   "login",
   new localStrategy(
