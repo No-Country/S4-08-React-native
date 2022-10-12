@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { DevModel } = require("../../models/dev/dev-model");
 
 //register
+
 const RegisterController = async (req, res) => {
   try {
     const { name, surname, email, password, role, avatar, social, info, team } =
@@ -27,14 +28,27 @@ const RegisterController = async (req, res) => {
     });
 
     const dev = await newDev.save();
+
+    //datos a encriptar con jwt
+    const body = {
+      _id: dev._id,
+      email: dev.email,
+      role: dev.role
+    };
+
+    const token = jwt.sign({ dev: body }, process.env.JWT_SECRET, {
+      expiresIn: "45m",
+    });
     
     //funcion del algoritmo que autoasigna dev a un team
 
-    return res.send({ message: "Dev registered succesfully", dev });
+    return res.send({ message: "Dev registered succesfully", token: "Bearer" + " " + token, dev });
   } catch (error) {
     return res.status(400).send("Error in register");
   }
 };
+
+   
 
 //login
 const LoginController = async (req, res, next) => {
