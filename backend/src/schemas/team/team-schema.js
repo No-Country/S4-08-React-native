@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const teamSchema = new Schema({
-  name: {
-    type: String,
-  },
   devs: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -31,7 +28,7 @@ const teamSchema = new Schema({
   },
   availability: {
     type: String,
-  }
+  },
 });
 
 module.exports = { teamSchema };

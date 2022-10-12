@@ -1,3 +1,4 @@
+const { DevModel } = require("../../models/dev/dev-model");
 const { TeamModel } = require("../../models/team/team-model");
 
 const teamProfilesController = async (req, res) => {
@@ -31,47 +32,44 @@ const teamsIncomplete = async (req, res) => {
       })
       .exec();
 
-    //copio los resultados de la query en una constante
+    //copio los resultados de la query en una objeto
     const teamsData = [...Teams];
-    //console.log(teamsData);
 
-    /*
-      //guardo en una constante los roles de devs que ya contiene el team(desarrollar ciclo for)
-      teamsData.forEach(dev => {
-        for (const role in dev) {
-          console.log(dev[role]);
-          //if (Object.hasOwnProperty.call(dev, role)) {}
-        }
-      });
-      */
-    const roleDev = teamsData[0].devs;
+    //ciclo para array
+    for (let i = 0; i < teamsData.length; i++) {
+      const roleDev = teamsData[i].devs;
+      const idTeam = teamsData[i]._id;
 
-    //comparar si el equipo tiene todos los roles
-    const back = roleDev.some((dev) => dev.role == "backend");
-    const front = roleDev.some((dev) => dev.role == "frontend");
-    const test = roleDev.some((dev) => dev.role == "tester");
-    const uxui = roleDev.some((dev) => dev.role == "uxui");
+      //instanciar variables de roles
+      const backend = roleDev.some((dev) => dev.role == "backend");
+      const frontend = roleDev.some((dev) => dev.role == "frontend");
+      const tester = roleDev.some((dev) => dev.role == "tester");
+      const uxui = roleDev.some((dev) => dev.role == "uxui");
 
-    if (!back) {
-      console.log("team uncomplete. missing backend");
+      //comprobar roles de devs en teams. query de DEVS segun rol y sin equipo
+      if (!backend) {
+        console.log(`team ${idTeam} uncomplete. missing backend`);
+        //buscar dev por rol y agregar al team
+        const dev = await DevModel.find({role: "backend", currentTeam: null}).exec();
+        console.log(dev);
+      }
+      if (!frontend) {
+        console.log(`team ${idTeam} uncomplete. missing frontend`);
+        const dev = await DevModel.find({role: "frontend", currentTeam: null}).exec();
+        console.log(dev);
+      }
+      if (!tester) {
+        console.log(`team ${idTeam} uncomplete. missing tester`);
+        const dev = await DevModel.find({role: "tester", currentTeam: null}).exec();
+        console.log(dev);
+      }
+      if (!uxui) {
+        console.log(`team ${idTeam} uncomplete. missing uxui`);
+        const dev = await DevModel.find({role: "uxui", currentTeam: null}).exec();
+        console.log(dev);
+      }
     }
-    if (!front) {
-      console.log("team uncomplete. missing frontend");
-    }
-    if (!test) {
-      console.log("team uncomplete. missing tester");
-    }
-    if (!uxui) {
-      console.log("team uncomplete. missing uxui");
-    }
-
     //falta agregar los devs a los teams
-
-    /*const verifyRoles = roleDev.some(dev => dev.role == back 
-        && dev.role == front 
-        && dev.role == test 
-        && dev.role == uxui)
-      */
 
     return res.send(Teams);
   } catch (error) {
@@ -79,4 +77,8 @@ const teamsIncomplete = async (req, res) => {
   }
 };
 
-module.exports = { teamProfilesController, teamProfileController, teamsIncomplete };
+module.exports = {
+  teamProfilesController,
+  teamProfileController,
+  teamsIncomplete,
+};
