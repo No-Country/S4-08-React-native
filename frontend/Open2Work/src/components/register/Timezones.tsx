@@ -73,7 +73,6 @@ const Timezones = ({onPress, error}: Props) => {
           style={{padding: 0}}>
           <ScrollView
             nestedScrollEnabled={true}
-            contentContainerStyle={{}}
             style={{
               height: 325,
               borderRadius: 5,
