@@ -1,8 +1,10 @@
 import React from 'react'
 import { Button, Modal } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/Ionicons';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import { Text } from 'react-native';
 import { removeError } from '../redux/slices/error/errorSlice';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const ErrorModal = () => {
 
@@ -28,6 +30,19 @@ export const ErrorModal = () => {
             }}
             dismissable
         >
+                <Icon
+                    name='close-circle-outline'
+                    size={40}
+                    color='white'
+                    onPress={() => dispatch(removeError())}
+                    style={{
+                        position: 'absolute',
+                        top: 5,
+                        right: 5,
+                        zIndex: 999,
+                        elevation: 999
+                    }} 
+                />
             <Text
                 style={{
                     color: '#fff',
