@@ -7,10 +7,10 @@ const teamRoutes = Router();
 teamRoutes.post("/register", controllers.authTeam.teamRegisterController);
 
 //get All team profiles
-teamRoutes.get("/profile", controllers.team.teamProfilesController);
+teamRoutes.get("/profile", validateToken, controllers.team.teamProfilesController);
 
 //get team profile by ID
-teamRoutes.get("/profile/:id", controllers.team.teamProfileController);
+teamRoutes.get("/profile/:id", validateToken, controllers.team.teamProfileController);
 
 
 module.exports =  teamRoutes;
