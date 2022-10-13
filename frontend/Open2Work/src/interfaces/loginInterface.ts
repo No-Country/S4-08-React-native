@@ -4,6 +4,8 @@ export interface UserLogued {
     message: string;
     token:   string;
     user:    User;
+    client?: User;
+
 }
 
 export interface User {
