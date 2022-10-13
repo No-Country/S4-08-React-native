@@ -40,6 +40,12 @@ const teamsIncomplete = async (req, res) => {
       const roleDev = teamsData[i].devs;
       const idTeam = teamsData[i]._id;
 
+      //if roleDev.includes("backend")
+      //hacer con el rol del dev registrado como funcion dinamica
+      //
+      //else teamData[i].devs.push()      
+
+
       //instanciar variables de roles
       const backend = roleDev.some((dev) => dev.role == "backend");
       const frontend = roleDev.some((dev) => dev.role == "frontend");
@@ -51,6 +57,8 @@ const teamsIncomplete = async (req, res) => {
         console.log(`team ${idTeam} uncomplete. missing backend`);
         //buscar dev por rol y agregar al team
         const dev = await DevModel.find({role: "backend", currentTeam: null}).exec();
+
+        //falta agregarlo al team
         console.log(dev);
       }
       if (!frontend) {
