@@ -12,8 +12,8 @@ import { TabNavClient } from './TabNavClient';
 export type RootStackParamList = {
   LoginScreen: undefined;
   IsDev: undefined;
-  Register: { isDev: boolean };
-  Profile: { render: string };
+  Register: {isDev?: boolean};
+  Profile: undefined;
   TabNav: undefined;
 };
 

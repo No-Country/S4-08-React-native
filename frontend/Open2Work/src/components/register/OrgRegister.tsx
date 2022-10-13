@@ -14,14 +14,13 @@ import { setToken } from '../../redux/slices/auth/authSlice';
 import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
 
 interface FormValues {
-	languages: string[],
-	timezone: string,
-	organization: string,
-	linkedin: string,
-	web: string,
-	github: string,
+  languages: string[];
+  timezone: string;
+  organization: string;
+  linkedin: string;
+  web: string;
+  github: string;
 }
-
 
 const OrgRegister = () => {
 
@@ -110,75 +109,75 @@ const OrgRegister = () => {
 						</Text>
 					)}
 
-					<MyInput
-						iconName="briefcase-outline"
-						label={'Organization'}
-						value={values.organization}
-						error={!!errors.organization && !!touched.organization}
-						onChangeText={handleChange('organization')}
-					/>
-					{errors.organization && touched.organization && (
-						<Text style={{ color: 'red' }}>
-							<ErrorMessage name="organization" />
-						</Text>
-					)}
-					<MyInput
-						iconName="logo-linkedin"
-						label={'Linkedin'}
-						value={values.linkedin}
-						error={!!errors.linkedin && !!touched.linkedin}
-						onChangeText={handleChange('linkedin')}
-					/>
-					{errors.linkedin && touched.linkedin && (
-						<Text style={{ color: 'red' }}>
-							<ErrorMessage name="linkedin" />
-						</Text>
-					)}
-					<MyInput
-						iconName="logo-github"
-						label={'GitHub'}
-						value={values.github}
-						error={!!errors.github && !!touched.github}
-						onChangeText={handleChange('github')}
-					/>
-					{errors.github && touched.github && (
-						<Text style={{ color: 'red' }}>
-							<ErrorMessage name="github" />
-						</Text>
-					)}
-					<MyInput
-						iconName="globe-outline"
-						label={'Portfolio / Web'}
-						value={values.web}
-						error={!!errors.web && !!touched.web}
-						onChangeText={handleChange('web')}
-					/>
-					{errors.web && touched.web && (
-						<Text style={{ color: 'red' }}>
-							<ErrorMessage name="web" />
-						</Text>
-					)}
+          <MyInput
+            iconName="briefcase-outline"
+            label={'Organization'}
+            value={values.organization}
+            error={!!errors.organization && !!touched.organization}
+            onChangeText={handleChange('organization')}
+          />
+          {errors.organization && touched.organization && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="organization" />
+            </Text>
+          )}
+          <MyInput
+            iconName="logo-linkedin"
+            label={'Linkedin'}
+            value={values.linkedin}
+            error={!!errors.linkedin && !!touched.linkedin}
+            onChangeText={handleChange('linkedin')}
+          />
+          {errors.linkedin && touched.linkedin && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="linkedin" />
+            </Text>
+          )}
+          <MyInput
+            iconName="logo-github"
+            label={'GitHub'}
+            value={values.github}
+            error={!!errors.github && !!touched.github}
+            onChangeText={handleChange('github')}
+          />
+          {errors.github && touched.github && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="github" />
+            </Text>
+          )}
+          <MyInput
+            iconName="globe-outline"
+            label={'Portfolio / Web'}
+            value={values.web}
+            error={!!errors.web && !!touched.web}
+            onChangeText={handleChange('web')}
+          />
+          {errors.web && touched.web && (
+            <Text style={{color: 'red'}}>
+              <ErrorMessage name="web" />
+            </Text>
+          )}
 
-					<Button
-						onPress={handleSubmit}
-						mode="contained"
-						style={{
-							width: '60%',
-							alignSelf: 'center',
-							marginTop: 20,
-							borderRadius: 40,
-						}}>
-						<Text
-							style={{
-								fontSize: 25,
-							}}>
-							SUBMIT
-						</Text>
-					</Button>
-				</View>
-			)}
-		</Formik>
-	);
+          <Button
+            onPress={handleSubmit}
+            mode="contained"
+            style={{
+              width: '60%',
+              alignSelf: 'center',
+              marginTop: 20,
+              borderRadius: 40,
+            }}>
+            <Text
+              style={{
+                fontSize: 25,
+              }}>
+              SUBMIT
+            </Text>
+          </Button>
+        </View>
+      )}
+    </Formik>
+  );
 };
 
 export default OrgRegister;

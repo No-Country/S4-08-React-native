@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
 import Array from './Array';
 import { useAppSelector } from '../../redux/hook';
+import MyAvatar from '../MyAvatar';
 
 interface Props {
   renderScreen: string;
@@ -47,7 +48,11 @@ const BannerGroup = ({ renderScreen, data }: Props): JSX.Element => {
             backgroundColor: 'black',
             alignItems: 'center',
           }}>
-          <Avatar.Text label={getInitials(data.name)} size={74} style={{ marginTop: 15 }} />
+          {data.uri ? (
+            <MyAvatar uri={data.uri} />
+          ) : (
+            <Avatar.Text label={getInitials(data.name)} size={90} style={{ marginTop: 7 }} />
+          )}
         </View>
       )}
       <Text style={styles.item}>

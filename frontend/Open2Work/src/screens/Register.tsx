@@ -1,12 +1,14 @@
 import React from 'react';
-import {ScrollView, ImageBackground, StatusBar} from 'react-native';
+import {ScrollView, ImageBackground, StatusBar, Text, View} from 'react-native';
 import {Headline} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
+import AvatarPicker from '../components/register/AvatarPicker';
 import MyAvatar from '../components/MyAvatar';
 import DevRegister from '../components/register/DevRegister';
 import OrgRegister from '../components/register/OrgRegister';
 import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import {RootStackParamList} from '../navigation/Navigation';
+import Icon from 'react-native-vector-icons/Ionicons';
 // interface Props {
 //   navigation: StackNavigationProp<RootStackParamList, 'Register'>;
 //   route: {params: {isDev?: boolean}};
@@ -14,11 +16,10 @@ import {RootStackParamList} from '../navigation/Navigation';
 
 type Props = StackScreenProps<RootStackParamList, 'Register'>;
 
-const Register = ({navigation, route: { params }}: Props) => {
-  
-  const { isDev } = params;
-
-
+const Register = ({navigation, route: {params}}: Props) => {
+  const {isDev} = params || true;
+  const [showModal, setShowModal] = React.useState(false);
+  const [uri, setUri] = React.useState(undefined || String);
   return (
     <ScrollView
       contentContainerStyle={{
@@ -64,7 +65,29 @@ const Register = ({navigation, route: { params }}: Props) => {
         }}>
         Create Account
       </Headline>
-      <MyAvatar />
+
+      <MyAvatar uri={uri} />
+
+      <Text
+        onPress={() => setShowModal(!showModal)}
+        style={{
+          left: 40,
+          bottom: 30,
+          borderRadius: 50,
+          width: 26,
+          aspectRatio: 1,
+          backgroundColor: '#17f1de',
+          textAlignVertical: 'center',
+          textAlign: 'center',
+        }}>
+        <Icon name="add-outline" size={26} />
+      </Text>
+
+      <AvatarPicker
+        setShowModal={setShowModal}
+        showModal={showModal}
+        setUri={setUri}
+      />
       {isDev ? <DevRegister /> : <OrgRegister />}
     </ScrollView>
   );

@@ -47,6 +47,7 @@ const Availability = ({onPress, error}: Props) => {
               borderRadius: 5,
               borderWidth: 1,
               borderColor: 'grey',
+              paddingLeft: 0,
             }}>
             <List.Item
               title="Full-Time ( 8 - 12 hs )"

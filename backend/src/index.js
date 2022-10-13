@@ -29,8 +29,8 @@ app.use('/team', routers.team);
 app.use('/', routers.login);
 
 //test home
-app.get("/", (req, res) => {
-  res.status(200).send("Working");
+app.get('/', (req, res) => {
+  res.status(200).send('Working');
 });
 
 //start server and DB

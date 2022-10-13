@@ -1,19 +1,19 @@
-const passport = require("passport");
-const bcryptjs = require("bcryptjs");
-const localStrategy = require("passport-local").Strategy;
-const JWTStrategy = require("passport-jwt").Strategy;
-const ExtractJWT = require("passport-jwt").ExtractJwt;
-const { DevModel } = require("../../models/dev/dev-model");
-const { ClientModel } = require("../../models/client/client-model");
-const dotenv = require("dotenv");
+const passport = require('passport');
+const bcryptjs = require('bcryptjs');
+const localStrategy = require('passport-local').Strategy;
+const JWTStrategy = require('passport-jwt').Strategy;
+const ExtractJWT = require('passport-jwt').ExtractJwt;
+const { DevModel } = require('../../models/dev/dev-model');
+const { ClientModel } = require('../../models/client/client-model');
+const dotenv = require('dotenv');
 dotenv.config();
 
 passport.use(
-  "login",
+  'login',
   new localStrategy(
     {
-      usernameField: "email",
-      passwordField: "password",
+      usernameField: 'email',
+      passwordField: 'password',
     },
     async (email, password, done) => {
       try {
@@ -22,7 +22,7 @@ passport.use(
         if (!user) {
           user = await ClientModel.findOne({ email });
           if (!user) {
-            return done(null, false, { message: "User not found" });
+            return done(null, false, { message: 'User not found' });
           }
         }
 
@@ -32,10 +32,10 @@ passport.use(
         );
 
         if (!checkPasswordUser) {
-          return done(null, false, { message: "Wrong password" });
+          return done(null, false, { message: 'Wrong password' });
         }
 
-        return done(null, user, { message: "Login successfull" });
+        return done(null, user, { message: 'Login successfull' });
       } catch (error) {
         return done(error);
       }
