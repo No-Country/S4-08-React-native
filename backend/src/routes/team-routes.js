@@ -9,10 +9,11 @@ teamRoutes.post("/register", controllers.authTeam.teamRegisterController);
 //get All team profiles
 teamRoutes.get("/profile", controllers.team.teamProfilesController);
 
-//get All team profiles ALGORITHM TESTING
-//teamRoutes.get("/profile", controllers.team.teamsIncomplete);
-
 //get team profile by ID
 teamRoutes.get("/profile/:id", controllers.team.teamProfileController);
+
+//get  ALGORITHM TESTING
+teamRoutes.get("/alg", controllers.team.teamsIncomplete);
+
 
 module.exports =  teamRoutes;
