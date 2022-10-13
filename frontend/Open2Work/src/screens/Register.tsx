@@ -24,7 +24,7 @@ const Register = ({navigation, route: { params }}: Props) => {
       contentContainerStyle={{
         backgroundColor: 'rgb(31,26,48)',
         alignItems: 'center',
-        flex:1
+        minHeight: '100%'
       }}>
       <StatusBar
         translucent
