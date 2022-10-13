@@ -1,26 +1,26 @@
 import axios from 'axios';
 import * as React from 'react';
-import {Modal, ScrollView, Text, View} from 'react-native';
+import {Modal, ScrollView, Text, View, Pressable} from 'react-native';
 import {Button, Headline} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import {MyInput} from '../components/MyInput';
-import Availability from '../components/register/Availability';
-import Languages from '../components/register/Languages';
-import Timezones from '../components/register/Timezones';
 
 const OrgHome = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [query, setQuery] = React.useState('');
   const [teamsData, setTeamsData] = React.useState();
   const [results, setResults] = React.useState();
-  const [selected, setSelected] = React.useState(['avail', 'lang']);
+  const [selected, setSelected] = React.useState(['']);
 
   React.useEffect(() => {
     axios
       .get('http://192.168.1.43:8080/team/profile')
-      .then(res => setTeamsData(res.data))
+      .then(res => {
+        setTeamsData(res.data);
+        setResults(res.data);
+      })
       .catch(err => console.log(err));
   }, []);
 
@@ -35,10 +35,15 @@ const OrgHome = () => {
 
   const handleTextInput = input => {
     setQuery(input);
-    let teamsMatch = Object.values(teamsData).map(item =>
-      Object.values(item).includes(input) ? item : null,
+    let teamsMatch = Object.values(teamsData).filter(item =>
+      item.stack.toLowerCase().includes(input.toLowerCase()),
     );
-    setResults(teamsMatch);
+
+    if (teamsMatch[0] === null || input === '' || input.length < 2) {
+      setResults(teamsData);
+    } else {
+      setResults(teamsMatch);
+    }
   };
 
   return (

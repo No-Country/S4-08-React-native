@@ -14,7 +14,7 @@ export const TabNav = () => {
       screenOptions={({route}) => ({
         tabBarIcon: ({focused}) => {
           switch (route.name) {
-            case 'Home':
+            case 'OrgStack':
               return (
                 <Icon
                   name={focused ? 'home' : 'home-outline'}
@@ -42,8 +42,8 @@ export const TabNav = () => {
         tabBarStyle: {backgroundColor: 'black'},
       })}>
       <Tab.Screen
-        name="Home"
-        component={OrgHome}
+        name="OrgStack"
+        component={OrgStack}
         initialParams={{render: 'group'}}
       />
       <Tab.Screen
@@ -52,5 +52,13 @@ export const TabNav = () => {
         initialParams={{render: 'dev'}}
       />
     </Tab.Navigator>
+  );
+};
+
+const OrgStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Home" component={OrgHome} />
+    </Stack.Navigator>
   );
 };
