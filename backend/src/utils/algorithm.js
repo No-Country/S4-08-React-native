@@ -1,8 +1,6 @@
-const { DevModel } = require("./../models/dev/dev-model");
-
 const { TeamModel } = require("./../models/team/team-model");
 
-const teamsIncomplete = async (req, res, role) => {
+const teamsIncomplete = async (user) => {
   try {
     //query a los teams incompletos. populate array de devs
     const Teams = await TeamModel.find({ isComplete: "false" })
@@ -12,28 +10,81 @@ const teamsIncomplete = async (req, res, role) => {
       })
       .exec();
 
-    //copio los resultados de la query en una objeto
-    const teamsData = [...Teams];
-    for (let i = 0; i < teamsData.length; i++) {
-      const roleDev = teamsData[i].devs;
-      const idTeam = teamsData[i]._id;
+    if (Teams.length > 0) {
+      //copio los resultados de la query en un array
+      const teamsData = [...Teams];
 
-      const role = roleDev.some((dev) => dev.role == role);
+      let idTeam = "";
 
-      if (!role) {
-        console.log(`team ${idTeam} uncomplete. missing ${role}`);
-        //
-        const dev = await DevModel.find({role: role, currentTeam: null}).exec();
+      //extraigo propiedades del array en constantes
+      for (let i = 0; i < teamsData.length; i++) {
+        const roleDev = teamsData[i].devs;
 
-        //falta agregarlo al team
-        console.log(dev);
+        //compruebo si existe un dev con el rol del registrado
+        const devRole = roleDev.some((x) => x.role == user.role);
+
+        if (!devRole) {
+          idTeam = teamsData[i]._id;
+          break;
+        }
       }
-    }
 
-    return res.send(teamsData);
+      //comprobacion que no haya ningun team incompleto que necesite el rol del dev registrado
+      if (idTeam !== "") {
+        //agregar a team
+        const Team = await TeamModel.findByIdAndUpdate(
+          { _id: idTeam },
+          { $push: { devs: user._id } },
+          { runValidators: true, returnDocument: "after" }
+        ).exec();
+
+        if (Team.devs.length === 4) {
+          Team.isComplete = true;
+        }
+
+        await Team.save();
+
+        console.log(`dev created and assigned`);
+        return Team._id;
+      } else {
+        //create team
+        const newTeam = new TeamModel({
+          devs: [user._id],
+          language: [user.info.language],
+          //stack,
+          //isComplete,
+          time_zone: [user.info.time_zone],
+          //working,
+          availability: user.info.time_availability,
+        });
+
+        await newTeam.save();
+
+        console.log(`new team ${newTeam._id} created. roles assigned`);
+        return newTeam._id;
+      }
+    } else {
+      console.log("all teams complete");
+
+      //create team
+      const newTeam = new TeamModel({
+        devs: [user._id],
+        language: [user.info.language],
+        //stack,
+        //isComplete,
+        time_zone: [user.info.time_zone],
+        //working,
+        availability: user.info.time_availability,
+      });
+
+      await newTeam.save();
+
+      console.log(`team ${newTeam._id} created`);
+      return newTeam._id;
+    }
   } catch (error) {
-    return res.status(400).send("NO Teams found");
+    console.log(`teamsIncomplete`);
   }
 };
 
-teamsIncomplete();
+module.exports = teamsIncomplete;

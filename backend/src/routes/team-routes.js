@@ -12,8 +12,5 @@ teamRoutes.get("/profile", controllers.team.teamProfilesController);
 //get team profile by ID
 teamRoutes.get("/profile/:id", controllers.team.teamProfileController);
 
-//get  ALGORITHM TESTING
-teamRoutes.get("/alg", controllers.team.teamsIncomplete);
-
 
 module.exports =  teamRoutes;
