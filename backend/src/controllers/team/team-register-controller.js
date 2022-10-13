@@ -5,19 +5,19 @@ const teamRegisterController = async (req, res) => {
     devs,
     language,
     stack,
-    isComplete,
+    //isComplete,
     time_zone,
-    working,
-    availability,
+    //working,
+    availability
   } = req.body;
 
   if (
     !devs ||
     !language ||
     !stack ||
-    !isComplete ||
+    //!isComplete ||
     !time_zone ||
-    !working ||
+    //!working ||
     !availability
   )
     return res.status(400).send();
@@ -26,9 +26,9 @@ const teamRegisterController = async (req, res) => {
     devs,
     language,
     stack,
-    isComplete,
+    //isComplete,
     time_zone,
-    working,
+    //working,
     availability,
   });
 
@@ -38,3 +38,15 @@ const teamRegisterController = async (req, res) => {
 };
 
 module.exports = { teamRegisterController };
+
+/*
+{
+        "devs":[],
+        "language": [],
+        "stack": "",
+        "isComplete": false,
+        "time_zone": [],
+        "working": false,
+        "availability": ""
+}
+*/

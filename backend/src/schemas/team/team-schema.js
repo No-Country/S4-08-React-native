@@ -21,10 +21,10 @@ const teamSchema = new Schema({
   },
   time_zone: {
     type: Array,
-    required: true,
   },
   working: {
     type: Boolean,
+    default: false
   },
   availability: {
     type: String,
