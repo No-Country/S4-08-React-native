@@ -14,6 +14,7 @@ import Languages from './Languages';
 import { logUser } from '../../redux/slices/user/userSlice';
 import { setError } from '../../redux/slices/error/errorSlice';
 import { setToken } from '../../redux/slices/auth/authSlice';
+import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
 
 interface FormValues {
 	languages: string[],
@@ -29,14 +30,11 @@ interface FormValues {
 const DevRegister = () => {
 
 	const formValues = useAppSelector(state => state.register);
-	
-	const user = useAppSelector(state => state.user);
 
-	
 	const dispatch = useAppDispatch();
 
 	const submitPOST = async (values: FormValues) => {
-
+		dispatch(loading());
 		const form = {
 			...formValues,
 			role: values.role,
@@ -56,13 +54,15 @@ const DevRegister = () => {
 
 		try {
 			// const resp = await apiDevelopers.post('/register', JSON.stringify(form));
-			const resp = await apiDevelopers.post('/register', form);
-			console.log(resp.data.message);
-			dispatch( logUser( resp.data.dev ))
-			dispatch( setToken('hola mundo'))
+			const { data } = await apiDevelopers.post('/register', form);
+			console.log(data.message);
+			dispatch(logUser(data.dev)) 
+			dispatch(setToken(data.token))
+			dispatch(removeLoading());
 		} catch (error: any) {
+			dispatch(removeLoading());
 			console.log('error', JSON.stringify(error, null, 2))
-			dispatch( setError(error.response.data.message))
+			dispatch(setError(error.response.data.message))
 		}
 
 	};
@@ -205,13 +205,10 @@ const DevRegister = () => {
 								SUBMIT
 							</Text>
 						</Button>
-						<Text style={{color:'white', zIndex: 999}}>{
-							JSON.stringify(user, null, 4)
-						}</Text>
 					</View>
 				)}
 			</Formik>
-			</>
+		</>
 	);
 };
 
