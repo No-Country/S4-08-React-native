@@ -1,12 +1,14 @@
 import * as React from 'react';
 import {View, Text} from 'react-native';
 import {Avatar} from 'react-native-paper';
+import { Dev } from '../../interfaces/teamInterface';
+import { getInitials } from '../../helpers/getInitials';
 
 interface Props {
-  render: string;
+  dev: Dev
 }
-
-const Card = ({render}: Props) => {
+const Card = ({ dev }: Props) => {
+  const initials = getInitials(`${dev.name} ${dev.surname}`)
   return (
     <View
       style={[
@@ -19,7 +21,7 @@ const Card = ({render}: Props) => {
           justifyContent: 'space-evenly',
         },
       ]}>
-      {render === 'group' ? <Avatar.Text size={74} label="NF" /> : null}
+      <Avatar.Text size={74} label={initials} />
       <View
         style={{
           backgroundColor: 'hsla(0,0%,95%,0.6)',
@@ -28,9 +30,9 @@ const Card = ({render}: Props) => {
           paddingLeft: 20,
           width: '60%',
         }}>
-        <Text style={{color: 'white'}}>NAHUEL FANEGO PAZ</Text>
-        <Text>Frontend</Text>
-        <Text style={{color: 'black'}}>nfanego@gmail.com</Text>
+        <Text style={{color: 'white', textTransform: 'capitalize'}}>{`${dev.name} ${dev.surname}`}</Text>
+        <Text style={{ textTransform: 'capitalize'}}>{dev.role}</Text>
+        <Text style={{color: 'black'}}>{dev.email}</Text>
       </View>
     </View>
   );
