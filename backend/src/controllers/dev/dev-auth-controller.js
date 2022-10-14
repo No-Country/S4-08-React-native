@@ -2,13 +2,22 @@ const passport = require("passport");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { DevModel } = require("../../models/dev/dev-model");
+const teamsIncomplete = require("../../utils/algorithm");
 
 //register
-
 const RegisterController = async (req, res) => {
   try {
-    const { name, surname, email, password, role, avatar, social, info, team } =
-      req.body;
+    const {
+      name,
+      surname,
+      email,
+      password,
+      role,
+      avatar,
+      social,
+      info,
+      //oldTeams,
+    } = req.body;
 
     if (!name || !surname || !email || !password || !role || !social || !info)
       return res.status(400).send();
@@ -24,31 +33,44 @@ const RegisterController = async (req, res) => {
       avatar,
       social,
       info,
-      team,
+      //oldTeams,
     });
 
+    //guardar dev en BBDD
     const dev = await newDev.save();
+
+    //ALGORITMO que asigna dev a un team
+    const assignTeam = await teamsIncomplete(dev);
+
+    try {
+      dev.currentTeam = assignTeam;
+      await dev.save();
+    } catch (error) {
+      console.log(error);
+    }
 
     //datos a encriptar con jwt
     const body = {
       _id: dev._id,
       email: dev.email,
-      role: dev.role
+      role: dev.role,
     };
 
     const token = jwt.sign({ dev: body }, process.env.JWT_SECRET, {
       expiresIn: "45m",
     });
-    
-    //funcion del algoritmo que autoasigna dev a un team
 
-    return res.send({ message: "Dev registered succesfully", token: "Bearer" + " " + token, dev });
+    
+    return res.send({
+      message: "Dev registered succesfully",
+      token: "Bearer" + " " + token,
+      dev,
+    });
   } catch (error) {
+    console.log(error);
     return res.status(400).send("Error in register");
   }
 };
-
-   
 
 //login
 const LoginController = async (req, res, next) => {
