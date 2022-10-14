@@ -50,7 +50,7 @@ const teamsIncomplete = async (user) => {
         //create team
         const newTeam = new TeamModel({
           devs: [user._id],
-          language: [user.info.language],
+          language: user.info.language,
           //stack,
           //isComplete,
           time_zone: [user.info.time_zone],
@@ -69,7 +69,7 @@ const teamsIncomplete = async (user) => {
       //create team
       const newTeam = new TeamModel({
         devs: [user._id],
-        language: [user.info.language],
+        language: user.info.language,
         //stack,
         //isComplete,
         time_zone: [user.info.time_zone],
