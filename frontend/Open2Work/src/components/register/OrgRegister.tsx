@@ -1,13 +1,17 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
-import {Button} from 'react-native-paper';
-import {Formik, ErrorMessage} from 'formik';
-import {MyInput} from '../MyInput';
+import { View, Text } from 'react-native';
+import { Button } from 'react-native-paper';
+import { Formik, ErrorMessage } from 'formik';
+import { MyInput } from '../MyInput';
 import Timezones from './Timezones';
 import Languages from './Languages';
 import * as Yup from 'yup';
-import {useAppSelector} from '../../redux/hook';
-import {apiClient} from '../../axios/apiClient';
+import { useAppSelector, useAppDispatch } from '../../redux/hook';
+import { apiClient } from '../../axios/apiClient';
+import { setError } from '../../redux/slices/error/errorSlice';
+import { logUser } from '../../redux/slices/user/userSlice';
+import { setToken } from '../../redux/slices/auth/authSlice';
+import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
 
 interface FormValues {
   languages: string[];
@@ -19,86 +23,91 @@ interface FormValues {
 }
 
 const OrgRegister = () => {
-  const formValues = useAppSelector(state => state.register);
 
-  const submitPOST = async (values: FormValues) => {
-    const form = {
-      ...formValues,
-      social: {
-        linkedin: values.linkedin,
-        portfolio: values.web,
-        github: values.github,
-      },
-      info: {
-        organization: values.organization,
-        time_zone: values.timezone,
-        language: values.languages,
-      },
-    };
+	const formValues = useAppSelector(state => state.register);
+	const dispatch = useAppDispatch();
 
-    try {
-      const resp = await apiClient.post('/register', form);
-      console.log(resp.data);
-    } catch (error) {
-      console.log('error', JSON.stringify(error, null, 2));
-    }
+	const submitPOST = async (values: FormValues) => {
+		dispatch(loading())
+		const form = {
+			...formValues,
+			social: {
+			  linkedin: values.linkedin,
+			  portfolio: values.web,
+			  github: values.github
+			},
+			info: {
+			  organization: values.organization,
+			  time_zone: values.timezone,
+			  language: values.languages
+			}
+		}
 
-    // axios
-    //   .get('http://192.168.1.43:8080/')
-    //   .then(res => console.log(res.status))
-    //   .catch(err => console.log(err.message));
-    /* .post('http://localhost:8080/dev/register', {...devForm, ...values})
-		  .then(res => console.log(res))
-		  .catch(err => console.log(err)); */
-  };
-  return (
-    <Formik
-      validationSchema={Yup.object({
-        languages: Yup.array()
-          .min(1, 'Provide at least 1 option')
-          .required('Required'),
-        timezone: Yup.string().required('Required'),
-        organization: Yup.string().required('Required'),
-        github: Yup.string().url('Invalid URL format'),
-        linkedin: Yup.string().url('Invalid URL format').required('Required'),
-        web: Yup.string().url('Invalid URL format').required('Required'),
-      })}
-      initialValues={{
-        languages: [],
-        timezone: '',
-        organization: '',
-        linkedin: '',
-        web: '',
-        github: '',
-      }}
-      onSubmit={(values: FormValues) => submitPOST(values)}>
-      {({
-        handleChange,
-        handleSubmit,
-        values,
-        errors,
-        touched,
-        setFieldValue,
-      }) => (
-        <View style={{minHeight: '100%', marginBottom: 25, width: '90%'}}>
-          <Languages
-            onPress={setFieldValue}
-            error={!!errors.languages && !!touched.languages}
-          />
-          {errors.languages && touched.languages && (
-            <Text style={{color: 'red'}}>
-              <ErrorMessage name="languages" />
-            </Text>
-          )}
-          <Timezones
-            onPress={setFieldValue}
-            error={!!errors.timezone && !!touched.timezone}
-          />
-          {errors.timezone && touched.timezone && (
-            <Text style={{color: 'red'}}>
-              <ErrorMessage name="timezone" />
-            </Text>
-          )}
+		try {
+			const resp = await apiClient.post('/register', form);
+			console.log(resp.data)
+			dispatch( logUser(resp.data.client))
+			dispatch( logUser( resp.data.message ))
+			dispatch( setToken('hola mundo'))
+			dispatch(removeLoading())
+		} catch (error: any) {
+			console.log('error', JSON.stringify(error, null, 2))
+			dispatch( setError(error.response.data.message))
+		}
+	};
+	return (
+		<Formik
+			validationSchema={Yup.object({
+				languages: Yup.array()
+					.min(1, 'Provide at least 1 option')
+					.required('Required'),
+				timezone: Yup.string().required('Required'),
+				organization: Yup.string().required('Required'),
+				github: Yup.string().url('Invalid URL format'),
+				linkedin: Yup.string().url('Invalid URL format').required('Required'),
+				web: Yup.string().url('Invalid URL format').required('Required'),
+			})}
+			initialValues={{
+				languages: [],
+				timezone: '',
+				organization: '',
+				linkedin: '',
+				web: '',
+				github: '',
+			}}
+			onSubmit={ (values: FormValues) => submitPOST( values )}>
+			{({
+				handleChange,
+				handleSubmit,
+				values,
+				errors,
+				touched,
+				setFieldValue,
+			}) => (
+				<View
+					style={{
+						minHeight: '100%',
+						marginBottom: 25,
+						width: '90%',
+					}}>
+					<Languages
+						onPress={setFieldValue}
+						error={!!errors.languages && !!touched.languages}
+					/>
+					{errors.languages && touched.languages && (
+						<Text style={{ color: 'red' }}>
+							<ErrorMessage name="languages" />
+						</Text>
+					)}
+					<Timezones
+						onPress={setFieldValue}
+						error={!!errors.timezone && !!touched.timezone}
+					/>
+					{errors.timezone && touched.timezone && (
+						<Text style={{ color: 'red' }}>
+							<ErrorMessage name="timezone" />
+						</Text>
+					)}
 
           <MyInput
             iconName="briefcase-outline"

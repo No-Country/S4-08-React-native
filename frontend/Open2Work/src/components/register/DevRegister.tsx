@@ -25,47 +25,44 @@ interface FormValues {
 }
 
 const DevRegister = () => {
-  const formValues = useAppSelector(state => state.register);
 
-  const user = useAppSelector(state => state.user);
+	const formValues = useAppSelector(state => state.register);
 
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  const submitPOST = async (values: FormValues) => {
-    const form = {
-      ...formValues,
-      role: values.role,
-      avatar: 'avatar',
-      social: {
-        linkedin: values.linkedin,
-        portfolio: values.web,
-        github: values.github,
-      },
-      info: {
-        time_availability: values.availability,
-        time_zone: values.timezone,
-        experience: values.seniority,
-        language: values.languages,
-      },
-    };
+	const submitPOST = async (values: FormValues) => {
+		dispatch(loading());
+		const form = {
+			...formValues,
+			role: values.role,
+			avatar: "avatar",
+			social: {
+				linkedin: values.linkedin,
+				portfolio: values.web,
+				github: values.github
+			},
+			info: {
+				time_availability: values.availability,
+				time_zone: values.timezone,
+				experience: values.seniority,
+				language: values.languages
+			}
+		}
 
-    try {
-      // const resp = await apiDevelopers.post('/register', JSON.stringify(form));
-      const resp = await apiDevelopers.post('/register', form);
-      console.log(resp.data.msg);
-      dispatch(logUser(resp.data.dev));
-    } catch (error) {
-      console.log('error', JSON.stringify(error, null, 2));
-    }
+		try {
+			// const resp = await apiDevelopers.post('/register', JSON.stringify(form));
+			const { data } = await apiDevelopers.post('/register', form);
+			console.log(data.message);
+			dispatch(logUser(data.dev)) 
+			dispatch(setToken(data.token))
+			dispatch(removeLoading());
+		} catch (error: any) {
+			dispatch(removeLoading());
+			console.log('error', JSON.stringify(error, null, 2))
+			dispatch(setError(error.response.data.message))
+		}
 
-    // axios
-    //   .get('http://192.168.1.43:8080/')
-    //   .then(res => console.log(res.status))
-    //   .catch(err => console.log(err.message));
-    /* .post('http://localhost:8080/dev/register', {...devForm, ...values})
-		  .then(res => console.log(res))
-		  .catch(err => console.log(err)); */
-  };
+	};
 
   return (
     <>
@@ -188,30 +185,27 @@ const DevRegister = () => {
               </Text>
             )}
 
-            <Button
-              onPress={handleSubmit}
-              mode="contained"
-              style={{
-                width: '60%',
-                alignSelf: 'center',
-                marginTop: 20,
-                borderRadius: 40,
-              }}>
-              <Text
-                style={{
-                  fontSize: 25,
-                }}>
-                SUBMIT
-              </Text>
-            </Button>
-            <Text style={{color: 'white', zIndex: 999}}>
-              {JSON.stringify(user, null, 4)}
-            </Text>
-          </View>
-        )}
-      </Formik>
-    </>
-  );
+						<Button
+							onPress={handleSubmit}
+							mode="contained"
+							style={{
+								width: '60%',
+								alignSelf: 'center',
+								marginTop: 20,
+								borderRadius: 40,
+							}}>
+							<Text
+								style={{
+									fontSize: 25,
+								}}>
+								SUBMIT
+							</Text>
+						</Button>
+					</View>
+				)}
+			</Formik>
+		</>
+	);
 };
 
 export default DevRegister;

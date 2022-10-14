@@ -43,7 +43,10 @@ export const LoginScreen = ({navigation}: Props) => {
               justifyContent: 'space-between',
             }}>
             {isRegister ? (
-              <FormLogin setIsRegister={setIsRegister} />
+              <FormLogin 
+                setIsRegister={setIsRegister}
+                navigation={navigation}
+                />
             ) : (
               <FormRegister
                 setIsRegister={setIsRegister}

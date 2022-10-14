@@ -6,7 +6,7 @@ import AvatarPicker from '../components/register/AvatarPicker';
 import MyAvatar from '../components/MyAvatar';
 import DevRegister from '../components/register/DevRegister';
 import OrgRegister from '../components/register/OrgRegister';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import {RootStackParamList} from '../navigation/Navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 // interface Props {
@@ -25,6 +25,7 @@ const Register = ({navigation, route: {params}}: Props) => {
       contentContainerStyle={{
         backgroundColor: 'rgb(31,26,48)',
         alignItems: 'center',
+        minHeight: '100%'
       }}>
       <StatusBar
         translucent
