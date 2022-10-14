@@ -29,11 +29,11 @@ const ResultItem = ({data}) => {
       </Text>
       <Text style={{color: 'lightgrey'}}>
         <Icon name="language-outline" size={16} /> [
-        {data.language.reduce((lang0, lang1) => `${lang0} - ${lang1}`)}]
+        {data.language.reduce((lang0, lang1) => `${lang0} - ${lang1}`,'')}]
       </Text>
       <Text style={{color: 'lightgrey'}}>
         <Icon name="time-outline" size={16} /> [
-        {data.time_zone.reduce((tz0, tz1) => `${tz0} / ${tz1}`)}]
+        {data.time_zone.reduce((tz0, tz1) => `${tz0} / ${tz1}`, )}]
       </Text>
       <Text style={{color: 'lightgrey'}}>
         <Icon name="briefcase-outline" size={16} /> {data.availability || ''}
