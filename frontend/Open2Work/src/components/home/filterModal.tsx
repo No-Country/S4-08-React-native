@@ -21,7 +21,6 @@ const FilterModal = ({handleToggle}) => {
           backgroundColor: 'hsla(0,0%,0%,0.5)',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 30,
         }}>
         <View
           style={{
