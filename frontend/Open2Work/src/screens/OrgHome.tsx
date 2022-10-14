@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import {MyInput} from '../components/MyInput';
+import { useAppSelector } from '../redux/hook';
 
 const OrgHome = () => {
   const [showModal, setShowModal] = React.useState(false);
@@ -14,9 +15,15 @@ const OrgHome = () => {
   const [results, setResults] = React.useState();
   const [selected, setSelected] = React.useState(['']);
 
+  const { token } = useAppSelector( state=> state.auth);
+
   React.useEffect(() => {
     axios
-      .get('http://192.168.0.244:8080/team/profile')
+      .get('http://192.168.0.244:8080/team/profile', {
+        headers: {
+          Authorization: token!
+        }
+      })
       .then(res => {
         setTeamsData(res.data);
         setResults(res.data);
