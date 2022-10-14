@@ -2,7 +2,8 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { HomeClient } from '../screens/HomeClient';
+// import { HomeClient } from '../screens/HomeClient';
+import OrgHome from '../screens/OrgHome';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ export const TabNavClient = () => {
 			})}>
 					<Tab.Screen
 						name="Home"
-						component={HomeClient}
+						component={OrgHome}
 					/>
 					<Tab.Screen
 						name="Profile"
