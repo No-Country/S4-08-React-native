@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {Headline} from 'react-native-paper';
-import {Modal, View, Text, ScrollView} from 'react-native';
+import { Headline } from 'react-native-paper';
+import { Modal, View, Text, ScrollView } from 'react-native';
 import Availability from '../register/Availability';
 import Languages from '../register/Languages';
 import Timezones from '../register/Timezones';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const FilterModal = ({handleToggle}) => {
+const FilterModal = ({ handleToggle }) => {
   return (
     <Modal transparent={true} style={{}}>
       <View
@@ -15,37 +15,45 @@ const FilterModal = ({handleToggle}) => {
           backgroundColor: 'hsla(0,0%,0%,0.5)',
           justifyContent: 'center',
           alignItems: 'center',
-          paddingVertical: 30,
         }}>
-        <ScrollView
+        <View
           style={{
-            backgroundColor: 'rgb(57,48,77)',
-            width: '80%',
-            height: '80%',
-            borderRadius: 5,
-            borderColor: 'darkgrey',
-            borderWidth: 1,
-            paddingVertical: 15,
-            paddingHorizontal: 15,
-          }}
-          contentContainerStyle={{
+            // height: 200,
+            width: '100%',
             justifyContent: 'center',
-          }}>
-          <View
+            alignItems: 'center'
+          }}
+        >
+
+          <ScrollView
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              backgroundColor: 'rgb(57,48,77)',
+              width: '80%',
+              borderRadius: 5,
+              borderColor: 'darkgrey',
+              borderWidth: 1,
+              paddingVertical: 15,
+              paddingHorizontal: 15,
+            }}
+            contentContainerStyle={{
+              justifyContent: 'center',
             }}>
-            <Headline style={{marginBottom: 10}}>Select Filters</Headline>
-            <Text onPress={handleToggle}>
-              <Icon name="close-outline" size={35} color="lightgrey" />
-            </Text>
-          </View>
-          <Timezones />
-          <Availability />
-          <Languages />
-        </ScrollView>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}>
+              <Headline style={{ marginBottom: 10 }}>Select Filters</Headline>
+              <Text onPress={handleToggle}>
+                <Icon name="close-outline" size={35} color="lightgrey" />
+              </Text>
+            </View>
+            <Timezones />
+            <Availability />
+            <Languages />
+          </ScrollView>
+        </View>
       </View>
     </Modal>
   );
