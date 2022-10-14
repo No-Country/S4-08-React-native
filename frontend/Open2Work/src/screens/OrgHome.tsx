@@ -16,7 +16,7 @@ const OrgHome = () => {
 
   React.useEffect(() => {
     axios
-      .get('http://192.168.1.43:8080/team/profile')
+      .get('http://192.168.0.244:8080/team/profile')
       .then(res => {
         setTeamsData(res.data);
         setResults(res.data);
