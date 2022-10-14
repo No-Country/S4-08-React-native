@@ -4,9 +4,10 @@ import {View} from 'react-native';
 interface Props {
   onPress: (field: string, value: any) => void;
   error: boolean;
+  onSelect: any;
 }
 
-const Availability = ({onPress, error}: Props) => {
+const Availability = ({onPress, error, onSelect}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState('');
   const handlePress = () => {
@@ -14,8 +15,20 @@ const Availability = ({onPress, error}: Props) => {
   };
 
   const handleSelect = (avail: string) => {
-    setSelected(avail);
-    onPress('availability', avail);
+    if (selected === '' || selected !== avail) {
+      setSelected(avail);
+      if (onSelect) {
+        onSelect(avail);
+      }
+      if (onPress) {
+        onPress('availability', avail);
+      }
+    } else {
+      setSelected('');
+      if (onSelect) {
+        onSelect('');
+      }
+    }
   };
 
   return (

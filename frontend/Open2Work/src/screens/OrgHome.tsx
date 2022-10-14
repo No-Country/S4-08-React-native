@@ -16,7 +16,12 @@ const OrgHome = () => {
 
   React.useEffect(() => {
     axios
-      .get('http://192.168.1.43:8080/team/profile')
+      .get('http://192.168.1.43:8080/team/profile', {
+        headers: {
+          authorization:
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzNDliMTZjMzIwNjRiZjZmYzAzYWU1NiIsImVtYWlsIjoiZGV2MUB0ZXN0LmNvbSJ9LCJpYXQiOjE2NjU3NzQxNTksImV4cCI6MTY2NTc3Njg1OX0.wKsOfL5ByDcGYC4WbEx6J12LRF7GIXv0kLiqaD-TF7g',
+        },
+      })
       .then(res => {
         setTeamsData(res.data);
         setResults(res.data);
@@ -34,11 +39,17 @@ const OrgHome = () => {
   };
 
   const handleTextInput = input => {
+    input = input.trim();
     setQuery(input);
-    let teamsMatch = Object.values(teamsData).filter(item =>
-      item.stack.toLowerCase().includes(input.toLowerCase()),
-    );
-
+    let teamsMatch;
+    if (input !== '') {
+      teamsMatch = Object.values(teamsData).filter(item => {
+        if (item.stack !== undefined)
+          return item.stack.toLowerCase().includes(input.toLowerCase());
+      });
+    } else {
+      teamsMatch = [null];
+    }
     if (teamsMatch[0] === null || input === '' || input.length < 2) {
       setResults(teamsData);
     } else {

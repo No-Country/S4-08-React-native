@@ -36,7 +36,7 @@ const ResultItem = ({data}) => {
         {data.time_zone.reduce((tz0, tz1) => `${tz0} / ${tz1}`)}]
       </Text>
       <Text style={{color: 'lightgrey'}}>
-        <Icon name="briefcase-outline" size={16} /> {data.availability || ''}
+        <Icon name="briefcase-outline" size={16} /> {data.availability}
       </Text>
     </View>
   );

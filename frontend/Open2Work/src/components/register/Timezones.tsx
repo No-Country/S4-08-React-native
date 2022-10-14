@@ -32,9 +32,10 @@ const timezonesData = {
 interface Props {
   onPress: (field: string, value: any) => void;
   error: boolean;
+  onSelect: any;
 }
 
-const Timezones = ({onPress, error}: Props) => {
+const Timezones = ({onPress, error, onSelect}: Props) => {
   const [expanded, setExpanded] = React.useState(false);
   const [selected, setSelected] = React.useState('');
 
@@ -43,8 +44,20 @@ const Timezones = ({onPress, error}: Props) => {
   };
 
   const handleSelect = (tz: string) => {
-    setSelected(tz);
-    onPress('timezone', tz);
+    if (selected === '' || selected !== tz) {
+      setSelected(tz);
+      if (onSelect) {
+        onSelect(tz);
+      }
+      if (onPress) {
+        onPress('timezone', tz);
+      }
+    } else {
+      setSelected('');
+      if (onSelect) {
+        onSelect('');
+      }
+    }
   };
 
   return (
