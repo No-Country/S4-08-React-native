@@ -28,6 +28,6 @@ export const authSlice = createSlice({
 export const { setToken, logout } = authSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectAuth = (state: RootState) => state.register;
+export const selectAuth = (state: RootState) => state.auth;
 
 export default authSlice.reducer;
