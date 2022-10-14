@@ -1,36 +1,44 @@
-import React from 'react'
-import { ScrollView, Image, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { ScrollView, Image, Text, View, ActivityIndicator } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import Card from '../components/profile/Card';
 import BannerGroup from '../components/profile/BannerGroup';
 import { ButtonLogout } from '../components/ButtonLogout';
+import axios from 'axios';
+import { Team } from '../interfaces/teamInterface';
 
 export const HomeDev = () => {
 
-  const user = useAppSelector(state => state.user);
-  const dispatch = useAppDispatch();
+  const [infoGroup, setInfoGroup] = useState<Team>();
 
-  const dataGroup = {
-    name: `${!!user.currentTeam ? `Group #${user.currentTeam.substring(18)}` : 'No group at the moment'}`,
-    techs: ['React Native', 'Redux', 'Express'],
-    tz: ['GMT-1', 'GMT-3'],
-    lang: ['Spanish', 'English'],
-    avail: 'Part-time',
-    isActive: 'Available',
-  }
+  const { user, auth } = useAppSelector(state => state);
+  const dispatch = useAppDispatch();
 
   const { top } = useSafeAreaInsets();
 
+  const getInfoGroup = async () => {
+    const resp = await axios.get<Team>(`http://192.168.0.244:8080/team/profile/${user.currentTeam}`, {
+      headers: {
+        Authorization: auth.token!
+      }
+    })
+    setInfoGroup(resp.data);
+  }
 
-  
+  useEffect(() => {
+    getInfoGroup()
+  }, [])
+
+
+
   return (
     <ScrollView
-    contentContainerStyle={{
-      backgroundColor: 'rgb(31,26,48)',
-      flex: 1,
-    }}>
+      contentContainerStyle={{
+        backgroundColor: 'rgb(31,26,48)',
+        flex: 1,
+      }}>
       <View
         style={{
           position: 'absolute',
@@ -60,17 +68,31 @@ export const HomeDev = () => {
           backgroundColor: 'hsla(0,0%,15%,0.65)',
           textTransform: 'capitalize'
         }}>
-        {dataGroup.name}
+        {`${!!user.currentTeam ? `Group #${user.currentTeam.substring(18)}` : 'No group at the moment'}`}
       </Headline>
+        <View>
+      {
+        infoGroup && (<BannerGroup
+          data={infoGroup}
+        />)
+      }
 
-      <BannerGroup
-        renderScreen={'group'}
-        data={dataGroup}
-      />
-      <Card render={'group'} />
-      <Card render={'group'} />
-      <Card render={'group'} />
-      <Card render={'group'} />
+        </View>
+        <View style={{
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          flex: 1
+        }}>
+      {
+        infoGroup && infoGroup.devs.map( dev =>{
+          return (
+            <Card dev={ dev } key={`${dev._id}`} />
+          )
+        })
+      }
+
+        </View>
+
     </ScrollView>
   );
 }
