@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const controllers = require("../controllers");
+const { validateToken } = require("../middlewares/auth/passport");
 
 const teamRoutes = Router();
 

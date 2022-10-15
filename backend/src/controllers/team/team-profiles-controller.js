@@ -13,7 +13,7 @@ const teamProfilesController = async (req, res) => {
 const teamProfileController = async (req, res) => {
   const { id } = req.params;
   try {
-    const Teams = await TeamModel.findById(id);
+    const Teams = await TeamModel.findById(id).populate("devs");
     return res.send(Teams);
   } catch (error) {
     return res.status(400).send("NO Teams found");
