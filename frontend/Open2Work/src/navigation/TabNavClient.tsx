@@ -2,8 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
-// import { HomeClient } from '../screens/HomeClient';
-import OrgHome from '../screens/OrgHome';
+import { StackClientHome } from './StackClientHome';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +13,7 @@ export const TabNavClient = () => {
 			screenOptions={({ route }) => ({
 				tabBarIcon: ({ focused }) => {
 					switch (route.name) {
-						case 'Home':
+						case 'ClientHome':
 							return (
 								<Icon
 									name={focused ? 'home' : 'home-outline'}
@@ -40,8 +39,8 @@ export const TabNavClient = () => {
 				tabBarStyle: { backgroundColor: 'black' },
 			})}>
 					<Tab.Screen
-						name="Home"
-						component={OrgHome}
+						name="ClientHome"
+						component={StackClientHome}
 					/>
 					<Tab.Screen
 						name="Profile"
