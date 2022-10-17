@@ -1,96 +1,101 @@
 import axios from 'axios';
 import * as React from 'react';
-import {Modal, ScrollView, Text, View, Pressable} from 'react-native';
-import {Button, Headline} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { ScrollView, Text, View, } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
-import {MyInput} from '../components/MyInput';
+import { MyInput } from '../components/MyInput';
 import { useAppSelector } from '../redux/hook';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamListClient } from '../navigation/StackClientHome';
 
-const OrgHome = () => {
-  const [showModal, setShowModal] = React.useState(false);
-  const [query, setQuery] = React.useState('');
-  const [teamsData, setTeamsData] = React.useState();
-  const [results, setResults] = React.useState();
-  const [selected, setSelected] = React.useState(['']);
+type Props = StackScreenProps<RootStackParamListClient, 'Home'>
 
-  const { token } = useAppSelector( state=> state.auth);
+const OrgHome = ({ navigation }: Props) => {
 
-  React.useEffect(() => {
-    axios
-      .get('http://192.168.0.244:8080/team/profile', {
-        headers: {
-          Authorization: token!
-        }
-      })
-      .then(res => {
-        setTeamsData(res.data);
-        setResults(res.data);
-      })
-      .catch(err => console.log(err));
-  }, []);
+	const [showModal, setShowModal] = React.useState(false);
+	const [query, setQuery] = React.useState('');
+	const [teamsData, setTeamsData] = React.useState();
+	const [results, setResults] = React.useState();
+	const [selected, setSelected] = React.useState(['']);
 
-  const handleToggle = id => {
-    setShowModal(!showModal);
-    /* if (selected.includes(id)) {
-      setSelected(selected.filter(item => item !== id));
-    } else {
-      setSelected(state => [...state, id]);
-    } */
-  };
+	const { token } = useAppSelector(state => state.auth);
 
-  const handleTextInput = input => {
-    setQuery(input);
-    let teamsMatch = Object.values(teamsData).filter(item =>
-      item.stack.toLowerCase().includes(input.toLowerCase()),
-    );
+	React.useEffect(() => {
+		axios
+			.get('http://192.168.0.244:8080/team/profile', {
+				headers: {
+					Authorization: token!
+				}
+			})
+			.then(res => {
+				setTeamsData(res.data);
+				setResults(res.data);
+			})
+			.catch(err => console.log(err));
+	}, []);
 
-    if (teamsMatch[0] === null || input === '' || input.length < 2) {
-      setResults(teamsData);
-    } else {
-      setResults(teamsMatch);
-    }
-  };
+	const handleToggle = id => {
+		setShowModal(!showModal);
+		/* if (selected.includes(id)) {
+		  setSelected(selected.filter(item => item !== id));
+		} else {
+		  setSelected(state => [...state, id]);
+		} */
+	};
 
-  return (
-    <>
-      {showModal && <FilterModal handleToggle={handleToggle} />}
-      <View style={{backgroundColor: 'rgb(31, 26, 48)', flex: 1}}>
-        <View style={{backgroundColor: 'rgb(57,48,77)'}}>
-          <View style={{margin: 15}}>
-            <MyInput
-              iconName="search-outline"
-              label="Search Tech Stack"
-              onChangeText={handleTextInput}
-            />
-          </View>
-          <View
-            style={{
-              marginBottom: 15,
-              marginHorizontal: 10,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Button
-              onPress={() => handleToggle('gmt')}
-              mode={selected.includes('gmt') ? 'contained' : 'outlined'}
-              style={{
-                width: '30%',
-                borderRadius: 40,
-                borderWidth: 2,
-                borderColor: '#17f1de',
-              }}>
-              <Text
-                style={{
-                  fontSize: 18,
-                }}>
-                Filters
-                {/* <Icon name="time-sharp" size={22} />{' '}
+	const handleTextInput = input => {
+		setQuery(input);
+		let teamsMatch = Object.values(teamsData).filter(item =>
+			item.stack.toLowerCase().includes(input.toLowerCase()),
+		);
+
+		if (teamsMatch[0] === null || input === '' || input.length < 2) {
+			setResults(teamsData);
+		} else {
+			setResults(teamsMatch);
+		}
+	};
+
+	return (
+		<>
+			{showModal && <FilterModal handleToggle={handleToggle} />}
+			<View style={{ backgroundColor: 'rgb(31, 26, 48)', flex: 1 }}>
+				<View style={{ backgroundColor: 'rgb(57,48,77)' }}>
+					<View style={{ margin: 15 }}>
+						<MyInput
+							iconName="search-outline"
+							label="Search Tech Stack"
+							onChangeText={handleTextInput}
+						/>
+					</View>
+					<View
+						style={{
+							marginBottom: 15,
+							marginHorizontal: 10,
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+						}}>
+						<Button
+							onPress={() => handleToggle('gmt')}
+							mode={selected.includes('gmt') ? 'contained' : 'outlined'}
+							style={{
+								width: '30%',
+								borderRadius: 40,
+								borderWidth: 2,
+								borderColor: '#17f1de',
+							}}>
+							<Text
+								style={{
+									fontSize: 18,
+								}}>
+								Filters
+								{/* <Icon name="time-sharp" size={22} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
-              </Text>
-            </Button>
-            {/* <Button
+							</Text>
+						</Button>
+						{/* <Button
               onPress={() => handleToggle('avail')}
               mode={selected.includes('avail') ? 'contained' : 'outlined'}
               style={{
@@ -124,24 +129,26 @@ const OrgHome = () => {
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" />
               </Text>
             </Button> */}
-          </View>
-        </View>
-        <View style={{backgroundColor: 'black', width: '100%', height: 2}} />
-        <ScrollView contentContainerStyle={{paddingVertical: 7}}>
-          <>
-            {results &&
-              results.map((item, index) => {
-                if (item !== null) {
-                  return <ResultItem key={index} data={item} />;
-                } else {
-                  return null;
-                }
-              })}
-          </>
-        </ScrollView>
-      </View>
-    </>
-  );
+					</View>
+				</View>
+				<View style={{ backgroundColor: 'black', width: '100%', height: 2 }} />
+				<ScrollView contentContainerStyle={{ paddingVertical: 7 }}>
+					<>
+						{results &&
+							results.map((item, index) => {
+								if (item !== null) {
+									return (
+												<ResultItem key={index} data={item} />
+									)
+								} else {
+									return null;
+								}
+							})}
+					</>
+				</ScrollView>
+			</View>
+		</>
+	);
 };
 
 export default OrgHome;
