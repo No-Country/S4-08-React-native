@@ -1,21 +1,39 @@
 import * as React from 'react';
 import {List} from 'react-native-paper';
 import {View} from 'react-native';
+import {useAppDispatch, useAppSelector} from '../../redux/hook';
+import {
+  selectFilter,
+  setAvailability,
+} from '../../redux/slices/filter/filterSilce';
 interface Props {
-  onPress: (field: string, value: any) => void;
-  error: boolean;
+  onPress?: (field: string, value: any) => void;
+  error?: boolean;
 }
 
 const Availability = ({onPress, error}: Props) => {
+  const {availability} = useAppSelector(selectFilter);
   const [expanded, setExpanded] = React.useState(false);
-  const [selected, setSelected] = React.useState('');
+  const [selected, setSelected] = React.useState('' || availability);
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(setAvailability(selected));
+  }, [selected, dispatch]);
+
   const handlePress = () => {
     setExpanded(!expanded);
   };
 
   const handleSelect = (avail: string) => {
-    setSelected(avail);
-    onPress('availability', avail);
+    if (selected === '' || selected !== avail) {
+      setSelected(avail);
+      if (onPress) {
+        onPress('availability', avail);
+      }
+    } else {
+      setSelected('');
+    }
   };
 
   return (

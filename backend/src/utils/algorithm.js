@@ -1,12 +1,12 @@
-const { TeamModel } = require("./../models/team/team-model");
+const { TeamModel } = require('./../models/team/team-model');
 
 const teamsIncomplete = async (user) => {
   try {
     //query a los teams incompletos. populate array de devs
-    const Teams = await TeamModel.find({ isComplete: "false" })
+    const Teams = await TeamModel.find({ isComplete: 'false' })
       .populate({
-        path: "devs",
-        select: "role -_id",
+        path: 'devs',
+        select: 'role -_id',
       })
       .exec();
 
@@ -14,7 +14,7 @@ const teamsIncomplete = async (user) => {
       //copio los resultados de la query en un array
       const teamsData = [...Teams];
 
-      let idTeam = "";
+      let idTeam = '';
 
       //extraigo propiedades del array en constantes
       for (let i = 0; i < teamsData.length; i++) {
@@ -30,12 +30,12 @@ const teamsIncomplete = async (user) => {
       }
 
       //comprobacion que no haya ningun team incompleto que necesite el rol del dev registrado
-      if (idTeam !== "") {
+      if (idTeam !== '') {
         //agregar a team
         const Team = await TeamModel.findByIdAndUpdate(
           { _id: idTeam },
           { $push: { devs: user._id } },
-          { runValidators: true, returnDocument: "after" }
+          { runValidators: true, returnDocument: 'after' }
         ).exec();
 
         if (Team.devs.length === 4) {
@@ -53,7 +53,7 @@ const teamsIncomplete = async (user) => {
           language: user.info.language,
           //stack,
           //isComplete,
-          time_zone: [user.info.time_zone],
+          time_zone: user.info.time_zone,
           //working,
           availability: user.info.time_availability,
         });
@@ -64,7 +64,7 @@ const teamsIncomplete = async (user) => {
         return newTeam._id;
       }
     } else {
-      console.log("all teams complete");
+      console.log('all teams complete');
 
       //create team
       const newTeam = new TeamModel({
@@ -72,7 +72,7 @@ const teamsIncomplete = async (user) => {
         language: user.info.language,
         //stack,
         //isComplete,
-        time_zone: [user.info.time_zone],
+        time_zone: user.info.time_zone,
         //working,
         availability: user.info.time_availability,
       });

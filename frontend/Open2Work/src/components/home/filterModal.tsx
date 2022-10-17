@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { Headline } from 'react-native-paper';
-import { Modal, View, Text, ScrollView } from 'react-native';
+import {Headline} from 'react-native-paper';
+import {Modal, View, Text, ScrollView} from 'react-native';
 import Availability from '../register/Availability';
 import Languages from '../register/Languages';
 import Timezones from '../register/Timezones';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const FilterModal = ({ handleToggle }) => {
+type Props = {handleToggle: () => void};
+
+const FilterModal = ({handleToggle}: Props) => {
   return (
     <Modal transparent={true} style={{}}>
       <View
@@ -18,13 +20,10 @@ const FilterModal = ({ handleToggle }) => {
         }}>
         <View
           style={{
-            // height: 200,
             width: '100%',
             justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-
+            alignItems: 'center',
+          }}>
           <ScrollView
             style={{
               backgroundColor: 'rgb(57,48,77)',
@@ -44,7 +43,7 @@ const FilterModal = ({ handleToggle }) => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-              <Headline style={{ marginBottom: 10 }}>Select Filters</Headline>
+              <Headline style={{marginBottom: 10}}>Select Filters</Headline>
               <Text onPress={handleToggle}>
                 <Icon name="close-outline" size={35} color="lightgrey" />
               </Text>

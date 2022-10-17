@@ -1,14 +1,22 @@
 import * as React from 'react';
 import {List} from 'react-native-paper';
 import {View} from 'react-native';
+import {useAppDispatch, useAppSelector} from '../../redux/hook';
+import {selectFilter, setLanguage} from '../../redux/slices/filter/filterSilce';
 interface Props {
-  onPress: (field: string, value: any) => void;
-  error: boolean;
+  onPress?: (field: string, value: any) => void;
+  error?: boolean;
 }
 
 const Languages = ({onPress, error}: Props) => {
+  const {language} = useAppSelector(selectFilter);
   const [expanded, setExpanded] = React.useState(false);
-  const [selected, setSelected] = React.useState(['']);
+  const [selected, setSelected] = React.useState([''] || language);
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(setLanguage(selected));
+  }, [selected, dispatch]);
 
   const handlePress = () => {
     setExpanded(!expanded);
@@ -17,21 +25,28 @@ const Languages = ({onPress, error}: Props) => {
   const handleSelect = (lang: string) => {
     if (selected.includes(lang)) {
       setSelected(selected.filter(item => item !== lang));
-      onPress(
-        'languages',
-        selected.filter(item => item !== lang),
-      );
+      if (onPress) {
+        onPress(
+          'languages',
+          selected.filter(item => item !== lang),
+        );
+      }
     } else {
       if (selected.length === 1 && selected[0] === '') {
         setSelected([lang]);
-        onPress('languages', [lang]);
+        if (onPress) {
+          onPress('languages', [lang]);
+        }
       } else {
         setSelected([...selected, lang]);
-        onPress('languages', [...selected, lang]);
+        if (onPress) {
+          onPress('languages', [...selected, lang]);
+        }
       }
     }
   };
 
+  console.log(selected);
   return (
     <List.Section>
       <View
@@ -69,13 +84,13 @@ const Languages = ({onPress, error}: Props) => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected.includes('ES')
+                    selected.includes('SPA')
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => handleSelect('ES')}
+              onPress={() => handleSelect('SPA')}
             />
             <List.Item
               title="English"
@@ -83,13 +98,13 @@ const Languages = ({onPress, error}: Props) => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected.includes('EN')
+                    selected.includes('ENG')
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => handleSelect('EN')}
+              onPress={() => handleSelect('ENG')}
             />
             <List.Item
               title="Portuguese"
@@ -97,13 +112,13 @@ const Languages = ({onPress, error}: Props) => {
                 <List.Icon
                   {...props}
                   icon={
-                    selected.includes('PT')
+                    selected.includes('POR')
                       ? 'radio-button-on-outline'
                       : 'radio-button-off-outline'
                   }
                 />
               )}
-              onPress={() => handleSelect('PT')}
+              onPress={() => handleSelect('POR')}
             />
           </View>
         </List.Accordion>
