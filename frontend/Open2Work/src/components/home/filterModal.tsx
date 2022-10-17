@@ -5,14 +5,10 @@ import Availability from '../register/Availability';
 import Languages from '../register/Languages';
 import Timezones from '../register/Timezones';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useAppDispatch} from '../../redux/hook';
 
-const FilterModal = ({handleToggle}) => {
-  const dispatch = useAppDispatch;
-  const [avail, setAvail] = React.useState('');
-  const [tz, setTz] = React.useState('');
-  const [langs, setLangs] = React.useState(['']);
+type Props = {handleToggle: () => void};
 
+const FilterModal = ({handleToggle}: Props) => {
   return (
     <Modal transparent={true} style={{}}>
       <View
@@ -52,9 +48,9 @@ const FilterModal = ({handleToggle}) => {
                 <Icon name="close-outline" size={35} color="lightgrey" />
               </Text>
             </View>
-            <Timezones onSelect={setTz} />
-            <Availability onSelect={setAvail} />
-            <Languages onSelect={setLangs} />
+            <Timezones />
+            <Availability />
+            <Languages />
           </ScrollView>
         </View>
       </View>
