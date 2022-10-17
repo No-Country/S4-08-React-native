@@ -39,7 +39,13 @@ const clientSchema = new Schema({
   isDev: {
     type: Boolean,
     default: false,
-  }
+  },
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+    },
+  ],
 });
 
 module.exports = { clientSchema };
