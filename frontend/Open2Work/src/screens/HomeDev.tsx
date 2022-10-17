@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { ScrollView, Image, Text, View, ActivityIndicator } from 'react-native';
+import { ScrollView, Image, View } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAppSelector, useAppDispatch } from '../redux/hook';
+import { useAppSelector } from '../redux/hook';
 import Card from '../components/profile/Card';
 import BannerGroup from '../components/profile/BannerGroup';
 import { ButtonLogout } from '../components/ButtonLogout';
@@ -14,7 +14,6 @@ export const HomeDev = () => {
   const [infoGroup, setInfoGroup] = useState<Team>();
 
   const { user, auth } = useAppSelector(state => state);
-  const dispatch = useAppDispatch();
 
   const { top } = useSafeAreaInsets();
 
@@ -68,7 +67,7 @@ export const HomeDev = () => {
           backgroundColor: 'hsla(0,0%,15%,0.65)',
           textTransform: 'capitalize'
         }}>
-        {`${!!user.currentTeam ? `Group #${user.currentTeam.substring(18)}` : 'No group at the moment'}`}
+        {`${!!infoGroup?._id ? `Group #${infoGroup._id.substring(20)}` : 'No group at the moment'}`}
       </Headline>
         <View>
       {
