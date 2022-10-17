@@ -1,59 +1,59 @@
 import axios from 'axios';
 import * as React from 'react';
-import { ScrollView, Text, View, } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, Text, TouchableOpacity, View, } from 'react-native';
 import { Button } from 'react-native-paper';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import { MyInput } from '../components/MyInput';
-import { useAppSelector } from '../redux/hook';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamListClient } from '../navigation/StackClientHome';
-import {useAppDispatch, useAppSelector} from '../redux/hook';
-import {resetFilter, selectFilter} from '../redux/slices/filter/filterSilce';
+import { useAppDispatch, useAppSelector } from '../redux/hook';
+import { resetFilter, selectFilter } from '../redux/slices/filter/filterSilce';
 
 type Props = StackScreenProps<RootStackParamListClient, 'Home'>
 
 const OrgHome = ({ navigation }: Props) => {
 
-	const [showModal, setShowModal] = React.useState(false);
-	const [query, setQuery] = React.useState('');
-	const [teamsData, setTeamsData] = React.useState<any>();
-	const [results, setResults] = React.useState<any>();
-	const [selected, setSelected] = React.useState(['']);
+  const [showModal, setShowModal] = React.useState(false);
+  const [query, setQuery] = React.useState('');
+  const [teamsData, setTeamsData] = React.useState<any>();
+  const [results, setResults] = React.useState<any>();
+  const [selected, setSelected] = React.useState(['']);
   const [error, setError] = React.useState('');
-  const {availability, timezone, language} = useAppSelector(selectFilter);
+  const { availability, timezone, language } = useAppSelector(selectFilter);
+
   const dispatch = useAppDispatch();
 
   const { token } = useAppSelector(state => state.auth);
+
   React.useEffect(() => {
     setError('');
     axios
       .get('http://192.168.0.244:8080/team/profile', {
-				headers: {
-					Authorization: token!
-				}
-			})
+        headers: {
+          Authorization: token!
+        }
+      })
       .then(res => {
         setTeamsData(res.data);
         setResults(res.data);
       })
       .catch(err => {
-        setError('Session Expired');
+        setError(err.message);
         console.log(err);
       });
   }, [timezone, availability, language]);
 
-	const handleToggle = () => {
-		setShowModal(!showModal);
+  const handleToggle = () => {
+    setShowModal(!showModal);
     handleFilters(results);
 
-		/* if (selected.includes(id)) {
-		  setSelected(selected.filter(item => item !== id));
-		} else {
-		  setSelected(state => [...state, id]);
-		} */
-	};
+    /* if (selected.includes(id)) {
+      setSelected(selected.filter(item => item !== id));
+    } else {
+      setSelected(state => [...state, id]);
+    } */
+  };
 
   const handleTextInput = (input: string) => {
     setQuery(input);
@@ -101,9 +101,9 @@ const OrgHome = ({ navigation }: Props) => {
   return (
     <>
       {showModal && <FilterModal handleToggle={handleToggle} />}
-      <View style={{backgroundColor: 'rgb(31, 26, 48)', flex: 1}}>
-        <View style={{backgroundColor: 'rgb(57,48,77)'}}>
-          <View style={{margin: 15}}>
+      <View style={{ backgroundColor: 'rgb(31, 26, 48)', flex: 1 }}>
+        <View style={{ backgroundColor: 'rgb(57,48,77)' }}>
+          <View style={{ margin: 15 }}>
             <MyInput
               iconName="search-outline"
               label="Search Tech Stack"
@@ -136,9 +136,9 @@ const OrgHome = ({ navigation }: Props) => {
                 Filters
                 {/* <Icon name="time-sharp" size={22} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
-							</Text>
-						</Button>
-						{/* <Button
+              </Text>
+            </Button>
+            {/* <Button
               onPress={() => handleToggle('avail')}
               mode={selected.includes('avail') ? 'contained' : 'outlined'}
               style={{
@@ -176,20 +176,30 @@ const OrgHome = ({ navigation }: Props) => {
             </Button>
           </View>
         </View>
-        <View style={{backgroundColor: 'black', width: '100%', height: 2}} />
-        <ScrollView contentContainerStyle={{paddingVertical: 7}}>
+        <View style={{ backgroundColor: 'black', width: '100%', height: 2 }} />
+        <ScrollView contentContainerStyle={{ paddingVertical: 7 }}>
           <>
-            {error && <Text style={{color: 'lightgrey'}}>{error}</Text>}
+            {error && <Text style={{ color: 'lightgrey' }}>{error}</Text>}
             {results && results.length > 0 ? (
-              results.map((item: any, index: number) => {
+              results.map((item: any ) => {
                 if (item !== null) {
-                  return <ResultItem key={index} data={item} />;
+                  return (
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Group', {
+                        id: item._id
+                      })}
+                    >
+                      <>
+                        <ResultItem key={item._id} data={item} />
+                      </>
+                    </TouchableOpacity>
+                  );
                 } else {
                   return null;
                 }
               })
             ) : (
-              <Text style={{color: 'lightgrey'}}>No Results</Text>
+              <Text style={{ color: 'lightgrey' }}>No Results</Text>
             )}
           </>
         </ScrollView>
