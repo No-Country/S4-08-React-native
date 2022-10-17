@@ -89,7 +89,7 @@ const BannerProfile = (): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  item: { color: 'darkgrey', fontSize: 17, marginVertical: 4 },
+  item:{ color: 'darkgrey', fontSize: 17, marginVertical: 4, marginHorizontal: 5 },
 });
 
 export default BannerProfile;

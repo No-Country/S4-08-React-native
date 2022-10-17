@@ -17,17 +17,20 @@ const BannerGroup = ({ data }: Props): JSX.Element => {
       style={{
         backgroundColor: 'black',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         flexWrap: 'wrap',
         marginBottom: 10,
         paddingVertical: 10,
         paddingHorizontal: 20,
+
       }}>
 
-      <Text style={styles.item}>
-        <Icon name="build-outline" size={20} color="white" />{' '}
-        {data.stack}
-      </Text>
+      {
+        data.stack && (<Text style={styles.item}>
+          <Icon name="build-outline" size={20} color="white" />{' '}
+          {data.stack}
+        </Text>)
+      }
       <Text style={styles.item}>
         <Icon name="globe-outline" size={20} color="white" />{' '}
         <Array data={data.time_zone} symbol={' / '} />
@@ -41,20 +44,19 @@ const BannerGroup = ({ data }: Props): JSX.Element => {
       </Text>
       <Text
         style={{
-          color: 'green',
+          color: data.working ? 'green' : 'red',
           fontSize: 17,
           textAlignVertical: 'center',
         }}>
-        <Icon name="alert-circle-outline" size={20} color="white" />{' '}
-        {data.working}
-      </Text>
+        <Icon name="alert-circle-outline" size={20} color="white" /> {data.working ? 'Working' : 'Not working'}</Text>
 
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  item: { color: 'darkgrey', fontSize: 17, marginVertical: 4 },
+  item: { color: 'darkgrey', fontSize: 17, marginVertical: 4, marginHorizontal: 5 },
+
 });
 
 export default BannerGroup;
