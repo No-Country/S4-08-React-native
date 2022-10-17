@@ -6,31 +6,42 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import {MyInput} from '../components/MyInput';
+import {useAppDispatch, useAppSelector} from '../redux/hook';
+import {resetFilter, selectFilter} from '../redux/slices/filter/filterSilce';
 
 const OrgHome = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [query, setQuery] = React.useState('');
-  const [teamsData, setTeamsData] = React.useState();
-  const [results, setResults] = React.useState();
+  const [teamsData, setTeamsData] = React.useState<any>();
+  const [results, setResults] = React.useState<any>();
   const [selected, setSelected] = React.useState(['']);
+  const [error, setError] = React.useState('');
+  const {availability, timezone, language} = useAppSelector(selectFilter);
+  const dispatch = useAppDispatch();
 
   React.useEffect(() => {
+    setError('');
     axios
       .get('http://192.168.1.43:8080/team/profile', {
         headers: {
           authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzNDliMTZjMzIwNjRiZjZmYzAzYWU1NiIsImVtYWlsIjoiZGV2MUB0ZXN0LmNvbSJ9LCJpYXQiOjE2NjU3NzQxNTksImV4cCI6MTY2NTc3Njg1OX0.wKsOfL5ByDcGYC4WbEx6J12LRF7GIXv0kLiqaD-TF7g',
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzNDllMzVhODAwYmUxNTczMmFlZGNmYiIsImVtYWlsIjoiZGV2MUB0ZXN0LmNvbSJ9LCJpYXQiOjE2NjU4Njc3MDcsImV4cCI6MTY2NTg3MDQwN30.9BYDq5V2qvxYvSHrZ2y5JjRMfUYTJzuSqDjeq_IuDSQ',
         },
       })
       .then(res => {
         setTeamsData(res.data);
         setResults(res.data);
       })
-      .catch(err => console.log(err));
-  }, []);
+      .catch(err => {
+        setError('Session Expired');
+        console.log(err);
+      });
+  }, [timezone, availability, language]);
 
-  const handleToggle = id => {
+  const handleToggle = () => {
     setShowModal(!showModal);
+    handleFilters(results);
+
     /* if (selected.includes(id)) {
       setSelected(selected.filter(item => item !== id));
     } else {
@@ -38,12 +49,12 @@ const OrgHome = () => {
     } */
   };
 
-  const handleTextInput = input => {
-    input = input.trim();
+  const handleTextInput = (input: string) => {
     setQuery(input);
-    let teamsMatch;
+    input = input.trim();
+    let teamsMatch: any;
     if (input !== '') {
-      teamsMatch = Object.values(teamsData).filter(item => {
+      teamsMatch = Object.values(teamsData).filter((item: any) => {
         if (item.stack !== undefined)
           return item.stack.toLowerCase().includes(input.toLowerCase());
       });
@@ -57,6 +68,30 @@ const OrgHome = () => {
     }
   };
 
+  const handleFilters = (resultsArray: any): void => {
+    if (timezone !== '') {
+      resultsArray = resultsArray.filter((team: any) => {
+        return team.time_zone[0].slice(3).trim().includes(timezone.slice(3));
+      });
+    }
+    if (availability !== '') {
+      resultsArray = resultsArray.filter((team: any) => {
+        return team.availability
+          .slice(0, 4)
+          .toLowerCase()
+          .includes(availability.slice(0, 4).toLowerCase());
+      });
+    }
+    if (language[0] !== '') {
+      resultsArray = resultsArray.filter((team: any) => {
+        return team.language.some((lang: string) =>
+          language.includes(lang.slice(0, 3).toUpperCase()),
+        );
+      });
+    }
+    setResults(resultsArray);
+  };
+
   return (
     <>
       {showModal && <FilterModal handleToggle={handleToggle} />}
@@ -67,6 +102,9 @@ const OrgHome = () => {
               iconName="search-outline"
               label="Search Tech Stack"
               onChangeText={handleTextInput}
+              clearTextOnFocus={true}
+              selectTextOnFocus={true}
+              value={query}
             />
           </View>
           <View
@@ -77,7 +115,7 @@ const OrgHome = () => {
               justifyContent: 'space-between',
             }}>
             <Button
-              onPress={() => handleToggle('gmt')}
+              onPress={handleToggle}
               mode={selected.includes('gmt') ? 'contained' : 'outlined'}
               style={{
                 width: '30%',
@@ -111,8 +149,9 @@ const OrgHome = () => {
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" />
               </Text>
             </Button>
+              */}
             <Button
-              onPress={() => handleToggle('lang')}
+              onPress={() => (dispatch(resetFilter()), handleTextInput(''))}
               mode={selected.includes('lang') ? 'contained' : 'outlined'}
               style={{
                 width: '30%',
@@ -124,23 +163,28 @@ const OrgHome = () => {
                 style={{
                   fontSize: 18,
                 }}>
-                <Icon name="language-sharp" size={21} />{' '}
-                <Icon name="chevron-down-outline" size={20} color="#17f1de" />
+                Reset
+                {/* <Icon name="language-sharp" size={21} />{' '}
+                <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
               </Text>
-            </Button> */}
+            </Button>
           </View>
         </View>
         <View style={{backgroundColor: 'black', width: '100%', height: 2}} />
         <ScrollView contentContainerStyle={{paddingVertical: 7}}>
           <>
-            {results &&
-              results.map((item, index) => {
+            {error && <Text style={{color: 'lightgrey'}}>{error}</Text>}
+            {results && results.length > 0 ? (
+              results.map((item: any, index: number) => {
                 if (item !== null) {
                   return <ResultItem key={index} data={item} />;
                 } else {
                   return null;
                 }
-              })}
+              })
+            ) : (
+              <Text style={{color: 'lightgrey'}}>No Results</Text>
+            )}
           </>
         </ScrollView>
       </View>

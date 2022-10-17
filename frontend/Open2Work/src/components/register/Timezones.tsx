@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {List} from 'react-native-paper';
 import {View, ScrollView} from 'react-native';
+import {useAppDispatch, useAppSelector} from '../../redux/hook';
+import {selectFilter, setTimezone} from '../../redux/slices/filter/filterSilce';
 
 const timezonesData = {
   'GMT-12': {tz: 'GMT -12', location: 'International Date Line West (IDLW)'},
@@ -30,14 +32,19 @@ const timezonesData = {
   'GMT+12': {tz: 'GMT +12', location: 'New Zealand Standard Time (NZST)'},
 };
 interface Props {
-  onPress: (field: string, value: any) => void;
-  error: boolean;
-  onSelect: any;
+  onPress?: (field: string, value: any) => void;
+  error?: boolean;
 }
 
-const Timezones = ({onPress, error, onSelect}: Props) => {
+const Timezones = ({onPress, error}: Props) => {
+  const {timezone} = useAppSelector(selectFilter);
   const [expanded, setExpanded] = React.useState(false);
-  const [selected, setSelected] = React.useState('');
+  const [selected, setSelected] = React.useState('' || timezone);
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(setTimezone(selected));
+  }, [selected, dispatch]);
 
   const handlePress = () => {
     setExpanded(!expanded);
@@ -46,17 +53,11 @@ const Timezones = ({onPress, error, onSelect}: Props) => {
   const handleSelect = (tz: string) => {
     if (selected === '' || selected !== tz) {
       setSelected(tz);
-      if (onSelect) {
-        onSelect(tz);
-      }
       if (onPress) {
         onPress('timezone', tz);
       }
     } else {
       setSelected('');
-      if (onSelect) {
-        onSelect('');
-      }
     }
   };
 
