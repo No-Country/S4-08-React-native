@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Avatar } from 'react-native-paper';
+import {Avatar} from 'react-native-paper';
 import Array from './Array';
 import { getInitials } from '../../helpers/getInitials';
 import { User } from '../../interfaces/loginInterface';
@@ -33,15 +33,19 @@ const BannerProfile = ({ user }: Props): JSX.Element => {
           backgroundColor: 'black',
           alignItems: 'center',
         }}>
-        <Avatar.Text label={getInitials(`${user.name} ${user.surname}`)} size={74} style={{ marginTop: 15 }} />
+        {user.avatar ? (
+          <MyAvatar uri={user.avatar} />
+        ) : (
+          <Avatar.Text
+            label={getInitials(`${user.name} ${user.surname}`)}
+            size={90}
+            style={{marginTop: 7}}
+          />
+        )}
       </View>
       <Text style={styles.item}>
         <Icon name="build-outline" size={20} color="white" />{' '}
-        {user.isDev ? (
-          user.role
-        ) : (
-          user.info.organization
-        )}
+        {user.isDev ? user.role : user.info.organization}
       </Text>
       <Text style={styles.item}>
         <Icon name="globe-outline" size={20} color="white" />{' '}
@@ -51,29 +55,32 @@ const BannerProfile = ({ user }: Props): JSX.Element => {
         <Icon name="language-outline" size={20} color="white" />{' '}
         <Array data={user.info.language} symbol={' - '} />
       </Text>
-      {
-        user.isDev && (<Text style={styles.item}>
-          <Icon name="briefcase-outline" size={20} color="white" /> {user.info.time_availability}
-        </Text>)
-      }
+      {user.isDev && (
+        <Text style={styles.item}>
+          <Icon name="briefcase-outline" size={20} color="white" />{' '}
+          {user.info.time_availability}
+        </Text>
+      )}
       <Text
         style={{
           color: 'darkgrey',
           fontSize: 17,
           textAlignVertical: 'center',
         }}>
-        <Icon name="mail-outline" size={20} color="white" />{' '}
-        {user.email}
+        <Icon name="mail-outline" size={20} color="white" /> {user.email}
       </Text>
       <>
         <Text style={styles.item}>
-          <Icon name="logo-github" size={20} color="white" /> {user.social.github}
+          <Icon name="logo-github" size={20} color="white" />{' '}
+          {user.social.github}
         </Text>
         <Text style={styles.item}>
-          <Icon name="logo-linkedin" size={20} color="white" /> {user.social.linkedin}
+          <Icon name="logo-linkedin" size={20} color="white" />{' '}
+          {user.social.linkedin}
         </Text>
         <Text style={styles.item}>
-          <Icon name="globe-outline" size={20} color="white" /> {user.social.portfolio}
+          <Icon name="globe-outline" size={20} color="white" />{' '}
+          {user.social.portfolio}
         </Text>
       </>
     </View>
