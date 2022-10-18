@@ -6,6 +6,7 @@ import { MyInput } from './MyInput';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import axios from 'axios';
 import { setError } from '../redux/slices/error/errorSlice';
+import { useSendContact } from '../hook/useSendContact';
 
 interface Props {
     teamId: string
@@ -13,42 +14,20 @@ interface Props {
 
 export const ContactModal = ({ teamId }: Props) => {
 
-    const { _id } = useAppSelector(state => state.user);
-    const dispatch = useAppDispatch();
-    const [showModal, setShowModal] = useState(false);
-    const [message, setMessage] = useState('');
+    const { show, message, handleChange, handleSubmit } = useSendContact();
 
-    const handleSubmit = async () => {
-
-        if (message === '') return;
-
-        const body = {
-            client: _id,
-            team: teamId,
-            description: message
-        }
-
-        try {
-            const { data } = await axios.post('http://192.168.0.244:8080/order/new', body);
-            dispatch(setError(data))
-            setShowModal(false)
-            setMessage('');
-        } catch (error: any) {
-            console.log(error)
-            dispatch(setError(error.response.data))
-        }
-    }
     return (
-        <>  
-        <StatusBar 
-            hidden
-        />
+        <>
             <Modal
-                visible={showModal}
+                visible={show}
                 animationType='fade'
                 transparent
-                onDismiss={() => setShowModal(false)}
+                onDismiss={() => handleChange( 'show', false )}
             >
+            <StatusBar
+                // hidden
+                backgroundColor={'black'}
+            />
 
                 <View
                     style={{
@@ -71,7 +50,7 @@ export const ContactModal = ({ teamId }: Props) => {
                             name='close-circle-outline'
                             size={40}
                             color='white'
-                            onPress={() => setShowModal(false)}
+                            onPress={() => handleChange( 'show', false )}
                             style={{
                                 position: 'absolute',
                                 top: 5,
@@ -89,7 +68,7 @@ export const ContactModal = ({ teamId }: Props) => {
                             multiline
                             keyboardType='default'
                             value={message}
-                            onChangeText={setMessage}
+                            onChangeText={( value )=>handleChange( 'message', value )}
                             style={{
                                 marginHorizontal: 20,
                             }}
@@ -99,14 +78,14 @@ export const ContactModal = ({ teamId }: Props) => {
                             style={{
                                 marginVertical: 20
                             }}
-                            onPress={() => handleSubmit()}
+                            onPress={() => handleSubmit(teamId)}
                         >send</Button>
                     </View>
                 </View>
 
             </Modal>
             <Button
-                onPress={() => setShowModal(true)}
+                onPress={() =>  handleChange( 'show', true )}
                 mode="contained"
                 style={{
                     width: '60%',
