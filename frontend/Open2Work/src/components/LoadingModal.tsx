@@ -1,7 +1,7 @@
 import React from 'react'
-import { ActivityIndicator, Button, Modal } from 'react-native-paper'
-import { useAppSelector, useAppDispatch } from '../redux/hook';
-import { Text } from 'react-native';
+import { ActivityIndicator, Modal } from 'react-native-paper'
+import { useAppSelector } from '../redux/hook';
+import { Text, StatusBar } from 'react-native';
 import { removeError } from '../redux/slices/error/errorSlice';
 
 export const LoadingModal = () => {
@@ -27,6 +27,9 @@ export const LoadingModal = () => {
             }}
             dismissable={ false }
         >
+            <StatusBar 
+                backgroundColor={'rgba(0,0,0,.5)'}
+            />
             <ActivityIndicator color='white' size={60} />
             <Text
                 style={{

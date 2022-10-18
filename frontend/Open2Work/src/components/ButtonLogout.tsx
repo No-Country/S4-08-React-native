@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useAppDispatch } from '../redux/hook';
 import { logout } from '../redux/slices/auth/authSlice';
 import { clearUser } from '../redux/slices/user/userSlice';
-import { Modal, View, TouchableOpacity, Text } from 'react-native';
+import { Modal, View, TouchableOpacity, Text, StatusBar } from 'react-native';
 import { Button } from 'react-native-paper';
 import {useState} from 'react';
 export const ButtonLogout = () => {
@@ -37,7 +37,9 @@ export const ButtonLogout = () => {
                     transparent
                     onDismiss={()=> setShowModal(false)}
                 >
-
+                    <StatusBar 
+                        backgroundColor={'rgba(0,0,0,.5)'}
+                    />
                     <View 
                     style={{
                         flex: 1,
