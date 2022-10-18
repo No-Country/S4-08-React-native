@@ -10,7 +10,7 @@ export const useGetTeamById = () => {
 
     const [infoGroup, setInfoGroup] = useState<Team>();
 
-    const { auth } = useAppSelector(state => state);
+    const { token } = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
 
     const getInfoGroup = async (id: string) => {
@@ -18,7 +18,7 @@ export const useGetTeamById = () => {
         try {
             const resp = await axios.get<Team>(`http://192.168.0.244:8080/team/profile/${id}`, {
                 headers: {
-                    Authorization: auth.token!
+                    Authorization: token!
                 }
             })
             setInfoGroup(resp.data);
