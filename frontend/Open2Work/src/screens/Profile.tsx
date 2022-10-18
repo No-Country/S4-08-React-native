@@ -61,7 +61,7 @@ const Profile = () => {
         {`${user.name} ${user.surname}`}
       </Headline>
 
-      <BannerProfile />
+      <BannerProfile user={ user } />
     </ScrollView>
   );
 };
