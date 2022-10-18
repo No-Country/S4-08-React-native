@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
 import Array from './Array';
-import { useAppSelector } from '../../redux/hook';
 import { getInitials } from '../../helpers/getInitials';
 import { User } from '../../interfaces/loginInterface';
 
