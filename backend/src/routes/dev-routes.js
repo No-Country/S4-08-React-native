@@ -1,14 +1,13 @@
 const { Router } = require("express");
 const controllers = require("../controllers");
 const { validateToken } = require("../middlewares/auth/passport");
+const validatorRegister = require("../middlewares/validators");
+
 
 const devRoutes = Router();
 
 //new Dev profile
-devRoutes.post("/register", controllers.authDev.RegisterController);
-
-//login dev profile
-//devRoutes.post("/login", controllers.authDev.LoginController);
+devRoutes.post("/register", validatorRegister ,controllers.authDev.RegisterController);
 
 //get All dev profiles
 devRoutes.get("/profile", validateToken, controllers.dev.ProfilesController);

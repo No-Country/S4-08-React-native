@@ -6,7 +6,7 @@ const loginRoutes = Router();
 //dev login
 loginRoutes.post("/login", controllers.authDev.LoginController);
 
-//client register
+//client login
 loginRoutes.post("/login", controllers.authClient.LoginController);
 
 module.exports = loginRoutes;

@@ -19,8 +19,11 @@ const RegisterController = async (req, res) => {
       //oldTeams,
     } = req.body;
 
-    if (!name || !surname || !email || !password || !role || !social || !info)
-      return res.status(400).send();
+    if (!surname || !role || !social || !info)
+      return res.status(400).send("Missing fields");
+
+    const checkEmail = await DevModel.find({ email: email });
+    if (checkEmail) return res.status(400).send("Email is already registered");
 
     const hashPassword = await bcryptjs.hash(password, 8);
 
@@ -60,14 +63,12 @@ const RegisterController = async (req, res) => {
       expiresIn: "45m",
     });
 
-    
     return res.send({
       message: "Dev registered succesfully",
       token: "Bearer" + " " + token,
       dev,
     });
   } catch (error) {
-    console.log(error);
     return res.status(400).send("Error in register");
   }
 };
