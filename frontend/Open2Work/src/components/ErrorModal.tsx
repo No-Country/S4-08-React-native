@@ -46,7 +46,8 @@ export const ErrorModal = () => {
             <Text
                 style={{
                     color: '#fff',
-                    fontSize: 40
+                    fontSize: 40,
+                    textAlign: 'center'
                 }}
             >{error}</Text>
             <Button
