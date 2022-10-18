@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, Image, View, TouchableOpacity, Text } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,10 +7,7 @@ import Card from '../components/profile/Card';
 import BannerGroup from '../components/profile/BannerGroup';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamListClient } from '../navigation/StackClientHome';
-import { Team } from '../interfaces/teamInterface';
-import { useAppSelector, useAppDispatch } from '../redux/hook';
-import axios from 'axios';
-import { loading, removeLoading } from '../redux/slices/loading/loadingSlice';
+import { useGetTeamById } from '../hook/useGetTeamById';
 
 type Props = StackScreenProps<RootStackParamListClient, 'Group'>
 
@@ -18,37 +15,17 @@ export const GroupDetails = ({ navigation, route }: Props) => {
 
     const id = route.params.id;
 
-    const [infoGroup, setInfoGroup] = useState<Team>();
-
-    const { auth } = useAppSelector(state => state);
-    const dispatch = useAppDispatch();
+    const { getInfoGroup, infoGroup } = useGetTeamById();
 
     const { top } = useSafeAreaInsets();
-  
-    const getInfoGroup = async () => {
-        
-        try {
-            dispatch(loading());
-          const resp = await axios.get<Team>(`http://192.168.0.244:8080/team/profile/${ id }`, {
-            headers: {
-              Authorization: auth.token!
-            }
-          })
-          setInfoGroup(resp.data);
-          dispatch(removeLoading())
-          
-        } catch (error) {
-            console.log(error)
-            dispatch(removeLoading())
-        }
-    }
-  
+
+
     useEffect(() => {
-      getInfoGroup()
-    }, [ id ])
-  
-  
-  
+        getInfoGroup(id)
+    }, [id])
+
+
+
     return (
         <ScrollView
             contentContainerStyle={{
@@ -64,7 +41,7 @@ export const GroupDetails = ({ navigation, route }: Props) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={()=> navigation.goBack()}
+                    onPress={() => navigation.goBack()}
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'center',

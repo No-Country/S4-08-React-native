@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, Image, View } from 'react-native';
 import { Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppSelector } from '../redux/hook';
 import Card from '../components/profile/Card';
 import BannerGroup from '../components/profile/BannerGroup';
-import { ButtonLogout } from '../components/ButtonLogout';
-import axios from 'axios';
-import { Team } from '../interfaces/teamInterface';
+import { useGetTeamById } from '../hook/useGetTeamById';
 
 export const HomeDev = () => {
 
-  const [infoGroup, setInfoGroup] = useState<Team>();
+  const { getInfoGroup, infoGroup } = useGetTeamById();
 
-  const { user, auth } = useAppSelector(state => state);
+  const { user } = useAppSelector(state => state);
 
   const { top } = useSafeAreaInsets();
 
-  const getInfoGroup = async () => {
-    const resp = await axios.get<Team>(`http://192.168.0.244:8080/team/profile/${user.currentTeam}`, {
-      headers: {
-        Authorization: auth.token!
-      }
-    })
-    setInfoGroup(resp.data);
-  }
-
   useEffect(() => {
-    getInfoGroup()
+    getInfoGroup(user.currentTeam)
   }, [])
 
 
@@ -46,7 +35,6 @@ export const HomeDev = () => {
           zIndex: 1,
         }}
       >
-        <ButtonLogout />
       </View>
       <Image
         style={{ width: '100%', height: 220 }}
