@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ScrollView, Image, View, TouchableOpacity, Text } from 'react-native';
-import { Headline } from 'react-native-paper';
+import { Button, Headline } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Card from '../components/profile/Card';
@@ -8,12 +8,13 @@ import BannerGroup from '../components/profile/BannerGroup';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamListClient } from '../navigation/StackClientHome';
 import { useGetTeamById } from '../hook/useGetTeamById';
+import { ContactModal } from '../components/ContactModal';
 
 type Props = StackScreenProps<RootStackParamListClient, 'Group'>
 
 export const GroupDetails = ({ navigation, route }: Props) => {
 
-    const id = route.params.id;
+    const idTeam = route.params.id;
 
     const { getInfoGroup, infoGroup } = useGetTeamById();
 
@@ -21,8 +22,8 @@ export const GroupDetails = ({ navigation, route }: Props) => {
 
 
     useEffect(() => {
-        getInfoGroup(id)
-    }, [id])
+        getInfoGroup(idTeam)
+    }, [idTeam])
 
 
 
@@ -99,7 +100,7 @@ export const GroupDetails = ({ navigation, route }: Props) => {
                 }
 
             </View>
-
+            <ContactModal teamId={idTeam} />
         </ScrollView>
     );
 }
