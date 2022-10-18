@@ -4,6 +4,7 @@ import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import { HomeClient } from '../screens/HomeClient';
 import OrgHome from '../screens/OrgHome';
+import Notifications from '../screens/Notifications';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,14 @@ export const TabNavClient = () => {
               return (
                 <Icon
                   name={focused ? 'home' : 'home-outline'}
+                  size={30}
+                  color={focused ? 'lightgrey' : 'darkgrey'}
+                />
+              );
+            case 'Notifications':
+              return (
+                <Icon
+                  name={focused ? 'notifications' : 'notifications-outline'}
                   size={30}
                   color={focused ? 'lightgrey' : 'darkgrey'}
                 />
@@ -41,6 +50,7 @@ export const TabNavClient = () => {
       })}>
       <Tab.Screen name="Home" component={OrgHome} />
       <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Notifications" component={Notifications} />
     </Tab.Navigator>
   );
 };
