@@ -1,13 +1,14 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
-import {TextInput} from 'react-native-paper';
-import {TextInputProps} from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
+import { TouchableOpacity, View, StyleProp, TextStyle } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import { TextInputProps } from 'react-native-paper/lib/typescript/components/TextInput/TextInput';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface Props extends Omit<TextInputProps, 'theme'> {
   iconName?: string;
   theme?: ReactNativePaper.Theme;
   onClick?: (value: boolean) => void;
+  style?: StyleProp<TextStyle>;
 }
 
 export const MyInput = ({
@@ -15,6 +16,7 @@ export const MyInput = ({
   onClick,
   secureTextEntry,
   error,
+  style,
   ...props
 }: Props) => {
   return (
@@ -25,7 +27,7 @@ export const MyInput = ({
       }}>
       {iconName && (
         <TouchableOpacity
-          style={{position: 'absolute', top: 27, left: 10, zIndex: 999}}
+          style={{ position: 'absolute', top: 27, left: 10, zIndex: 999 }}
           onPress={() => onClick && onClick(!secureTextEntry)}>
           <Icon name={iconName} size={30} color="#fff" />
         </TouchableOpacity>
@@ -36,11 +38,12 @@ export const MyInput = ({
         mode="outlined"
         error={error}
         secureTextEntry={secureTextEntry}
-        style={{
+        style={[{
           flex: 1,
-          paddingLeft: 40,
+          paddingLeft: iconName ? 40 : 0,
           paddingVertical: 10,
-        }}
+          
+        },{...style}]}
       />
     </View>
   );
