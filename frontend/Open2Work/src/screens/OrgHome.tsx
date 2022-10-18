@@ -1,16 +1,14 @@
 import axios from 'axios';
 import * as React from 'react';
 import {
-  Modal,
   ScrollView,
   Text,
   View,
-  Pressable,
   ImageBackground,
+  StyleSheet,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Button, Headline} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import {MyInput} from '../components/MyInput';
@@ -103,10 +101,10 @@ const OrgHome = () => {
   return (
     <>
       {showModal && <FilterModal handleToggle={handleToggle} />}
-      <View style={{backgroundColor: 'rgb(31, 26, 48)', flex: 1}}>
+      <View style={styles.container}>
         <ScrollView>
           <LinearGradient
-            style={{width: '100%', height: 500, position: 'absolute'}}
+            style={styles.grdtContainer}
             locations={[0.1, 0.35, 1]}
             useAngle={true}
             angle={180}
@@ -120,23 +118,11 @@ const OrgHome = () => {
               source={{
                 uri: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
               }}
-              style={{
-                width: '100%',
-                height: '75%',
-                zIndex: -100,
-              }}
+              style={styles.imgBkgd}
             />
           </LinearGradient>
-          <Headline
-            style={{
-              color: '#17f1de',
-              marginTop: 40,
-              fontWeight: '700',
-              fontSize: 30,
-            }}>
-            Team Finder
-          </Headline>
-          <View style={{backgroundColor: 'rgb(57,48,77)', marginTop: 100}}>
+          <Headline style={styles.headline}>Team Finder</Headline>
+          <View style={styles.searchCont}>
             <View style={{margin: 15}}>
               <MyInput
                 iconName="search-outline"
@@ -147,26 +133,12 @@ const OrgHome = () => {
                 value={query}
               />
             </View>
-            <View
-              style={{
-                marginBottom: 15,
-                marginHorizontal: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
+            <View style={styles.filters}>
               <Button
                 onPress={handleToggle}
                 mode={selected.includes('gmt') ? 'contained' : 'outlined'}
-                style={{
-                  width: '30%',
-                  borderRadius: 40,
-                  borderWidth: 2,
-                  borderColor: '#17f1de',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                  }}>
+                style={styles.filterBtn}>
+                <Text style={{fontSize: 18}}>
                   Filters
                   {/* <Icon name="time-sharp" size={22} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
@@ -193,16 +165,8 @@ const OrgHome = () => {
               <Button
                 onPress={() => (dispatch(resetFilter()), handleTextInput(''))}
                 mode={selected.includes('lang') ? 'contained' : 'outlined'}
-                style={{
-                  width: '30%',
-                  borderRadius: 40,
-                  borderWidth: 2,
-                  borderColor: '#17f1de',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                  }}>
+                style={styles.resetBtn}>
+                <Text style={{fontSize: 18}}>
                   Reset
                   {/* <Icon name="language-sharp" size={21} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
@@ -210,10 +174,14 @@ const OrgHome = () => {
               </Button>
             </View>
           </View>
-          <View style={{backgroundColor: 'black', width: '100%', height: 2}} />
+          <View style={styles.line} />
           <ScrollView contentContainerStyle={{paddingVertical: 7}}>
             <>
-              {error && <Text style={{color: 'lightgrey'}}>{error}</Text>}
+              {error && (
+                <Text style={{color: 'lightgrey', marginLeft: 10}}>
+                  {error}
+                </Text>
+              )}
               {results && results.length > 0 ? (
                 results.map((item: any, index: number) => {
                   if (item !== null) {
@@ -223,7 +191,9 @@ const OrgHome = () => {
                   }
                 })
               ) : (
-                <Text style={{color: 'lightgrey'}}>No Results</Text>
+                <Text style={{color: 'lightgrey', marginLeft: 10}}>
+                  No Results
+                </Text>
               )}
             </>
           </ScrollView>
@@ -232,5 +202,42 @@ const OrgHome = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {backgroundColor: 'rgb(31, 26, 48)', flex: 1},
+  grdtContainer: {width: '100%', height: 500, position: 'absolute'},
+  imgBkgd: {
+    width: '100%',
+    height: '75%',
+    zIndex: -100,
+  },
+  headline: {
+    color: '#17f1de',
+    marginTop: 40,
+    fontWeight: '700',
+    fontSize: 30,
+    marginLeft: 15,
+  },
+  searchCont: {backgroundColor: 'rgb(57,48,77)', marginTop: 100},
+  filters: {
+    marginBottom: 15,
+    marginHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  filterBtn: {
+    width: '30%',
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#17f1de',
+  },
+  resetBtn: {
+    width: '30%',
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#17f1de',
+  },
+  line: {backgroundColor: 'black', width: '100%', height: 2},
+});
 
 export default OrgHome;

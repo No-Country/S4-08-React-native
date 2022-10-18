@@ -1,39 +1,36 @@
 import React from 'react';
-import {ScrollView, ImageBackground, StatusBar, Text, View} from 'react-native';
+import {
+  ScrollView,
+  ImageBackground,
+  StatusBar,
+  Text,
+  StyleSheet,
+} from 'react-native';
 import {Headline} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import AvatarPicker from '../components/register/AvatarPicker';
 import MyAvatar from '../components/MyAvatar';
 import DevRegister from '../components/register/DevRegister';
 import OrgRegister from '../components/register/OrgRegister';
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../navigation/Navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
-// interface Props {
-//   navigation: StackNavigationProp<RootStackParamList, 'Register'>;
-//   route: {params: {isDev?: boolean}};
-// }
 
 type Props = StackScreenProps<RootStackParamList, 'Register'>;
 
-const Register = ({navigation, route: {params}}: Props) => {
+const Register = ({route: {params}}: Props) => {
   const {isDev} = params || true;
   const [showModal, setShowModal] = React.useState(false);
   const [uri, setUri] = React.useState(undefined || String);
   return (
-    <ScrollView
-      contentContainerStyle={{
-        backgroundColor: 'rgb(31,26,48)',
-        alignItems: 'center',
-        minHeight: '100%'
-      }}>
+    <ScrollView contentContainerStyle={styles.container}>
       <StatusBar
         translucent
         backgroundColor={'transparent'}
         barStyle="light-content"
       />
       <LinearGradient
-        style={{width: '100%', height: 500, position: 'absolute'}}
+        style={styles.grdtContainer}
         locations={[0.1, 0.35, 1]}
         useAngle={true}
         angle={180}
@@ -49,37 +46,14 @@ const Register = ({navigation, route: {params}}: Props) => {
               ? 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80'
               : 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
           }}
-          style={{
-            width: '100%',
-            height: '75%',
-            zIndex: -100,
-          }}
+          style={styles.imgBkgd}
         />
       </LinearGradient>
-      <Headline
-        style={{
-          color: '#17f1de',
-          marginTop: 40,
-          fontWeight: '700',
-          fontSize: 30,
-        }}>
-        Create Account
-      </Headline>
+      <Headline style={styles.headline}>Create Account</Headline>
 
       <MyAvatar uri={uri} />
 
-      <Text
-        onPress={() => setShowModal(!showModal)}
-        style={{
-          left: 40,
-          bottom: 30,
-          borderRadius: 50,
-          width: 26,
-          aspectRatio: 1,
-          backgroundColor: '#17f1de',
-          textAlignVertical: 'center',
-          textAlign: 'center',
-        }}>
+      <Text onPress={() => setShowModal(!showModal)} style={styles.add}>
         <Icon name="add-outline" size={26} />
       </Text>
 
@@ -92,5 +66,35 @@ const Register = ({navigation, route: {params}}: Props) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgb(31,26,48)',
+    alignItems: 'center',
+    minHeight: '100%',
+  },
+  grdtContainer: {width: '100%', height: 500, position: 'absolute'},
+  imgBkgd: {
+    width: '100%',
+    height: '75%',
+    zIndex: -100,
+  },
+  headline: {
+    color: '#17f1de',
+    marginTop: 40,
+    fontWeight: '700',
+    fontSize: 30,
+  },
+  add: {
+    left: 40,
+    bottom: 30,
+    borderRadius: 50,
+    width: 26,
+    aspectRatio: 1,
+    backgroundColor: '#17f1de',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+});
 
 export default Register;
