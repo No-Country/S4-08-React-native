@@ -11,7 +11,10 @@ import Seniority from '../register/Seniority';
 import Availability from '../register/Availability';
 import Timezones from '../register/Timezones';
 import Languages from '../register/Languages';
-import {logUser} from '../../redux/features/user/userSlice';
+import {logUser} from '../../redux/slices/user/userSlice';
+import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
+import { setToken } from '../../redux/slices/auth/authSlice';
+import { setError } from '../../redux/slices/error/errorSlice';
 
 interface FormValues {
   languages: string[];
