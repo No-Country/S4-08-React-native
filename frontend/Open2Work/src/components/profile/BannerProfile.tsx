@@ -34,7 +34,7 @@ const BannerProfile = ({ user }: Props): JSX.Element => {
           backgroundColor: 'black',
           alignItems: 'center',
         }}>
-        {user.avatar ? (
+        {user.avatar.startsWith('http')  ? (
           <MyAvatar uri={user.avatar} />
         ) : (
           <Avatar.Text

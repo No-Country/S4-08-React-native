@@ -1,11 +1,19 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {Button, Headline} from 'react-native-paper';
+import { View, Text } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Button, Headline } from 'react-native-paper';
+import { useAppSelector } from '../redux/hook';
 
 const Notifications = () => {
+
+
+  const { isDev, orders } = useAppSelector(state => state.user);
+
+  console.log('orders', JSON.stringify(orders, null, 2))
+
+
   return (
-    <View style={{backgroundColor: 'rgb(31, 26, 48)', flex: 1}}>
+    <View style={{ backgroundColor: 'rgb(31, 26, 48)', flex: 1 }}>
       <Headline
         style={{
           color: '#17f1de',
@@ -16,6 +24,7 @@ const Notifications = () => {
         }}>
         Inbox
       </Headline>
+
       <View
         style={{
           backgroundColor: 'hsl(0,0%,5%)',
@@ -29,144 +38,47 @@ const Notifications = () => {
           padding: 10,
           marginHorizontal: 15,
           borderRadius: 3,
-          height: '83%',
+          height: '90%',
         }}>
-        <ScrollView>
-          <View
-            style={{
-              backgroundColor: 'hsla(0, 0%, 65%,0.75)',
-              borderRadius: 5,
-              padding: 10,
-              marginVertical: 10,
-            }}>
-            <Text>From:</Text>
-            <Text>Message:</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: 10,
-              }}>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(200,10,10)'}}>
-                <Text>Reject</Text>
-              </Button>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(50,225,50)'}}>
-                <Text>Accept</Text>
-              </Button>
-            </View>
-          </View>
-          <View
-            style={{
-              backgroundColor: 'hsla(0, 0%, 65%,0.75)',
-              borderRadius: 5,
-              padding: 10,
-              marginVertical: 10,
-            }}>
-            <Text>From:</Text>
-            <Text>Message:</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: 10,
-              }}>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(200,10,10)'}}>
-                <Text>Reject</Text>
-              </Button>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(50,225,50)'}}>
-                <Text>Accept</Text>
-              </Button>
-            </View>
-          </View>
-          <View
-            style={{
-              backgroundColor: 'hsla(0, 0%, 65%,0.75)',
-              borderRadius: 5,
-              padding: 10,
-              marginVertical: 10,
-            }}>
-            <Text>From:</Text>
-            <Text>Message:</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: 10,
-              }}>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(190,10,10)'}}>
-                <Text>Reject</Text>
-              </Button>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(50,220,50)'}}>
-                <Text>Accept</Text>
-              </Button>
-            </View>
-          </View>
-          <View
-            style={{
-              backgroundColor: 'hsla(0, 0%, 65%,0.75)',
-              borderRadius: 5,
-              padding: 10,
-              marginVertical: 10,
-            }}>
-            <Text>From:</Text>
-            <Text>Message:</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: 10,
-              }}>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(190,10,10)'}}>
-                <Text>Reject</Text>
-              </Button>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(50,205,0)'}}>
-                <Text>Accept</Text>
-              </Button>
-            </View>
-          </View>
-          <View
-            style={{
-              backgroundColor: 'hsla(0, 0%, 65%,0.75)',
-              borderRadius: 5,
-              padding: 10,
-              marginVertical: 10,
-            }}>
-            <Text>From:</Text>
-            <Text>Message:</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                marginTop: 10,
-              }}>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(190,10,10)'}}>
-                <Text>Reject</Text>
-              </Button>
-              <Button
-                mode="contained"
-                style={{backgroundColor: 'rgb(50,225,50)'}}>
-                <Text>Accept</Text>
-              </Button>
-            </View>
-          </View>
+        <ScrollView
+          showsVerticalScrollIndicator={ false }
+        >
+          {
+            orders.map((order) => {
+              return (
+                <View
+                  key={order._id}
+                  style={{
+                    backgroundColor: 'hsla(0, 0%, 65%,0.75)',
+                    borderRadius: 5,
+                    padding: 10,
+                    marginVertical: 10,
+                  }}>
+                  <Text>{`Created: ${new Date(order.createdAt)}`}</Text>
+                  <Text>{`To: Team ${order.team.slice(-4)}`}</Text>
+                  <Text>{`Message: ${order.description}`}</Text>
+                  <Text>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
+                  {/* <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-around',
+                    marginTop: 10,
+                  }}>
+                  <Button
+                    mode="contained"
+                    style={{backgroundColor: 'rgb(200,10,10)'}}>
+                    <Text>Reject</Text>
+                  </Button>
+                  <Button
+                    mode="contained"
+                    style={{backgroundColor: 'rgb(50,225,50)'}}>
+                    <Text>Accept</Text>
+                  </Button>
+                </View> */}
+                </View>)
+            })
+          }
+
         </ScrollView>
       </View>
     </View>
