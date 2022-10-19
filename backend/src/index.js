@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const routers = require("./routes");
 const cors = require("cors");
 const passport = require("passport");
+const path = require("path");
+const multer = require("multer");
 
 //basic config
 dotenv.config();
@@ -21,6 +23,16 @@ app.use(cors());
 //passport
 app.use(passport.initialize());
 require("./middlewares/auth/passport.js");
+
+//multer
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "public/uploads"),
+  filename: (req, file, callback) => {
+    callback(null, new Date().getTime() + path.extname(file.originalname));
+  },
+});
+
+app.use(multer({ storage }).single("image"));
 
 //routes
 app.use("/dev", routers.dev);
