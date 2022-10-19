@@ -24,11 +24,17 @@ const teamSchema = new Schema({
   },
   working: {
     type: Boolean,
-    default: false
+    default: false,
   },
   availability: {
     type: String,
   },
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+    },
+  ],
 });
 
 module.exports = { teamSchema };

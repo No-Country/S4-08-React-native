@@ -8,8 +8,11 @@ const RegisterController = async (req, res) => {
     const { name, surname, email, password, avatar, social, info, team } =
       req.body;
 
-    if (!name || !surname || !email || !password || !social || !info)
-      return res.status(400).send();
+    if (!surname || !role || !social || !info || !team)
+      return res.status(400).send("Missing fields");
+
+    const checkEmail = await ClientModel.find({ email: email });
+    if (checkEmail) return res.status(400).send("Email is already registered");
 
     const hashPassword = await bcryptjs.hash(password, 8);
 
@@ -30,14 +33,18 @@ const RegisterController = async (req, res) => {
     const body = {
       _id: client._id,
       email: client.email,
-      role: client.role
+      role: client.role,
     };
 
     const token = jwt.sign({ client: body }, process.env.JWT_SECRET, {
       expiresIn: "45m",
     });
 
-    return res.send({ message: "Client registered succesfully", token: "Bearer" + " " + token, client});
+    return res.send({
+      message: "Client registered succesfully",
+      token: "Bearer" + " " + token,
+      client,
+    });
   } catch (error) {
     return res.status(400).send("Error in register");
   }
