@@ -1,15 +1,17 @@
 import * as React from 'react';
-import {View, Pressable, Modal, Text, StatusBar} from 'react-native';
+import { View, Pressable, Modal, Text, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 
 interface Props {
   showModal: boolean;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
-  setUri: React.Dispatch<React.SetStateAction<string>>;
+  setUri: React.Dispatch<React.SetStateAction<{
+    path?: string, mime?: string
+  }>>;
 }
 
-const AvatarPicker = ({showModal, setShowModal, setUri}: Props) => {
+const AvatarPicker = ({ showModal, setShowModal, setUri }: Props) => {
   const handlePicker = (picker: string) => {
     switch (picker) {
       case 'image':
@@ -19,7 +21,10 @@ const AvatarPicker = ({showModal, setShowModal, setUri}: Props) => {
           cropping: true,
         })
           .then(image => {
-            setUri(image.path);
+            setUri({ 
+              path: image.path,
+              mime: image.mime
+            });
           })
           .catch(err => console.log(err))
           .finally(() => setShowModal(false));
@@ -31,7 +36,10 @@ const AvatarPicker = ({showModal, setShowModal, setUri}: Props) => {
           cropping: true,
         })
           .then(image => {
-            setUri(image.path);
+            setUri({ 
+              path: image.path,
+              mime: image.mime
+            });
           })
           .catch(err => console.log(err))
           .finally(() => setShowModal(false));
@@ -41,7 +49,7 @@ const AvatarPicker = ({showModal, setShowModal, setUri}: Props) => {
   return (
     <>
       <Modal
-        style={{position: 'absolute', zIndex: -10}}
+        style={{ position: 'absolute', zIndex: -10 }}
         visible={showModal}
         animationType="fade"
         onRequestClose={() => setShowModal(false)}>
@@ -69,13 +77,13 @@ const AvatarPicker = ({showModal, setShowModal, setUri}: Props) => {
               }}
               onPress={() => handlePicker('image')}>
               <Icon name="images" size={29} color="black" />
-              <Text style={{color: 'black'}}>Gallery</Text>
+              <Text style={{ color: 'black' }}>Gallery</Text>
             </Pressable>
             <Pressable
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+              style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
               onPress={() => handlePicker('camera')}>
               <Icon name="camera" size={34} color="black" />
-              <Text style={{color: 'black'}}>Camera</Text>
+              <Text style={{ color: 'black' }}>Camera</Text>
             </Pressable>
           </View>
         </Pressable>

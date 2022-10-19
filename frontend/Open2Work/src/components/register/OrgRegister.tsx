@@ -12,6 +12,7 @@ import { setError } from '../../redux/slices/error/errorSlice';
 import { logUser } from '../../redux/slices/user/userSlice';
 import { setToken } from '../../redux/slices/auth/authSlice';
 import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
+import { ImageState } from '../../screens/Register';
 
 interface FormValues {
   languages: string[];
@@ -22,7 +23,11 @@ interface FormValues {
   github: string;
 }
 
-const OrgRegister = () => {
+interface Props {
+	file: ImageState
+}
+
+const OrgRegister = ({ file }: Props) => {
 
 	const formValues = useAppSelector(state => state.register);
 	const dispatch = useAppDispatch();
