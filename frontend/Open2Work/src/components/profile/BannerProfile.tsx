@@ -5,6 +5,7 @@ import {Avatar} from 'react-native-paper';
 import Array from './Array';
 import { getInitials } from '../../helpers/getInitials';
 import { User } from '../../interfaces/loginInterface';
+import MyAvatar from '../MyAvatar';
 
 interface Props {
   user: User;

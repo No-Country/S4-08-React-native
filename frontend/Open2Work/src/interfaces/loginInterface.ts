@@ -22,6 +22,7 @@ export interface User {
     info:        Info;
     __v:         number;
     currentTeam: string;
+    orders: OrderElement[];
 }
 
 export interface Social {
@@ -40,3 +41,13 @@ export interface Info {
     _id:               string;
 }
 
+export interface OrderElement {
+    _id:         string;
+    client:      string;
+    team:        string;
+    devs_ok:     any[];
+    devs_not:    any[];
+    description: string;
+    createdAt:   string;
+    __v:         number;
+}
