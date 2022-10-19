@@ -38,7 +38,8 @@ app.use(multer({ storage }).single("image"));
 app.use("/dev", routers.dev);
 app.use("/client", routers.client);
 app.use("/team", routers.team);
-app.use("/order", routers.order)
+app.use("/order", routers.order);
+app.use("/img", routers.img);
 app.use("/", routers.login);
 
 //test home

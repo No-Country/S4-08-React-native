@@ -4,18 +4,6 @@ const jwt = require("jsonwebtoken");
 const { DevModel } = require("../../models/dev/dev-model");
 const teamsIncomplete = require("../../utils/algorithm");
 
-//testing cloudinary config
-const dotenv = require("dotenv");
-dotenv.config();
-const cloudinary = require("cloudinary");
-const fs = require("fs-extra");
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
 //register
 const RegisterController = async (req, res) => {
   try {
@@ -30,7 +18,7 @@ const RegisterController = async (req, res) => {
       info,
       //oldTeams,
     } = req.body;
-
+    
     if (!surname || !role || !social || !info)
       return res.status(400).send("Missing fields");
 
@@ -40,15 +28,6 @@ const RegisterController = async (req, res) => {
     //hashear password
     const hashPassword = await bcryptjs.hash(password, 8);
 
-
-    //upload a cloudinary
-    const resCloudinary = await cloudinary.v2.uploader.upload(req.file.path, {
-      folder: "test_folder",
-      //allowed_formats: ["jpeg", "png"],
-      format: "png"
-      
-    });
-
     //guardar dev registrado
     const newDev = new DevModel({
       name,
@@ -56,7 +35,7 @@ const RegisterController = async (req, res) => {
       email,
       password: hashPassword,
       role,
-      avatar: resCloudinary.url,
+      avatar,
       social,
       info,
       //oldTeams,
@@ -65,9 +44,6 @@ const RegisterController = async (req, res) => {
   
     //guardar dev en BBDD
     const dev = await newDev.save();
-
-    //eliminar la foto avatar guardada en mi servidor node
-    await fs.unlink(req.file.path);
 
     //ALGORITMO que asigna dev a un team
     const assignTeam = await teamsIncomplete(dev);
