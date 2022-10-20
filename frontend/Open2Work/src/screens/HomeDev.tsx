@@ -13,12 +13,12 @@ export const HomeDev = () => {
 
   const { user } = useAppSelector(state => state);
 
-  const { top } = useSafeAreaInsets();
-
+  
   useEffect(() => {
     getInfoGroup(user.currentTeam)
   }, [])
-
+  
+  const { top } = useSafeAreaInsets();
 
 
   return (
@@ -55,7 +55,7 @@ export const HomeDev = () => {
           backgroundColor: 'hsla(0,0%,15%,0.65)',
           textTransform: 'capitalize'
         }}>
-        {`${!!infoGroup?._id ? `Group #${infoGroup._id.substring(20)}` : 'No group at the moment'}`}
+        {`${!!infoGroup?._id ? `Group #${infoGroup._id.slice(-4)}` : 'No group at the moment'}`}
       </Headline>
         <View>
       {

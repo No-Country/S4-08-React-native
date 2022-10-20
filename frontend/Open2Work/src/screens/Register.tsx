@@ -15,11 +15,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // }
 
 type Props = StackScreenProps<RootStackParamList, 'Register'>;
-
+export interface ImageState {
+  path?: string,
+  mime?: string;
+}
 const Register = ({navigation, route: {params}}: Props) => {
+
   const {isDev} = params || true;
   const [showModal, setShowModal] = React.useState(false);
-  const [uri, setUri] = React.useState(undefined || String);
+  const [uri, setUri] = React.useState<ImageState>({
+    path: '',
+    mime: ''
+  });
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -66,7 +74,7 @@ const Register = ({navigation, route: {params}}: Props) => {
         Create Account
       </Headline>
 
-      <MyAvatar uri={uri} />
+      <MyAvatar uri={ uri.path } />
 
       <Text
         onPress={() => setShowModal(!showModal)}
@@ -88,7 +96,7 @@ const Register = ({navigation, route: {params}}: Props) => {
         showModal={showModal}
         setUri={setUri}
       />
-      {isDev ? <DevRegister /> : <OrgRegister />}
+      {isDev ? <DevRegister file={ uri }/> : <OrgRegister file={ uri }/>}
     </ScrollView>
   );
 };
