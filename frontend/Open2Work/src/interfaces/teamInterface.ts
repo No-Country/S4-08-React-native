@@ -12,8 +12,19 @@ export interface Team {
     availability: string;
     __v:          number;
     stack:        string;
+    orders: OrderElement[];
 }
 
+export interface OrderElement {
+    _id:         string;
+    client:      string;
+    team:        string;
+    devs_ok:     any[];
+    devs_not:    any[];
+    description: string;
+    createdAt:   string;
+    __v:         number;
+}
 // export interface Dev {
 //     _id:         string;
 //     name:        string;
