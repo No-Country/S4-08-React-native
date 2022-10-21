@@ -35,8 +35,19 @@ const UpdateController = async (req, res) => {
     return res.status(400).send("No Client found");
   }
 
-  const { name, email, password, role, avatar, social, info, isDev, team } = req.body;
-  if (!name && !email && !password && !role && !avatar && !social && !info && !isDev && !team)
+  const { name, email, password, role, avatar, social, info, isDev, team } =
+    req.body;
+  if (
+    !name &&
+    !email &&
+    !password &&
+    !role &&
+    !avatar &&
+    !social &&
+    !info &&
+    !isDev &&
+    !team
+  )
     return res.status(400).send("Error. empty body request");
 
   const filter = req.params;
@@ -65,5 +76,5 @@ module.exports = {
   ProfilesController,
   ProfileController,
   UpdateController,
-  DeleteController
+  DeleteController,
 };
