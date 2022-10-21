@@ -9,8 +9,10 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamListClient } from '../navigation/StackClientHome';
 import { useGetTeamById } from '../hook/useGetTeamById';
 import { ContactModal } from '../components/ContactModal';
+import { RootStackParamListClientNotifications } from '../navigation/StackNotifications';
+import { ButtonGoBack } from '../components/ButtonGoBack';
 
-type Props = StackScreenProps<RootStackParamListClient, 'Group'>
+type Props = StackScreenProps<RootStackParamListClient, 'Group'> | StackScreenProps<RootStackParamListClientNotifications, 'Details'>
 
 export const GroupDetails = ({ navigation, route }: Props) => {
 
@@ -33,34 +35,19 @@ export const GroupDetails = ({ navigation, route }: Props) => {
                 backgroundColor: 'rgb(31,26,48)',
                 flex: 1,
             }}>
-            <View
-                style={{
-                    position: 'absolute',
-                    left: 10,
-                    top,
-                    zIndex: 1,
-                }}
-            >
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'hsla(0,0%,15%,0.65)'
-                    }}
-                >
-                    <Icon name='arrow-back-outline' size={40} color='white' />
-                    <Text style={{
-                        color: 'white',
-                        fontSize: 25
-                    }}>Go back</Text>
-                </TouchableOpacity>
-            </View>
             <Image
                 style={{ width: '100%', height: 220 }}
                 source={require('../assets/imgs/istockphoto-1046965704-640x640.jpg')}
             />
+            <View
+                style={{
+                    position: 'absolute',
+                    top,
+                    left: 10
+                }}
+            >
+                <ButtonGoBack navigation={navigation} />
+            </View>
             <Headline
                 style={{
                     position: 'absolute',
