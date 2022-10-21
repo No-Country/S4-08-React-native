@@ -51,7 +51,6 @@ export const TabNavDev = () => {
       <Tab.Screen
         name="Profile"
         component={Profile}
-        initialParams={{render: 'dev'}}
       />
       <Tab.Screen name="Notifications" component={Notifications} />
     </Tab.Navigator>

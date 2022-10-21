@@ -46,7 +46,6 @@ const Languages = ({onPress, error}: Props) => {
     }
   };
 
-  console.log(selected);
   return (
     <List.Section>
       <View

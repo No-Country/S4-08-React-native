@@ -39,8 +39,10 @@ app.use('/dev', routers.dev);
 app.use('/client', routers.client);
 app.use('/team', routers.team);
 app.use('/order', routers.order);
+app.use('/img', routers.img);
 app.use('/auth', routers.auth);
 app.use('/', routers.login);
+
 //test home
 app.get('/', (req, res) => {
   res.status(200).send('Working');

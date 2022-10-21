@@ -1,22 +1,29 @@
 import axios from 'axios';
 import * as React from 'react';
 import {
+  Modal,
   ScrollView,
   Text,
   View,
+  Pressable,
   ImageBackground,
+  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Button, Headline} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import {MyInput} from '../components/MyInput';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamListClient} from '../navigation/StackClientHome';
 import {useAppDispatch, useAppSelector} from '../redux/hook';
-
 import {resetFilter, selectFilter} from '../redux/slices/filter/filterSilce';
 
-const OrgHome = () => {
+type Props = StackScreenProps<RootStackParamListClient, 'Home'>;
+
+const OrgHome = ({navigation}: Props) => {
   const [showModal, setShowModal] = React.useState(false);
   const [query, setQuery] = React.useState('');
   const [teamsData, setTeamsData] = React.useState<any>();
@@ -24,15 +31,17 @@ const OrgHome = () => {
   const [selected, setSelected] = React.useState(['']);
   const [error, setError] = React.useState('');
   const {availability, timezone, language} = useAppSelector(selectFilter);
+
   const dispatch = useAppDispatch();
-  const token = useAppSelector(state => state.auth.token);
+
+  const {token} = useAppSelector(state => state.auth);
 
   React.useEffect(() => {
     setError('');
     axios
-      .get('http://192.168.1.43:8080/team/profile', {
+      .get('http://192.168.0.244:8080/team/profile', {
         headers: {
-          authorization: token!,
+          Authorization: token!,
         },
       })
       .then(res => {
@@ -40,20 +49,20 @@ const OrgHome = () => {
         setResults(res.data);
       })
       .catch(err => {
-        setError('Session Expired');
+        setError(err.message);
         console.log(err);
       });
-  }, [timezone, availability, language, token]);
+  }, [timezone, availability, language]);
 
   const handleToggle = () => {
     setShowModal(!showModal);
     handleFilters(results);
 
     /* if (selected.includes(id)) {
-      setSelected(selected.filter(item => item !== id));
-    } else {
-      setSelected(state => [...state, id]);
-    } */
+		  setSelected(selected.filter(item => item !== id));
+		} else {
+		  setSelected(state => [...state, id]);
+		} */
   };
 
   const handleTextInput = (input: string) => {
@@ -103,49 +112,47 @@ const OrgHome = () => {
     <>
       {showModal && <FilterModal handleToggle={handleToggle} />}
       <View style={styles.container}>
-        <ScrollView>
-          <LinearGradient
-            style={styles.grdtContainer}
-            locations={[0.1, 0.35, 1]}
-            useAngle={true}
-            angle={180}
-            colors={[
-              'rgba(0, 0, 0,0.65)',
-              'rgba(31, 26, 48,0.8)',
-              'rgba(31, 26, 48,1)',
-            ]}>
-            <ImageBackground
-              resizeMode="cover"
-              source={{
-                uri: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-              }}
-              style={styles.imgBkgd}
+        <LinearGradient
+          style={styles.grdtContainer}
+          locations={[0.1, 0.35, 1]}
+          useAngle={true}
+          angle={180}
+          colors={styles.colors}>
+          <ImageBackground
+            resizeMode="cover"
+            source={{
+              uri: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+            }}
+            style={styles.imgBkgd}
+          />
+        </LinearGradient>
+        <Headline style={styles.headline}>Team Finder</Headline>
+        <View style={styles.searchCont}>
+          <View style={{margin: 15}}>
+            <MyInput
+              iconName="search-outline"
+              label="Search Tech Stack"
+              onChangeText={handleTextInput}
+              clearTextOnFocus={true}
+              selectTextOnFocus={true}
+              value={query}
             />
-          </LinearGradient>
-          <Headline style={styles.headline}>Team Finder</Headline>
-          <View style={styles.searchCont}>
-            <View style={{margin: 15}}>
-              <MyInput
-                iconName="search-outline"
-                label="Search Tech Stack"
-                onChangeText={handleTextInput}
-                clearTextOnFocus={true}
-                selectTextOnFocus={true}
-                value={query}
-              />
-            </View>
-            <View style={styles.filters}>
-              <Button
-                onPress={handleToggle}
-                mode={selected.includes('gmt') ? 'contained' : 'outlined'}
-                style={styles.filterBtn}>
-                <Text style={{fontSize: 18}}>
-                  Filters
-                  {/* <Icon name="time-sharp" size={22} />{' '}
+          </View>
+          <View style={styles.filters}>
+            <Button
+              onPress={handleToggle}
+              mode={selected.includes('gmt') ? 'contained' : 'outlined'}
+              style={styles.filterBtn}>
+              <Text
+                style={{
+                  fontSize: 18,
+                }}>
+                Filters
+                {/* <Icon name="time-sharp" size={22} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
-                </Text>
-              </Button>
-              {/* <Button
+              </Text>
+            </Button>
+            {/* <Button
               onPress={() => handleToggle('avail')}
               mode={selected.includes('avail') ? 'contained' : 'outlined'}
               style={{
@@ -163,41 +170,49 @@ const OrgHome = () => {
                 </Text>
                 </Button>
               */}
-              <Button
-                onPress={() => (dispatch(resetFilter()), handleTextInput(''))}
-                mode={selected.includes('lang') ? 'contained' : 'outlined'}
-                style={styles.resetBtn}>
-                <Text style={{fontSize: 18}}>
-                  Reset
-                  {/* <Icon name="language-sharp" size={21} />{' '}
+            <Button
+              onPress={() => (dispatch(resetFilter()), handleTextInput(''))}
+              mode={selected.includes('lang') ? 'contained' : 'outlined'}
+              style={styles.resetBtn}>
+              <Text
+                style={{
+                  fontSize: 18,
+                }}>
+                Reset
+                {/* <Icon name="language-sharp" size={21} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
-                </Text>
-              </Button>
-            </View>
+              </Text>
+            </Button>
           </View>
-          <View style={styles.line} />
-          <ScrollView contentContainerStyle={{paddingVertical: 7}}>
-            <>
-              {error && (
-                <Text style={{color: 'lightgrey', marginLeft: 10}}>
-                  {error}
-                </Text>
-              )}
-              {results && results.length > 0 ? (
-                results.map((item: any, index: number) => {
-                  if (item !== null) {
-                    return <ResultItem key={index} data={item} />;
-                  } else {
-                    return null;
-                  }
-                })
-              ) : (
-                <Text style={{color: 'lightgrey', marginLeft: 10}}>
-                  No Results
-                </Text>
-              )}
-            </>
-          </ScrollView>
+        </View>
+        <View style={styles.line} />
+        <ScrollView contentContainerStyle={{paddingVertical: 7}}>
+          <>
+            {error && <Text style={styles.message}>{error}</Text>}
+            {results && results.length > 0 ? (
+              results.map((item: any, index: number) => {
+                if (item !== null) {
+                  return (
+                    <TouchableOpacity
+                      key={`button ${item._id}`}
+                      onPress={() =>
+                        navigation.navigate('Group', {
+                          id: item._id,
+                        })
+                      }>
+                      <>
+                        <ResultItem key={item._id} data={item} />
+                      </>
+                    </TouchableOpacity>
+                  );
+                } else {
+                  return null;
+                }
+              })
+            ) : (
+              <Text style={styles.message}>No Results</Text>
+            )}
+          </>
         </ScrollView>
       </View>
     </>
@@ -239,6 +254,8 @@ const styles = StyleSheet.create({
     borderColor: '#17f1de',
   },
   line: {backgroundColor: 'black', width: '100%', height: 2},
+  colors: ['rgba(0, 0, 0,0.65)', 'rgba(31, 26, 48,0.8)', 'rgba(31, 26, 48,1)'],
+  message: {color: 'lightgrey', marginLeft: 10},
 });
 
 export default OrgHome;

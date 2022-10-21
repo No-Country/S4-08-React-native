@@ -5,107 +5,58 @@ import { Avatar } from 'react-native-paper';
 import Array from './Array';
 import { useAppSelector } from '../../redux/hook';
 import MyAvatar from '../MyAvatar';
+import { Team } from '../../interfaces/teamInterface';
 
 interface Props {
-  renderScreen: string;
-  data: any;
+  data: Team;
 }
 
-const BannerGroup = ({ renderScreen, data }: Props): JSX.Element => {
-
-  const user = useAppSelector(state => state.user);
-
-
-  const getInitials = (name: string) => {
-    const names = name.split(' ');
-    let iniciales = '';
-    for (let i = 0; i <= names.length - 1; i++) {
-      iniciales = iniciales + names[i].substring(0, 1);
-    }
-    return iniciales.toUpperCase();
-  }
-
+const BannerGroup = ({ data }: Props): JSX.Element => {
   return (
     <View
       style={{
         backgroundColor: 'black',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         flexWrap: 'wrap',
         marginBottom: 10,
         paddingVertical: 10,
         paddingHorizontal: 20,
+
       }}>
-      {renderScreen !== 'group' && (
-        <View
-          style={{
-            position: 'absolute',
-            top: -100,
-            marginLeft: 5,
-            width: 102,
-            height: 145,
-            borderRadius: 50,
-            backgroundColor: 'black',
-            alignItems: 'center',
-          }}>
-          {data.uri ? (
-            <MyAvatar uri={data.uri} />
-          ) : (
-            <Avatar.Text label={getInitials(data.name)} size={90} style={{ marginTop: 7 }} />
-          )}
-        </View>
-      )}
-      <Text style={styles.item}>
-        <Icon name="build-outline" size={20} color="white" />{' '}
-        {renderScreen === 'group' ? (
-          <Array data={data.techs} symbol={', '} />
-        ) : (
-          user.role
-        )}
-      </Text>
+
+      {
+        data.stack && (<Text style={styles.item}>
+          <Icon name="build-outline" size={20} color="white" />{' '}
+          {data.stack}
+        </Text>)
+      }
       <Text style={styles.item}>
         <Icon name="globe-outline" size={20} color="white" />{' '}
-        {renderScreen === 'group' ? (
-          <Array data={data.tz} symbol={' / '} />
-        ) : (
-          data.tz
-        )}
+        <Array data={data.time_zone} symbol={' / '} />
       </Text>
       <Text style={styles.item}>
         <Icon name="language-outline" size={20} color="white" />{' '}
-        <Array data={data.lang} symbol={' - '} />
+        <Array data={data.language} symbol={' - '} />
       </Text>
       <Text style={styles.item}>
-        <Icon name="briefcase-outline" size={20} color="white" /> {data.avail}
+        <Icon name="briefcase-outline" size={20} color="white" /> {data.availability}
       </Text>
       <Text
         style={{
-          color: renderScreen === 'group' ? 'green' : 'darkgrey',
+          color: data.working ? 'green' : 'red',
           fontSize: 17,
           textAlignVertical: 'center',
         }}>
-        <Icon name="alert-circle-outline" size={20} color="white" />{' '}
-        {renderScreen === 'group' ? data.isActive : data.email}
-      </Text>
-      {renderScreen !== 'group' && (
-        <>
-          <Text style={styles.item}>
-            <Icon name="logo-github" size={20} color="white" /> {data.gh}
-          </Text>
-          <Text style={styles.item}>
-            <Icon name="logo-linkedin" size={20} color="white" /> {data.lkd}
-          </Text>
-          <Text style={styles.item}>
-            <Icon name="globe-outline" size={20} color="white" /> {data.web}
-          </Text>
-        </>
-      )}
+        <Icon name="alert-circle-outline" size={20} color="white" /> {data.working ? 'Working' : 'Not working'}</Text>
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  item: { color: 'darkgrey', fontSize: 17, marginVertical: 4 },
+  item: { color: 'darkgrey', fontSize: 17, marginVertical: 4, marginHorizontal: 5 },
+
 });
 
 export default BannerGroup;

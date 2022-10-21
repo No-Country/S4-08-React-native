@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Modal } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
-import { Text } from 'react-native';
+import { Text, StatusBar } from 'react-native';
 import { removeError } from '../redux/slices/error/errorSlice';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -30,6 +30,9 @@ export const ErrorModal = () => {
             }}
             dismissable
         >
+            <StatusBar 
+            backgroundColor={'rgba(0,0,0,.5)'}
+            />
                 <Icon
                     name='close-circle-outline'
                     size={40}
@@ -46,7 +49,8 @@ export const ErrorModal = () => {
             <Text
                 style={{
                     color: '#fff',
-                    fontSize: 40
+                    fontSize: 40,
+                    textAlign: 'center'
                 }}
             >{error}</Text>
             <Button

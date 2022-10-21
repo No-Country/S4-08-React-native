@@ -32,6 +32,6 @@ export const loadingSlice = createSlice({
 export const { loading, removeLoading } = loadingSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectLoading = (state: RootState) => state.register;
+export const selectLoading = (state: RootState) => state.loading;
 
 export default loadingSlice.reducer;

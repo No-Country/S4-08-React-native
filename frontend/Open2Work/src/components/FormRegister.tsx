@@ -127,6 +127,8 @@ export const FormRegister = ({setIsRegister, navigation}: Props) => {
               value={values.email}
               label="Email"
               autoComplete="off"
+              keyboardType="email-address"
+              autoCapitalize="none"
               error={!!errors.email && !!touched.email}
             />
             {errors.email && touched.email && (

@@ -11,7 +11,11 @@ import Seniority from '../register/Seniority';
 import Availability from '../register/Availability';
 import Timezones from '../register/Timezones';
 import Languages from '../register/Languages';
-import {logUser} from '../../redux/features/user/userSlice';
+import {logUser} from '../../redux/slices/user/userSlice';
+import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
+import { setToken } from '../../redux/slices/auth/authSlice';
+import { setError } from '../../redux/slices/error/errorSlice';
+import { ImageState } from '../../screens/Register';
 
 interface FormValues {
   languages: string[];
@@ -24,13 +28,18 @@ interface FormValues {
   web: string;
 }
 
-const DevRegister = () => {
+interface Props {
+  file: ImageState
+}
+
+const DevRegister = ({ file }: Props) => {
 
 	const formValues = useAppSelector(state => state.register);
 
 	const dispatch = useAppDispatch();
 
 	const submitPOST = async (values: FormValues) => {
+    
 		dispatch(loading());
 		const form = {
 			...formValues,

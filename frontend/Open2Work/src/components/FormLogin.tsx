@@ -110,6 +110,7 @@ export const FormLogin = ({setIsRegister, navigation}: Props) => {
               label="Email"
               error={!!touched.email && !!errors.email}
               keyboardType="email-address"
+              autoCapitalize="none"
             />
             {errors.email && touched.email && (
               <Text style={{color: 'red'}}>

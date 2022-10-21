@@ -1,50 +1,54 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, Image, View, StyleSheet} from 'react-native';
 import {Headline} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useAppSelector, useAppDispatch} from '../redux/hook';
+import {useAppSelector} from '../redux/hook';
 import Card from '../components/profile/Card';
 import BannerGroup from '../components/profile/BannerGroup';
-import {ButtonLogout} from '../components/ButtonLogout';
+import {useGetTeamById} from '../hook/useGetTeamById';
 
 export const HomeDev = () => {
-  const user = useAppSelector(state => state.user);
-  const dispatch = useAppDispatch();
+  const {getInfoGroup, infoGroup} = useGetTeamById();
+
+  const {user} = useAppSelector(state => state);
+
+  useEffect(() => {
+    getInfoGroup(user.currentTeam);
+  }, []);
 
   const {top} = useSafeAreaInsets();
 
-  const dataGroup = {
-    name: `${
-      !!user.currentTeam
-        ? `Group #${user.currentTeam.substring(18)}`
-        : 'No group at the moment'
-    }`,
-    techs: ['React Native', 'Redux', 'Express'],
-    tz: ['GMT-1', 'GMT-3'],
-    lang: ['Spanish', 'English'],
-    avail: 'Part-time',
-    isActive: 'Available',
-  };
-
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.logout}>
-        <ButtonLogout />
-      </View>
+      <View style={[styles.logout]}></View>
       <Image
-        style={styles.img}
+        style={{width: '100%', height: 220}}
         source={require('../assets/imgs/istockphoto-1046965704-640x640.jpg')}
       />
-      <Headline style={styles.headline}>{dataGroup.name}</Headline>
-
-      <BannerGroup renderScreen={'group'} data={dataGroup} />
-      <Card render={'group'} />
-      <Card render={'group'} />
-      <Card render={'group'} />
-      <Card render={'group'} />
+      <Headline
+        style={[
+          {
+            top,
+          },
+          styles.headline,
+        ]}>
+        {`${
+          !!infoGroup?._id
+            ? `Group #${infoGroup._id.slice(-4)}`
+            : 'No group at the moment'
+        }`}
+      </Headline>
+      <View>{infoGroup && <BannerGroup data={infoGroup} />}</View>
+      <View style={styles.list}>
+        {infoGroup &&
+          infoGroup.devs.map(dev => {
+            return <Card dev={dev} key={`${dev._id}`} />;
+          })}
+      </View>
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'rgb(31,26,48)',
@@ -68,5 +72,10 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: 'hsla(0,0%,15%,0.65)',
     textTransform: 'capitalize',
+  },
+  list: {
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flex: 1,
   },
 });

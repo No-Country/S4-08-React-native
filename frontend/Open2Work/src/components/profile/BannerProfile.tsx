@@ -3,20 +3,14 @@ import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Avatar} from 'react-native-paper';
 import Array from './Array';
-import {useAppSelector} from '../../redux/hook';
+import { getInitials } from '../../helpers/getInitials';
+import { User } from '../../interfaces/loginInterface';
 import MyAvatar from '../MyAvatar';
 
-const BannerProfile = (): JSX.Element => {
-  const user = useAppSelector(state => state.user);
-
-  const getInitials = (name: string) => {
-    const names = name.split(' ');
-    let iniciales = '';
-    for (let i = 0; i <= names.length - 1; i++) {
-      iniciales = iniciales + names[i].substring(0, 1);
-    }
-    return iniciales.toUpperCase();
-  };
+interface Props {
+  user: User;
+}
+const BannerProfile = ({ user }: Props): JSX.Element => {
 
   return (
     <View
@@ -40,7 +34,7 @@ const BannerProfile = (): JSX.Element => {
           backgroundColor: 'black',
           alignItems: 'center',
         }}>
-        {user.avatar ? (
+        {user.avatar.startsWith('http')  ? (
           <MyAvatar uri={user.avatar} />
         ) : (
           <Avatar.Text
@@ -95,7 +89,7 @@ const BannerProfile = (): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  item: {color: 'darkgrey', fontSize: 17, marginVertical: 4},
+  item: { color: 'darkgrey', fontSize: 17, marginVertical: 4, marginHorizontal: 5 },
 });
 
 export default BannerProfile;

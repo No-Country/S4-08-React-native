@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { View } from 'react-native';
 import {Avatar} from 'react-native-paper';
 
 interface Props {
-  uri?: React.ComponentState;
+  uri?: string;
 }
 
 const MyAvatar = ({uri, ...props}: Props) => {
