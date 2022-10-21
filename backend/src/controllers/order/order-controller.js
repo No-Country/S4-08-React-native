@@ -38,15 +38,28 @@ const createOrder = async (req, res) => {
   }
 };
 
-/*
-const orderController = async (req, res) => {
+const updateOrder = async (req, res) => {
+  //id order
   const { id } = req.params;
+
+  //buscar order por id
   try {
-    const Teams = await OrderModel.findById(id).populate("orders");
-    return res.send(Teams);
+    const Order = await OrderModel.findById(id);
   } catch (error) {
-    return res.status(400).send("NO Teams found");
+    return res.status(400).send("No Order found");
   }
+
+  //body req con los id de los devs que aceptan/rechazan la orden
+  const { devs_ok, devs_not } = req.body;
+
+  //defino propiedades para modificar la order. filtro por id de order, y actualizo devs_ok y devs_not
+  const filter = req.params;
+  const update = req.body;
+
+  const Order = await OrderModel.findOneAndUpdate(filter, update);
+  console.log(Order);
+
+  return res.send("Order updated succesfully");
 };
-*/
-module.exports = { createOrder };
+
+module.exports = { createOrder, updateOrder };
