@@ -5,14 +5,14 @@ const { ClientModel } = require("../../models/client/client-model");
 
 const RegisterController = async (req, res) => {
   try {
-    const { name, surname, email, password, avatar, social, info, team } =
+    const { name, surname, email, password, avatar, social, info } =
       req.body;
 
-    if (!surname || !role || !social || !info || !team)
+    if (!surname || !social || !info || !email || !password)
       return res.status(400).send("Missing fields");
 
     const checkEmail = await ClientModel.find({ email: email });
-    if (checkEmail) return res.status(400).send("Email is already registered");
+    if (checkEmail.length<0) return res.status(400).send("Email is already registered");
 
     const hashPassword = await bcryptjs.hash(password, 8);
 
@@ -24,7 +24,6 @@ const RegisterController = async (req, res) => {
       avatar,
       social,
       info,
-      team,
     });
 
     const client = await newClient.save();
@@ -46,6 +45,7 @@ const RegisterController = async (req, res) => {
       client,
     });
   } catch (error) {
+    console.log(error)
     return res.status(400).send("Error in register");
   }
 };
