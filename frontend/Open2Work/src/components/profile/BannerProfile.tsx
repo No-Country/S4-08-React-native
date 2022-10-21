@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Avatar} from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
 import Array from './Array';
 import { getInitials } from '../../helpers/getInitials';
 import { User } from '../../interfaces/loginInterface';
@@ -34,13 +34,13 @@ const BannerProfile = ({ user }: Props): JSX.Element => {
           backgroundColor: 'black',
           alignItems: 'center',
         }}>
-        {user.avatar.startsWith('http')  ? (
+        {user.avatar.startsWith('http') ? (
           <MyAvatar uri={user.avatar} />
         ) : (
           <Avatar.Text
             label={getInitials(`${user.name} ${user.surname}`)}
             size={90}
-            style={{marginTop: 7}}
+            style={{ marginTop: 7 }}
           />
         )}
       </View>
