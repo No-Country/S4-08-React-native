@@ -95,6 +95,7 @@ const Notifications = ({ navigation }: Props) => {
 
                     <Text style={{
                       color: '#fff',
+                      fontSize: 18
                     }}>{`Created: ${new Date(order.createdAt)}`}</Text>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Details', {
@@ -104,13 +105,16 @@ const Notifications = ({ navigation }: Props) => {
                     >
                       <Text style={{
                         color: '#17f1de',
+                        fontSize: 18
                       }}>{`From: Client #${order.client.slice(-4)}`}</Text>
                     </TouchableOpacity>
                     <Text style={{
                       color: '#fff',
+                      fontSize: 18
                     }}>{`Message: ${order.description}`}</Text>
                     <Text style={{
                       color: '#fff',
+                      fontSize: 18
                     }}>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
                     <View
                       style={{
@@ -143,7 +147,8 @@ const Notifications = ({ navigation }: Props) => {
                     }}>
 
                     <Text style={{
-                      color: '#fff'
+                      color: '#fff',
+                      fontSize: 18
                     }}>{`Created: ${new Date(order.createdAt)}`}</Text>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Details', {
@@ -152,15 +157,18 @@ const Notifications = ({ navigation }: Props) => {
                       })}
                     >
                       <Text style={{
-                        color: '#17f1de'
+                        color: '#17f1de',
+                        fontSize: 18,
                       }}>{`To: Group #${order.team.slice(-4)}`}</Text>
                     </TouchableOpacity>
 
                     <Text style={{
-                      color: '#fff'
+                      color: '#fff',
+                      fontSize: 18
                     }}>{`Message: ${order.description}`}</Text>
                     <Text style={{
-                      color: '#fff'
+                      color: '#fff',
+                      fontSize: 18
                     }}>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
                   </View>
                 )

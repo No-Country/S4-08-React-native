@@ -19,6 +19,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamListClient } from '../navigation/StackClientHome';
 import { useAppDispatch, useAppSelector } from '../redux/hook';
 import { resetFilter, selectFilter } from '../redux/slices/filter/filterSilce';
+import { apiDb } from '../axios/apiDb';
 
 type Props = StackScreenProps<RootStackParamListClient, 'Home'>
 
@@ -35,15 +36,16 @@ const OrgHome = ({ navigation }: Props) => {
 	const dispatch = useAppDispatch();
 
 	const { token } = useAppSelector(state => state.auth);
+	const user = useAppSelector(state => state.user);
 
 	React.useEffect(() => {
 		setError('');
-		axios
-			.get('http://192.168.0.244:8080/team/profile', {
-				headers: {
-					Authorization: token!
-				}
-			})
+
+		apiDb.get('/team/profile', {
+			headers: {
+				Authorization: token!
+			}
+		})
 			.then(res => {
 				setTeamsData(res.data);
 				setResults(res.data);
@@ -112,74 +114,74 @@ const OrgHome = ({ navigation }: Props) => {
 		<>
 			{showModal && <FilterModal handleToggle={handleToggle} />}
 			<View style={{ backgroundColor: 'rgb(31, 26, 48)', flex: 1 }}>
-					<LinearGradient
-						style={{ width: '100%', height: 500, position: 'absolute' }}
-						locations={[0.1, 0.35, 1]}
-						useAngle={true}
-						angle={180}
-						colors={[
-							'rgba(0, 0, 0,0.65)',
-							'rgba(31, 26, 48,0.8)',
-							'rgba(31, 26, 48,1)',
-						]}>
-						<ImageBackground
-							resizeMode="cover"
-							source={{
-								uri: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-							}}
-							style={{
-								width: '100%',
-								height: '75%',
-								zIndex: -100,
-							}}
-						/>
-					</LinearGradient>
-					<Headline
+				<LinearGradient
+					style={{ width: '100%', height: 500, position: 'absolute' }}
+					locations={[0.1, 0.35, 1]}
+					useAngle={true}
+					angle={180}
+					colors={[
+						'rgba(0, 0, 0,0.65)',
+						'rgba(31, 26, 48,0.8)',
+						'rgba(31, 26, 48,1)',
+					]}>
+					<ImageBackground
+						resizeMode="cover"
+						source={{
+							uri: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+						}}
 						style={{
-							color: '#17f1de',
-							marginTop: 40,
-							fontWeight: '700',
-							fontSize: 30,
+							width: '100%',
+							height: '75%',
+							zIndex: -100,
+						}}
+					/>
+				</LinearGradient>
+				<Headline
+					style={{
+						color: '#17f1de',
+						marginTop: 40,
+						fontWeight: '700',
+						fontSize: 30,
+					}}>
+					Team Finder
+				</Headline>
+				<View style={{ backgroundColor: 'rgb(57,48,77)', marginTop: 100 }}>
+					<View style={{ margin: 15 }}>
+						<MyInput
+							iconName="search-outline"
+							label="Search Tech Stack"
+							onChangeText={handleTextInput}
+							clearTextOnFocus={true}
+							selectTextOnFocus={true}
+							value={query}
+						/>
+					</View>
+					<View
+						style={{
+							marginBottom: 15,
+							marginHorizontal: 10,
+							flexDirection: 'row',
+							justifyContent: 'space-between',
 						}}>
-						Team Finder
-					</Headline>
-					<View style={{ backgroundColor: 'rgb(57,48,77)', marginTop: 100 }}>
-						<View style={{ margin: 15 }}>
-							<MyInput
-								iconName="search-outline"
-								label="Search Tech Stack"
-								onChangeText={handleTextInput}
-								clearTextOnFocus={true}
-								selectTextOnFocus={true}
-								value={query}
-							/>
-						</View>
-						<View
+						<Button
+							onPress={handleToggle}
+							mode={selected.includes('gmt') ? 'contained' : 'outlined'}
 							style={{
-								marginBottom: 15,
-								marginHorizontal: 10,
-								flexDirection: 'row',
-								justifyContent: 'space-between',
+								width: '30%',
+								borderRadius: 40,
+								borderWidth: 2,
+								borderColor: '#17f1de',
 							}}>
-							<Button
-								onPress={handleToggle}
-								mode={selected.includes('gmt') ? 'contained' : 'outlined'}
+							<Text
 								style={{
-									width: '30%',
-									borderRadius: 40,
-									borderWidth: 2,
-									borderColor: '#17f1de',
+									fontSize: 18,
 								}}>
-								<Text
-									style={{
-										fontSize: 18,
-									}}>
-									Filters
-									{/* <Icon name="time-sharp" size={22} />{' '}
+								Filters
+								{/* <Icon name="time-sharp" size={22} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
-								</Text>
-							</Button>
-							{/* <Button
+							</Text>
+						</Button>
+						{/* <Button
               onPress={() => handleToggle('avail')}
               mode={selected.includes('avail') ? 'contained' : 'outlined'}
               style={{
@@ -197,54 +199,60 @@ const OrgHome = ({ navigation }: Props) => {
                 </Text>
                 </Button>
               */}
-							<Button
-								onPress={() => (dispatch(resetFilter()), handleTextInput(''))}
-								mode={selected.includes('lang') ? 'contained' : 'outlined'}
+						<Button
+							onPress={() => (dispatch(resetFilter()), handleTextInput(''))}
+							mode={selected.includes('lang') ? 'contained' : 'outlined'}
+							style={{
+								width: '30%',
+								borderRadius: 40,
+								borderWidth: 2,
+								borderColor: '#17f1de',
+							}}>
+							<Text
 								style={{
-									width: '30%',
-									borderRadius: 40,
-									borderWidth: 2,
-									borderColor: '#17f1de',
+									fontSize: 18,
 								}}>
-								<Text
-									style={{
-										fontSize: 18,
-									}}>
-									Reset
-									{/* <Icon name="language-sharp" size={21} />{' '}
+								Reset
+								{/* <Icon name="language-sharp" size={21} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
-								</Text>
-							</Button>
-						</View>
+							</Text>
+						</Button>
 					</View>
-					<View style={{ backgroundColor: 'black', width: '100%', height: 2 }} />
-					<ScrollView contentContainerStyle={{ paddingVertical: 7 }}>
-						<>
-							{error && <Text style={{ color: 'lightgrey' }}>{error}</Text>}
-							{results && results.length > 0 ? (
-								results.map((item: any, index: number) => {
-									if (item !== null) {
+				</View>
+				<View style={{ backgroundColor: 'black', width: '100%', height: 2 }} />
+				<ScrollView contentContainerStyle={{ paddingVertical: 7 }}>
+					<>
+						{error && <Text style={{ color: 'lightgrey' }}>{error}</Text>}
+						{results && results.length > 0 ? (
+							results.map((item: any, index: number) => {
+								if (item !== null) {
+									if (user.orders) {
+
+										const haveOrder = user.orders.some(order => order.team === item._id) || false;
 										return (
 											<TouchableOpacity
 												key={`button ${item._id}`}
 												onPress={() => navigation.navigate('Group', {
 													id: item._id
 												})}
+												disabled={haveOrder}
+
 											>
 												<>
-													<ResultItem key={item._id} data={item} />
+													<ResultItem key={item._id} data={item} haveOrder={haveOrder} />
 												</>
 											</TouchableOpacity>
 										);
-									} else {
-										return null;
 									}
-								})
-							) : (
-								<Text style={{ color: 'lightgrey' }}>No Results</Text>
-							)}
-						</>
-					</ScrollView>
+								} else {
+									return null;
+								}
+							})
+						) : (
+							<Text style={{ color: 'lightgrey' }}>No Results</Text>
+						)}
+					</>
+				</ScrollView>
 			</View>
 		</>
 	);
