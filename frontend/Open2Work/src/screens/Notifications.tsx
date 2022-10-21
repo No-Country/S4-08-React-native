@@ -99,8 +99,8 @@ const Notifications = ({ navigation }: Props) => {
                     }}>{`Created: ${new Date(order.createdAt)}`}</Text>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Details', {
-                        id: order.client,
-                        msg: order.description
+                        idUser: order.client,
+                        order
                       })}
                     >
                       <Text style={{
@@ -152,8 +152,8 @@ const Notifications = ({ navigation }: Props) => {
                     }}>{`Created: ${new Date(order.createdAt)}`}</Text>
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Details', {
-                        id: order.team,
-                        msg: order.description
+                        idUser: order.team,
+                        order
                       })}
                     >
                       <Text style={{

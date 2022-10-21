@@ -16,7 +16,7 @@ type Props = StackScreenProps<RootStackParamListClient, 'Group'> | StackScreenPr
 
 export const GroupDetails = ({ navigation, route }: Props) => {
 
-    const idTeam = route.params.id;
+    const idTeam = route.params.idUser;
 
     const { getInfoGroup, infoGroup } = useGetTeamById();
 

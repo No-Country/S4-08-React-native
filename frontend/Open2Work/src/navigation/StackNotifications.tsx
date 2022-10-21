@@ -5,12 +5,13 @@ import { GroupDetails } from '../screens/GroupDetails';
 import Notifications from '../screens/Notifications';
 import { ClientDetails } from '../screens/ClientDetails';
 import { useAppSelector } from '../redux/hook';
+import { OrderElement } from '../interfaces/teamInterface';
 
 export type RootStackParamListClientNotifications = {
     Notifications: undefined;
     Details: {
-        id: string,
-        msg: string
+        idUser: string,
+        order: OrderElement,
     };
 };
 
