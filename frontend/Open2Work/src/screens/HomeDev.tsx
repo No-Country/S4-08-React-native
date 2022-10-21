@@ -12,7 +12,7 @@ export const HomeDev = () => {
   const { getInfoGroup, infoGroup } = useGetTeamById();
 
   const { user } = useAppSelector(state => state);
-
+  
   
   useEffect(() => {
     getInfoGroup(user.currentTeam)
@@ -71,7 +71,7 @@ export const HomeDev = () => {
           flex: 1
         }}>
       {
-        infoGroup && infoGroup.devs.map( dev =>{
+        infoGroup?.devs && infoGroup.devs.map( dev =>{
           return (
             <Card dev={ dev } key={`${dev._id}`} />
           )
