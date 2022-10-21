@@ -21,9 +21,11 @@ passport.use(
 
         if (!user) {
           user = await ClientModel.findOne({ email });
-          // await user.populate('orders')
           if (!user) {
             return done(null, false, { message: 'User not found' });
+          }
+          if (user.orders.length > 0){
+            await user.populate('orders')
           }
         }
 
