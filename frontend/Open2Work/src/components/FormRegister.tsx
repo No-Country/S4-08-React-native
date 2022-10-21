@@ -9,7 +9,7 @@ import {RootStackParamList} from '../navigation/Navigation';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useAppDispatch} from '../redux/hook';
 import {register} from '../redux/slices/register/registerSlice';
-import useGithub from '../hooks/useGithub';
+import useAuthProvider from '../hooks/useAuthProvider';
 
 interface Props {
   setIsRegister: (value: boolean) => void;
@@ -29,7 +29,11 @@ export const FormRegister = ({setIsRegister, navigation}: Props) => {
 
   const [hidden, setHidden] = useState(true);
 
-  useGithub();
+  useAuthProvider();
+
+  const handleOpenUrl = (provider: string) => {
+    Linking.openURL('http://192.168.1.43:8080/auth/' + provider);
+  };
 
   const handleSubmit = (values: FormValues) => {
     const {confirPass, ...rest} = values;
@@ -203,16 +207,14 @@ export const FormRegister = ({setIsRegister, navigation}: Props) => {
           backgroundColor="#0a66c2"
           iconName="logo-linkedin"
           label="Sign up with LinkedIn"
-          onPress={() => console.log('Login with Linkedin')}
+          onPress={() => handleOpenUrl('linkedin')}
         />
 
         <IconLogin
           iconName="logo-github"
           label="Sign up with Github"
           backgroundColor="#6e5494"
-          onPress={() =>
-            Linking.openURL('http://192.168.1.43:8080/auth/github')
-          }
+          onPress={() => handleOpenUrl('github')}
         />
       </View>
 

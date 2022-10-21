@@ -12,7 +12,7 @@ authRoutes.get(
 authRoutes.get(
   '/github/callback',
   passport.authenticate('github', {
-    failureRedirect: '/auth/github/fail',
+    failureRedirect: '/auth/fail',
     session: false,
   }),
   function (req, res) {
@@ -34,7 +34,56 @@ authRoutes.get(
   }
 );
 
-authRoutes.get('/github/fail', (req, res) => {
+authRoutes.get(
+  '/linkedin',
+  passport.authenticate('linkedin', {
+    state: 'SOME STATE',
+    scope: ['r_emailaddress', 'r_liteprofile'],
+  }),
+  function (req, res) {
+    // The request will be redirected to LinkedIn for authentication, so this
+    // function will not be called.
+  }
+);
+
+authRoutes.get('/linkedin/callback', (req, res, next) => {
+  passport.authenticate('linkedin', (err, user, info) => {
+    if (err) {
+      // failureRedirect
+      return res.redirect('/auth/fail');
+    }
+
+    if (!user) {
+      // failureRedirect
+      return res.redirect('/auth/fail');
+    }
+
+    // Note: https://github.com/jaredhanson/passport/blob/master/lib/middleware/authenticate.js#L52
+    req.login(user, { session: false }, (err) => {
+      if (err) {
+        return next(err);
+      }
+      // successRedirect
+      const body = {
+        reqCode: user.id,
+      };
+
+      const token = jwt.sign({ auth: body }, process.env.JWT_SECRET, {
+        expiresIn: '45m',
+      });
+      res.redirect(
+        'open2work://' +
+          token +
+          ';' +
+          user.displayName +
+          ';' +
+          user.photos[2].value
+      );
+    });
+  })(req, res, next);
+});
+
+authRoutes.get('/fail', (req, res) => {
   res.redirect('open2work://fail');
 });
 

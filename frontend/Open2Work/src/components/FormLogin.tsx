@@ -14,7 +14,7 @@ import {UserLogued} from '../interfaces/loginInterface';
 import {setToken} from '../redux/slices/auth/authSlice';
 import {setError} from '../redux/slices/error/errorSlice';
 import {loading, removeLoading} from '../redux/slices/loading/loadingSlice';
-import useGithub from '../hooks/useGithub';
+import useAuthProvider from '../hooks/useAuthProvider';
 
 interface Props {
   setIsRegister: (value: boolean) => void;
@@ -30,10 +30,10 @@ export const FormLogin = ({setIsRegister, navigation}: Props) => {
 
   const [hidden, setHidden] = useState(true);
 
-  useGithub();
+  useAuthProvider();
 
-  const handleOpenUrl = () => {
-    Linking.openURL('http://192.168.1.43:8080/auth/github');
+  const handleOpenUrl = (provider: string) => {
+    Linking.openURL('http://192.168.1.43:8080/auth/' + provider);
   };
 
   const handleSubmit = async (values: FormValues) => {
@@ -165,14 +165,14 @@ export const FormLogin = ({setIsRegister, navigation}: Props) => {
           backgroundColor="#0a66c2"
           iconName="logo-linkedin"
           label="Sign in with LinkedIn"
-          onPress={() => console.log('Login with Linkedin')}
+          onPress={() => handleOpenUrl('linkedin')}
         />
 
         <IconLogin
           iconName="logo-github"
           label="Sign in with Github"
           backgroundColor="#6e5494"
-          onPress={handleOpenUrl}
+          onPress={() => handleOpenUrl('github')}
         />
       </View>
       <View

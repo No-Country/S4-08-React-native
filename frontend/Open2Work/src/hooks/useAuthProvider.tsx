@@ -10,7 +10,11 @@ const useGithub = () => {
     Linking.addEventListener('url', ({url}) => {
       const token = url.slice(12);
       const paths = token.split(';');
-      const name = paths[1];
+      let name = paths[1];
+      const regex = /%20/g;
+      if (name.includes('%20')) {
+        name = name.replace(regex, ' ');
+      }
       const avatar = paths[2];
       if (token !== 'fail') {
         dispatch(setToken(token));

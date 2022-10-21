@@ -5,6 +5,7 @@ const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
 var GitHubStrategy = require('passport-github2').Strategy;
+var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 //var GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const { DevModel } = require('../../models/dev/dev-model');
@@ -25,7 +26,7 @@ passport.use(
 
         if (!user) {
           user = await ClientModel.findOne({ email });
-          await user.populate('orders')
+          await user.populate('orders');
           if (!user) {
             return done(null, false, { message: 'User not found' });
           }
@@ -112,6 +113,27 @@ passport.use(
     }
   )
 );
+
+passport.use(
+  new LinkedInStrategy(
+    {
+      clientID: process.env.LD_CLIENT_ID,
+      clientSecret: process.env.LD_SECRET,
+      callbackURL: 'http://127.0.0.1:8080/auth/linkedin/callback',
+    },
+    function (accessToken, refreshToken, profile, done) {
+      // asynchronous verification, for effect...
+      process.nextTick(function () {
+        // To keep the example simple, the user's LinkedIn profile is returned to
+        // represent the logged-in user. In a typical application, you would want
+        // to associate the LinkedIn account with a user record in your database,
+        // and return that user instead.
+        return done(null, profile);
+      });
+    }
+  )
+);
+
 /*
 passport.use(
   new GoogleStrategy(
