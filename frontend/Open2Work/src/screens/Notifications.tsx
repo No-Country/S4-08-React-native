@@ -1,36 +1,42 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, RefreshControl } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { Button, Headline } from 'react-native-paper';
+import { Headline } from 'react-native-paper';
+import { InfoPerfilModal } from '../components/InfoPerfilModal';
 import { useGetTeamById } from '../hook/useGetTeamById';
 import { useAppSelector } from '../redux/hook';
-import { OrderElement } from '../interfaces/teamInterface';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamListClientNotifications } from '../navigation/StackNotifications';
+import { useGetClientById } from '../hook/useGetClientById';
 
-const Notifications = () => {
+type Props = StackScreenProps<RootStackParamListClientNotifications, 'Notifications'>
 
-  const { getInfoGroup, infoGroup } = useGetTeamById();
+const Notifications = ({ navigation }: Props) => {
 
-  const { isDev, orders, currentTeam } = useAppSelector(state => state.user);
-  const { isLoading } = useAppSelector(state => state.loading);
+  const { getInfoGroup, infoGroup, groupLoading } = useGetTeamById();
 
-  const [ordenes, setOrdenes] = useState<OrderElement[]>();
+  const {getInfoClient, infoClient, clientLoading} = useGetClientById();
 
-  useEffect(() => {
-    if(!isLoading){
-      if( isDev ){
-        setOrdenes(infoGroup?.orders)
-      }else {
-        setOrdenes( orders )
-      }
+  const { isDev, currentTeam, _id } = useAppSelector(state => state.user);
+
+  const refreshOrders = ()=>{
+    if ( isDev ){
+      getInfoGroup(currentTeam) 
+    }else{
+      getInfoClient(_id)
     }
-  }, [isLoading])
+  }
 
   useEffect(() => {
-    if(isDev){
+    if (isDev) {
       getInfoGroup(currentTeam)
+    }else{
+      getInfoClient(_id)
     }
-  },[])
+  }, [])
 
+  const ordenes = isDev ? infoGroup?.orders : infoClient?.orders;
+  const isLoading = isDev ? groupLoading : clientLoading;
 
   return (
     <View style={{ backgroundColor: 'rgb(31, 26, 48)', flex: 1 }}>
@@ -62,78 +68,104 @@ const Notifications = () => {
         }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              onRefresh={()=> refreshOrders()
+              }
+              refreshing={ isLoading }
+            />
+          }
         >
+          {/* <InfoPerfilModal idPerfil={'6349e35a800be15732aedd00'} isDev={ false } /> */}
           {ordenes &&
             ordenes.map((order) => {
 
-              if(isDev){
-                
+              if (isDev) {
+
+                return (
+
+                  <View
+                    key={order._id}
+                    style={{
+                      backgroundColor: 'rgb(31, 26, 48)',
+                      borderRadius: 5,
+                      padding: 10,
+                      marginVertical: 10,
+                    }}>
+
+                    <Text style={{
+                      color: '#fff',
+                    }}>{`Created: ${new Date(order.createdAt)}`}</Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Details', {
+                        id: order.client,
+                        msg: order.description
+                      })}
+                    >
+                      <Text style={{
+                        color: '#17f1de',
+                      }}>{`From: Client #${order.client.slice(-4)}`}</Text>
+                    </TouchableOpacity>
+                    <Text style={{
+                      color: '#fff',
+                    }}>{`Message: ${order.description}`}</Text>
+                    <Text style={{
+                      color: '#fff',
+                    }}>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: 10,
+                      }}>
+                      {/* <Button
+                    mode="contained"
+                    style={{backgroundColor: 'rgb(200,10,10)'}}>
+                    <Text>Reject</Text>
+                  </Button>
+                  <Button
+                    mode="contained"
+                    style={{backgroundColor: 'rgb(50,225,50)'}}>
+                    <Text>Accept</Text>
+                  </Button> */}
+                    </View>
+                  </View>
+                )
+              } else {
                 return (
                   <View
-                  key={order._id}
-                  style={{
-                    backgroundColor: 'hsla(0, 0%, 65%,0.75)',
-                    borderRadius: 5,
-                    padding: 10,
-                    marginVertical: 10,
-                  }}>
-                  <Text>{`Created: ${new Date(order.createdAt)}`}</Text>
-                  <Text>{`From: Client #${order.client.slice(-4)}`}</Text>
-                  <Text>{`Message: ${order.description}`}</Text>
-                  <Text>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
-                  <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    marginTop: 10,
-                  }}>
-                  <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(200,10,10)'}}>
-                    <Text>Reject</Text>
-                  </Button>
-                  <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(50,225,50)'}}>
-                    <Text>Accept</Text>
-                  </Button>
-                </View>
-                </View>
+                    key={order._id}
+                    style={{
+                      backgroundColor: 'rgb(31, 26, 48)',
+                      borderRadius: 5,
+                      padding: 10,
+                      marginVertical: 10,
+                    }}>
+
+                    <Text style={{
+                      color: '#fff'
+                    }}>{`Created: ${new Date(order.createdAt)}`}</Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Details', {
+                        id: order.team,
+                        msg: order.description
+                      })}
+                    >
+                      <Text style={{
+                        color: '#17f1de'
+                      }}>{`To: Group #${order.team.slice(-4)}`}</Text>
+                    </TouchableOpacity>
+
+                    <Text style={{
+                      color: '#fff'
+                    }}>{`Message: ${order.description}`}</Text>
+                    <Text style={{
+                      color: '#fff'
+                    }}>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
+                  </View>
                 )
-              }else{
-                return(
-                <View
-                  key={order._id}
-                  style={{
-                    backgroundColor: 'hsla(0, 0%, 65%,0.75)',
-                    borderRadius: 5,
-                    padding: 10,
-                    marginVertical: 10,
-                  }}>
-                  <Text>{`Created: ${new Date(order.createdAt)}`}</Text>
-                  <Text>{`To: Team ${order.team.slice(-4)}`}</Text>
-                  <Text>{`Message: ${order.description}`}</Text>
-                  <Text>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
-                  {/* <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    marginTop: 10,
-                  }}>
-                  <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(200,10,10)'}}>
-                    <Text>Reject</Text>
-                  </Button>
-                  <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(50,225,50)'}}>
-                    <Text>Accept</Text>
-                  </Button>
-                </View> */}
-                </View>)
               }
-            })
+            }).reverse()
           }
 
         </ScrollView>
