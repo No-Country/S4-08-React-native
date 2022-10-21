@@ -15,7 +15,8 @@ export const ButtonGoBack = ({ navigation }: Props) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     backgroundColor: 'hsla(0,0%,15%,0.65)',
-                    borderRadius: 6
+                    borderRadius: 6,
+                    padding: 5
                 }}
             >
                 <Icon name='arrow-back-outline' size={40} color='white' />
