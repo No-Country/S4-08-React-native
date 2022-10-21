@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { setError } from '../redux/slices/error/errorSlice';
 import axios from 'axios';
 import { loading, removeLoading } from '../redux/slices/loading/loadingSlice';
+import { apiDb } from '../axios/apiDb';
 
 interface ModalState {
     show: boolean;
@@ -43,7 +44,7 @@ export const useSendContact = () => {
 
         try {
 
-            const { data } = await axios.post('http://192.168.0.244:8080/order/new', body);
+            const { data } = await apiDb.post('/order/new', body);
             handleChange('show', false)
             handleChange('message', '')
             dispatch(removeLoading())
