@@ -7,12 +7,12 @@ import Timezones from './Timezones';
 import Languages from './Languages';
 import * as Yup from 'yup';
 import { useAppSelector, useAppDispatch } from '../../redux/hook';
-import { apiClient } from '../../axios/apiClient';
 import { setError } from '../../redux/slices/error/errorSlice';
 import { logUser } from '../../redux/slices/user/userSlice';
 import { setToken } from '../../redux/slices/auth/authSlice';
 import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
 import { ImageState } from '../../screens/Register';
+import { apiDb } from '../../axios/apiDb';
 
 interface FormValues {
   languages: string[];
@@ -37,26 +37,28 @@ const OrgRegister = ({ file }: Props) => {
 		const form = {
 			...formValues,
 			social: {
-			  linkedin: values.linkedin,
-			  portfolio: values.web,
-			  github: values.github
+				linkedin: values.linkedin,
+				portfolio: values.web,
+				github: values.github
 			},
 			info: {
-			  organization: values.organization,
-			  time_zone: values.timezone,
-			  language: values.languages
+				organization: values.organization,
+				time_zone: values.timezone,
+				language: values.languages
 			}
 		}
-
+		
+		console.log('form', JSON.stringify(form, null, 2))
 		try {
-			const resp = await apiClient.post('/register', form);
-			console.log(resp.data)
-			dispatch( logUser(resp.data.client))
-			dispatch( logUser( resp.data.message ))
-			dispatch( setToken('hola mundo'))
+			const { data }= await apiDb.post('/client/register', form);
+			console.log(data)
+			dispatch( logUser(data.client))
+			dispatch( setError( data.message ))
+			dispatch( setToken(data.token))
 			dispatch(removeLoading())
 		} catch (error: any) {
-			console.log('error', JSON.stringify(error, null, 2))
+			dispatch(removeLoading())
+			console.log('error', JSON.stringify(error.response, null, 2))
 			dispatch( setError(error.response.data.message))
 		}
 	};

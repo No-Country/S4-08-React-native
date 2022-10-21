@@ -1,41 +1,41 @@
 import React from 'react'
 import { useState } from 'react';
-import { Team } from '../interfaces/teamInterface';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import axios from 'axios';
 import { loading, removeLoading } from '../redux/slices/loading/loadingSlice';
+import { User } from '../interfaces/loginInterface';
 import { apiDb } from '../axios/apiDb';
 
-export const useGetTeamById = () => {
+export const useGetClientById = () => {
 
 
-    const [infoGroup, setInfoGroup] = useState<Team>();
+    const [infoClient, setInfoClient] = useState<User>();
 
     const { token } = useAppSelector(state => state.auth);
     const { isLoading } = useAppSelector(state => state.loading);
 
     const dispatch = useAppDispatch();
 
-    const getInfoGroup = async (id: string) => {
+    const getInfoClient = async (id: string) => {
         dispatch(loading());
         try {
-            const resp = await apiDb.get<Team>(`/team/profile/${id}`, {
+            const resp = await apiDb.get<User>(`/client/profile/${id}`, {
                 headers: {
                     Authorization: token!
                 }
             })
-            setInfoGroup(resp.data);
+            setInfoClient(resp.data);
             dispatch(removeLoading());
         } catch (error: any) {
-            console.log('error.response', JSON.stringify(error.response, null, 2))
+            console.log(error.response.data)
             dispatch(removeLoading())
         }
     }
 
     return {
-        infoGroup,
-        getInfoGroup,
-        groupLoading : isLoading
+        infoClient,
+        getInfoClient,
+        clientLoading : isLoading
     }
 
 }

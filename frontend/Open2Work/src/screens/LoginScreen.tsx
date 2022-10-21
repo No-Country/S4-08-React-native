@@ -11,6 +11,7 @@ import {ImageLogin} from '../components/ImageLogin';
 import {FormLogin} from '../components/FormLogin';
 import {FormRegister} from '../components/FormRegister';
 import {RootStackParamList} from '../navigation/Navigation';
+import { Text } from 'react-native';
 
 // type Props = {
 //   navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
@@ -35,6 +36,15 @@ export const LoginScreen = ({navigation}: Props) => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <>
           <ImageLogin />
+          <Text style={{
+            color: '#17f1de',
+            fontSize: 40,
+            position: 'absolute',
+            right: 10,
+            top: 20
+          }}>
+            Open2Work!
+          </Text>
           <View
             style={{
               flex: 1,

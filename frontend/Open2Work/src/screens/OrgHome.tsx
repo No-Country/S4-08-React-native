@@ -20,6 +20,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamListClient} from '../navigation/StackClientHome';
 import {useAppDispatch, useAppSelector} from '../redux/hook';
 import {resetFilter, selectFilter} from '../redux/slices/filter/filterSilce';
+import {apiDb} from '../axios/apiDb';
 
 type Props = StackScreenProps<RootStackParamListClient, 'Home'>;
 
@@ -35,11 +36,13 @@ const OrgHome = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
 
   const {token} = useAppSelector(state => state.auth);
+  const user = useAppSelector(state => state.user);
 
   React.useEffect(() => {
     setError('');
-    axios
-      .get('http://192.168.0.244:8080/team/profile', {
+
+    apiDb
+      .get('/team/profile', {
         headers: {
           Authorization: token!,
         },
@@ -192,19 +195,29 @@ const OrgHome = ({navigation}: Props) => {
             {results && results.length > 0 ? (
               results.map((item: any, index: number) => {
                 if (item !== null) {
-                  return (
-                    <TouchableOpacity
-                      key={`button ${item._id}`}
-                      onPress={() =>
-                        navigation.navigate('Group', {
-                          id: item._id,
-                        })
-                      }>
-                      <>
-                        <ResultItem key={item._id} data={item} />
-                      </>
-                    </TouchableOpacity>
-                  );
+                  if (user.orders) {
+                    const haveOrder =
+                      user.orders.some(order => order.team === item._id) ||
+                      false;
+                    return (
+                      <TouchableOpacity
+                        key={`button ${item._id}`}
+                        onPress={() =>
+                          navigation.navigate('Group', {
+                            id: item._id,
+                          })
+                        }
+                        disabled={haveOrder}>
+                        <>
+                          <ResultItem
+                            key={item._id}
+                            data={item}
+                            haveOrder={haveOrder}
+                          />
+                        </>
+                      </TouchableOpacity>
+                    );
+                  }
                 } else {
                   return null;
                 }

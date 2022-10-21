@@ -8,7 +8,7 @@ import { Team } from '../interfaces/teamInterface';
 export type RootStackParamListClient = {
     Home: undefined;
     Group: {
-        id: string
+        idUser: string
     };
 };
 

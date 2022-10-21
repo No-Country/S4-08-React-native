@@ -10,14 +10,14 @@ teamRoutes.post('/register', controllers.authTeam.teamRegisterController);
 //get All team profiles
 teamRoutes.get(
   '/profile',
-  validateToken,
+  // validateToken,
   controllers.team.teamProfilesController
 );
 
 //get team profile by ID
 teamRoutes.get(
   '/profile/:id',
-  validateToken,
+  // validateToken,
   controllers.team.teamProfileController
 );
 

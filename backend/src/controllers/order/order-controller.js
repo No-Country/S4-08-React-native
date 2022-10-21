@@ -41,25 +41,29 @@ const createOrder = async (req, res) => {
 const updateOrder = async (req, res) => {
   //id order
   const { id } = req.params;
+  const { dev, ok } = req.body;
+
 
   //buscar order por id
   try {
     const Order = await OrderModel.findById(id);
+    if (Order === null) {
+
+      return res.status(400).send("No Order found");
+    }
+    if (ok) {
+      Order.devs_ok.push(dev);
+    } else {
+      Order.devs_not.push(dev)
+    }
+
+    await Order.save();
+    return res.status(200).send("Order updated")
+    
   } catch (error) {
-    return res.status(400).send("No Order found");
+    console.log(error)
+    return res.status(400).send(error);
   }
-
-  //body req con los id de los devs que aceptan/rechazan la orden
-  const { devs_ok, devs_not } = req.body;
-
-  //defino propiedades para modificar la order. filtro por id de order, y actualizo devs_ok y devs_not
-  const filter = req.params;
-  const update = req.body;
-
-  const Order = await OrderModel.findOneAndUpdate(filter, update);
-  console.log(Order);
-
-  return res.send("Order updated succesfully");
 };
 
 module.exports = { createOrder, updateOrder };

@@ -4,7 +4,6 @@ import {Button} from 'react-native-paper';
 import {Formik, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {useAppDispatch, useAppSelector} from '../../redux/hook';
-import {apiDevelopers} from '../../axios/apiDevelopers';
 import {MyInput} from '../MyInput';
 import Roles from '../register/Roles';
 import Seniority from '../register/Seniority';
@@ -16,6 +15,7 @@ import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice'
 import { setToken } from '../../redux/slices/auth/authSlice';
 import { setError } from '../../redux/slices/error/errorSlice';
 import { ImageState } from '../../screens/Register';
+import { apiDb } from '../../axios/apiDb';
 
 interface FormValues {
   languages: string[];
@@ -41,6 +41,7 @@ const DevRegister = ({ file }: Props) => {
 	const submitPOST = async (values: FormValues) => {
     
 		dispatch(loading());
+
 		const form = {
 			...formValues,
 			role: values.role,
@@ -59,16 +60,14 @@ const DevRegister = ({ file }: Props) => {
 		}
 
 		try {
-			// const resp = await apiDevelopers.post('/register', JSON.stringify(form));
-			const { data } = await apiDevelopers.post('/register', form);
-			console.log(data.message);
-			dispatch(logUser(data.dev)) 
+			const { data } = await apiDb.post('/dev/register', form);
 			dispatch(setToken(data.token))
+			dispatch(logUser(data.dev)) 
 			dispatch(removeLoading());
+			dispatch( setError(data.message));
 		} catch (error: any) {
 			dispatch(removeLoading());
-			console.log('error', JSON.stringify(error, null, 2))
-			dispatch(setError(error.response.data.message))
+			console.log('error', JSON.stringify(error.response, null, 2))
 		}
 
 	};

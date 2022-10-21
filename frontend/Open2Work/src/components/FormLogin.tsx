@@ -7,7 +7,6 @@ import {IconLogin} from './IconLogin';
 import {MyInput} from './MyInput';
 import {useAppDispatch} from '../redux/hook';
 import {logUser} from '../redux/slices/user/userSlice';
-import axios from 'axios';
 import {RootStackParamList} from '../navigation/Navigation';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {UserLogued} from '../interfaces/loginInterface';
@@ -15,6 +14,7 @@ import {setToken} from '../redux/slices/auth/authSlice';
 import {setError} from '../redux/slices/error/errorSlice';
 import {loading, removeLoading} from '../redux/slices/loading/loadingSlice';
 import useAuthProvider from '../hooks/useAuthProvider';
+import {apiDb} from '../axios/apiDb';
 
 interface Props {
   setIsRegister: (value: boolean) => void;
@@ -44,6 +44,11 @@ export const FormLogin = ({setIsRegister, navigation}: Props) => {
         'http://192.168.0.244:8080/login',
         values,
       );
+      console.log(
+        `${data.message}: ${data.user.name} ${data.user.surname}, ${data.user.email}`,
+      );
+
+      const {data} = await apiDb.post<UserLogued>('/login', values);
       console.log(
         `${data.message}: ${data.user.name} ${data.user.surname}, ${data.user.email}`,
       );

@@ -6,7 +6,7 @@
 
 ## Tecnologías
 
-- 💻 Frontend (React Native)
+- 💻 Frontend (React Native, Typescript)
 - ⚙ Backend (Node Js y Express) desplegado en Heroku
 - 💾 Base de datos (MongoDB)
 

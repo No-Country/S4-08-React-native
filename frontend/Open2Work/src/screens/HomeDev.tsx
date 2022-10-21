@@ -10,6 +10,8 @@ import {useGetTeamById} from '../hook/useGetTeamById';
 export const HomeDev = () => {
   const {getInfoGroup, infoGroup} = useGetTeamById();
 
+  const {getInfoGroup, infoGroup} = useGetTeamById();
+
   const {user} = useAppSelector(state => state);
 
   useEffect(() => {
@@ -20,18 +22,12 @@ export const HomeDev = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={[styles.logout]}></View>
+      <View style={[top, styles.logout]}></View>
       <Image
-        style={{width: '100%', height: 220}}
+        style={styles.img}
         source={require('../assets/imgs/istockphoto-1046965704-640x640.jpg')}
       />
-      <Headline
-        style={[
-          {
-            top,
-          },
-          styles.headline,
-        ]}>
+      <Headline style={[top, styles.headline]}>
         {`${
           !!infoGroup?._id
             ? `Group #${infoGroup._id.slice(-4)}`
@@ -40,7 +36,7 @@ export const HomeDev = () => {
       </Headline>
       <View>{infoGroup && <BannerGroup data={infoGroup} />}</View>
       <View style={styles.list}>
-        {infoGroup &&
+        {infoGroup?.devs &&
           infoGroup.devs.map(dev => {
             return <Card dev={dev} key={`${dev._id}`} />;
           })}

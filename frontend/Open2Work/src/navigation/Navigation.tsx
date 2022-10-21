@@ -23,7 +23,7 @@ export const StackNavigation = () => {
 
   const { auth, user } = useAppSelector(state => state);
 
-  const { isLoading, token } = auth;
+  const { token } = auth;
   const { isDev } = user;
 
   return (

@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Profile from '../screens/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StackClientHome } from './StackClientHome';
-import Notifications from '../screens/Notifications';
+import { StackNotifications } from './StackNotifications';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +21,7 @@ export const TabNavClient = () => {
                   color={focused ? 'lightgrey' : 'darkgrey'}
                 />
               );
-            case 'Notifications':
+            case 'StackNotifications':
               return (
                 <Icon
                   name={focused ? 'notifications' : 'notifications-outline'}
@@ -48,8 +48,8 @@ export const TabNavClient = () => {
         tabBarStyle: {backgroundColor: 'black'},
       })}>
       <Tab.Screen name="ClientHome" component={StackClientHome} />
+      <Tab.Screen name="StackNotifications" component={StackNotifications} />
       <Tab.Screen name="Profile" component={Profile} />
-      <Tab.Screen name="Notifications" component={Notifications} />
     </Tab.Navigator>
   );
 };

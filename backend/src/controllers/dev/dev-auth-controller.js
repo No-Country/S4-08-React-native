@@ -23,7 +23,7 @@ const RegisterController = async (req, res) => {
       return res.status(400).send("Missing fields");
 
     const checkEmail = await DevModel.find({ email: email });
-    if (checkEmail) return res.status(400).send("Email is already registered");
+    if (checkEmail.length>0) return res.status(400).send("Email is already registered");
 
     //hashear password
     const hashPassword = await bcryptjs.hash(password, 8);
