@@ -4,6 +4,7 @@ import { Team } from '../interfaces/teamInterface';
 import { useAppSelector, useAppDispatch } from '../redux/hook';
 import axios from 'axios';
 import { loading, removeLoading } from '../redux/slices/loading/loadingSlice';
+import { apiDb } from '../axios/apiDb';
 
 export const useGetTeamById = () => {
 
@@ -17,8 +18,9 @@ export const useGetTeamById = () => {
 
     const getInfoGroup = async (id: string) => {
         dispatch(loading());
+        console.log('token...:', token)
         try {
-            const resp = await axios.get<Team>(`http://192.168.0.244:8080/team/profile/${id}`, {
+            const resp = await apiDb.get<Team>(`/team/profile/${id}`, {
                 headers: {
                     Authorization: token!
                 }
@@ -26,7 +28,7 @@ export const useGetTeamById = () => {
             setInfoGroup(resp.data);
             dispatch(removeLoading());
         } catch (error: any) {
-            console.log(error.response.data)
+            console.log('error.response', JSON.stringify(error.response, null, 2))
             dispatch(removeLoading())
         }
     }

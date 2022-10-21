@@ -7,13 +7,13 @@ import { IconLogin } from './IconLogin';
 import { MyInput } from './MyInput';
 import { useAppDispatch } from '../redux/hook';
 import { logUser } from '../redux/slices/user/userSlice';
-import axios from 'axios';
 import { RootStackParamList } from '../navigation/Navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { UserLogued } from '../interfaces/loginInterface';
 import { setToken } from '../redux/slices/auth/authSlice';
 import { setError } from '../redux/slices/error/errorSlice';
 import { loading, removeLoading } from '../redux/slices/loading/loadingSlice';
+import { apiDb } from '../axios/apiDb';
 
 
 interface Props {
@@ -36,7 +36,7 @@ export const FormLogin = ({ setIsRegister, navigation }: Props) => {
         Keyboard.dismiss();
         try {
 
-            const { data } = await axios.post<UserLogued>('http://192.168.0.244:8080/login', values);
+            const { data } = await apiDb.post<UserLogued>('/login', values);
             console.log(`${data.message}: ${data.user.name} ${data.user.surname}, ${data.user.email}`)
 
             dispatch(setToken(data.token))

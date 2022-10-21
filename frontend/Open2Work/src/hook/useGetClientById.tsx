@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../redux/hook';
 import axios from 'axios';
 import { loading, removeLoading } from '../redux/slices/loading/loadingSlice';
 import { User } from '../interfaces/loginInterface';
+import { apiDb } from '../axios/apiDb';
 
 export const useGetClientById = () => {
 
@@ -18,7 +19,7 @@ export const useGetClientById = () => {
     const getInfoClient = async (id: string) => {
         dispatch(loading());
         try {
-            const resp = await axios.get<User>(`http://192.168.0.244:8080/client/profile/${id}`, {
+            const resp = await apiDb.get<User>(`/client/profile/${id}`, {
                 headers: {
                     Authorization: token!
                 }
