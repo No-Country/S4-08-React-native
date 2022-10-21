@@ -11,6 +11,8 @@ export const useGetTeamById = () => {
     const [infoGroup, setInfoGroup] = useState<Team>();
 
     const { token } = useAppSelector(state => state.auth);
+    const { isLoading } = useAppSelector(state => state.loading);
+
     const dispatch = useAppDispatch();
 
     const getInfoGroup = async (id: string) => {
@@ -32,6 +34,7 @@ export const useGetTeamById = () => {
     return {
         infoGroup,
         getInfoGroup,
+        groupLoading : isLoading
     }
 
 }
