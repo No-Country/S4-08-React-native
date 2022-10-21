@@ -18,7 +18,6 @@ export const useGetTeamById = () => {
 
     const getInfoGroup = async (id: string) => {
         dispatch(loading());
-        console.log('token...:', token)
         try {
             const resp = await apiDb.get<Team>(`/team/profile/${id}`, {
                 headers: {
