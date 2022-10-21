@@ -16,6 +16,9 @@ const ProfileController = async (req, res) => {
 
   try {
     const Client = await ClientModel.findById(id);
+    if(Client.orders.length>0){
+      await Client.populate('orders')
+    }
     return res.send(Client);
   } catch (error) {
     return res.status(400).send("NO Client found");
