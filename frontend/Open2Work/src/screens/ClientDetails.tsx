@@ -7,20 +7,50 @@ import { useGetClientById } from '../hook/useGetClientById';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamListClientNotifications } from '../navigation/StackNotifications'
 import { ButtonGoBack } from '../components/ButtonGoBack'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { useAppSelector, useAppDispatch } from '../redux/hook';
+import { apiDb } from '../axios/apiDb';
+import { AppDispatch } from '../redux/store';
+import { loading, removeLoading } from '../redux/slices/loading/loadingSlice'
+import { setError } from '../redux/slices/error/errorSlice'
 
 type Props = StackScreenProps<RootStackParamListClientNotifications, 'Details'>
 
 export const ClientDetails = ({ route, navigation }: Props) => {
 
-    const { id, msg } = route.params;
+    const { idUser, order } = route.params;
+    const { _id } = useAppSelector(state => state.user);
+
+    const dispatch = useAppDispatch();
 
     const { top } = useSafeAreaInsets();
 
     const { getInfoClient, infoClient } = useGetClientById();
 
+    const handleAccept = async (value: boolean) => {
+        dispatch(loading());
+        try {
+
+            const body = {
+                dev: _id,
+                ok: value
+            };
+
+            const { data } = await apiDb.put(`/order/update/${order._id}`, body);
+            dispatch(setError(data))
+            dispatch(removeLoading())
+        } catch (error: any) {
+            console.log('error.response', JSON.stringify(error.response, null, 2))
+            dispatch(removeLoading())
+        }
+
+
+    }
+
     useEffect(() => {
-        getInfoClient(id)
-    }, [id])
+        getInfoClient(idUser)
+    }, [idUser])
 
     return (
         <ScrollView
@@ -89,8 +119,41 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                     fontSize: 30
                                 }}
                             >
-                                {msg}
+                                {order.description}
                             </Text>
+                            {
+                                (!order.devs_ok.includes(_id) || !order.devs_not.includes(_id)) && (
+                                    <>
+                                        <Text
+                                            style={{
+                                                color: '#17f1de',
+                                                fontSize: 40,
+                                                textAlign: 'center'
+                                            }}
+                                        >
+                                           Would you like to accept the job
+                                        </Text>
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                width: '60%',
+                                                justifyContent: 'space-evenly',
+                                                margin: 10
+                                            }}
+                                        >
+                                            <TouchableOpacity>
+
+                                                <Icon name='thumbs-up-outline' size={50} color='green' />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity>
+
+                                                <Icon name='thumbs-down-outline' size={50} color='red' />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </>
+                                )
+                            }
+
                         </View>
                     </>
                 )
