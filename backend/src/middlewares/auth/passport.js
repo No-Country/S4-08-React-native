@@ -3,6 +3,10 @@ const bcryptjs = require('bcryptjs');
 const localStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
+
+var GitHubStrategy = require('passport-github2').Strategy;
+//var GoogleStrategy = require('passport-google-oauth2').Strategy;
+
 const { DevModel } = require('../../models/dev/dev-model');
 const { ClientModel } = require('../../models/client/client-model');
 const dotenv = require('dotenv');
@@ -59,7 +63,90 @@ passport.use(
   )
 );
 
-const validateToken = passport.authenticate("jwt", { session: false });
+/* passport.use(
+  new GithubStrategy(
+    {
+      clientID: config.github.clientID,
+      clientSecret: config.github.clientSecret,
+      callbackURL: config.github.callbackURL,
+    },
+    function (accessToken, refreshToken, profile, done) {
+      User.findOne({ oauthID: profile.id }, function (err, user) {
+        if (err) {
+          console.log(err); // handle errors!
+        }
+        if (!err && user !== null) {
+          done(null, user);
+        } else {
+          user = new User({
+            oauthID: profile.id,
+            name: profile.displayName,
+            created: Date.now(),
+          });
+          user.save(function (err) {
+            if (err) {
+              console.log(err); // handle errors!
+            } else {
+              console.log('saving user ...');
+              done(null, user);
+            }
+          });
+        }
+      });
+    }
+  )
+);
+*/
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.GH_CLIENT_ID,
+      clientSecret: process.env.GH_SECRET,
+      callbackURL: 'http://127.0.0.1:8080/auth/github/callback',
+    },
+    function (accessToken, refreshToken, profile, done) {
+      process.nextTick(() => {
+        return done(null, profile);
+      });
+    }
+  )
+);
+/*
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: config.google.clientID,
+      clientSecret: config.google.clientSecret,
+      callbackURL: config.google.callbackURL,
+    },
+    function (request, accessToken, refreshToken, profile, done) {
+      User.findOne({ oauthID: profile.id }, function (err, user) {
+        if (err) {
+          console.log(err); // handle errors!
+        }
+        if (!err && user !== null) {
+          done(null, user);
+        } else {
+          user = new User({
+            oauthID: profile.id,
+            name: profile.displayName,
+            created: Date.now(),
+          });
+          user.save(function (err) {
+            if (err) {
+              console.log(err); // handle errors!
+            } else {
+              console.log('saving user ...');
+              done(null, user);
+            }
+          });
+        }
+      });
+    }
+  )
+); */
+
+const validateToken = passport.authenticate('jwt', { session: false });
 
 /*
 passport.use(new JWTStrategy({ 

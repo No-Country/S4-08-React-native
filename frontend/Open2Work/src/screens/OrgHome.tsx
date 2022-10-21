@@ -13,6 +13,7 @@ import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import {MyInput} from '../components/MyInput';
 import {useAppDispatch, useAppSelector} from '../redux/hook';
+
 import {resetFilter, selectFilter} from '../redux/slices/filter/filterSilce';
 
 const OrgHome = () => {
@@ -24,14 +25,14 @@ const OrgHome = () => {
   const [error, setError] = React.useState('');
   const {availability, timezone, language} = useAppSelector(selectFilter);
   const dispatch = useAppDispatch();
+  const token = useAppSelector(state => state.auth.token);
 
   React.useEffect(() => {
     setError('');
     axios
       .get('http://192.168.1.43:8080/team/profile', {
         headers: {
-          authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzNDllMzVhODAwYmUxNTczMmFlZGNmYiIsImVtYWlsIjoiZGV2MUB0ZXN0LmNvbSJ9LCJpYXQiOjE2NjU4Njc3MDcsImV4cCI6MTY2NTg3MDQwN30.9BYDq5V2qvxYvSHrZ2y5JjRMfUYTJzuSqDjeq_IuDSQ',
+          authorization: token!,
         },
       })
       .then(res => {
@@ -42,7 +43,7 @@ const OrgHome = () => {
         setError('Session Expired');
         console.log(err);
       });
-  }, [timezone, availability, language]);
+  }, [timezone, availability, language, token]);
 
   const handleToggle = () => {
     setShowModal(!showModal);
