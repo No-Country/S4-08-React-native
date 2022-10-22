@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { User } from '../../../interfaces/loginInterface';
 import type { RootState } from '../../store';
+import { apiDb } from '../../../axios/apiDb';
+import { useAppSelector } from '../../hook';
 
 const initialState: User = {
     __v: 0,
@@ -26,8 +28,9 @@ const initialState: User = {
         language: [''],
         organization: '',
         time_availability: '',
-        time_zone:'',
-    }
+        time_zone: '',
+    },
+    orders: []
 }
 
 
@@ -44,7 +47,7 @@ export const userSlice = createSlice({
         },
         clearUser: (state) => {
             return initialState
-        }
+        },
     }
 })
 
