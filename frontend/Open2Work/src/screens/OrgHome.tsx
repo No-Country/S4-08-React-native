@@ -4,7 +4,8 @@ import {
 	Text,
 	View,
 	ImageBackground,
-	TouchableOpacity
+	TouchableOpacity,
+  StyleSheet
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Button, Headline } from 'react-native-paper';
@@ -117,7 +118,7 @@ const OrgHome = ({navigation}: Props) => {
           locations={[0.1, 0.35, 1]}
           useAngle={true}
           angle={180}
-          colors={styles.colors}>
+          colors={ ['rgba(0, 0, 0,0.65)', 'rgba(31, 26, 48,0.8)', 'rgba(31, 26, 48,1)']}>
           <ImageBackground
             resizeMode="cover"
             source={{
@@ -259,7 +260,6 @@ const styles = StyleSheet.create({
     borderColor: '#17f1de',
   },
   line: {backgroundColor: 'black', width: '100%', height: 2},
-  colors: ['rgba(0, 0, 0,0.65)', 'rgba(31, 26, 48,0.8)', 'rgba(31, 26, 48,1)'],
   message: {color: 'lightgrey', marginLeft: 10},
 });
 

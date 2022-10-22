@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-paper';
 import Array from './Array';
 import { getInitials } from '../../helpers/getInitials';
 import { User } from '../../interfaces/loginInterface';
 import MyAvatar from '../MyAvatar';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   user: User;
@@ -46,11 +47,11 @@ const BannerProfile = ({ user }: Props): JSX.Element => {
       </View>
       <Text style={styles.item}>
         <Icon name="build-outline" size={20} color="white" />{' '}
-        {user.isDev ? user.role : user.info.organization}
+        {(user.isDev ? user.role : user.info.organization) || 'Globant'}
       </Text>
       <Text style={styles.item}>
         <Icon name="globe-outline" size={20} color="white" />{' '}
-        {user.info.time_zone}
+        {user.info.time_zone || 'UTC-3'}
       </Text>
       <Text style={styles.item}>
         <Icon name="language-outline" size={20} color="white" />{' '}
@@ -62,27 +63,40 @@ const BannerProfile = ({ user }: Props): JSX.Element => {
           {user.info.time_availability}
         </Text>
       )}
-      <Text
-        style={{
-          color: 'darkgrey',
-          fontSize: 17,
-          textAlignVertical: 'center',
-        }}>
-        <Icon name="mail-outline" size={20} color="white" /> {user.email}
-      </Text>
+      <TouchableOpacity
+        onPress={() => Linking.openURL(`mailto:${user.email}`)}
+      >
+        <Text
+          style={styles.item}>
+          <Icon name="mail-outline" size={20} color="white" /> {user.email || 'test@test.com'}
+        </Text>
+      </TouchableOpacity>
       <>
-        <Text style={styles.item}>
-          <Icon name="logo-github" size={20} color="white" />{' '}
-          {user.social.github}
-        </Text>
-        <Text style={styles.item}>
-          <Icon name="logo-linkedin" size={20} color="white" />{' '}
-          {user.social.linkedin}
-        </Text>
-        <Text style={styles.item}>
-          <Icon name="globe-outline" size={20} color="white" />{' '}
-          {user.social.portfolio}
-        </Text>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(`${user.social.github} `)}
+        >
+          <Text style={[styles.item]}>
+            <Icon name="logo-github" size={20} color="white" />{' '}
+            {user.social.github || 'http://a.com'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(`${user.social.linkedin}`)}
+        >
+          <Text style={styles.item}>
+            <Icon name="logo-linkedin" size={20} color="white" />{' '}
+            {user.social.linkedin || 'http://a.com'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(`${user.social.portfolio}`)}
+        >
+          <Text style={styles.item}>
+            <Icon name="globe-outline" size={20} color="white" />{' '}
+            {user.social.portfolio || 'http://a.com'}
+          </Text>
+
+        </TouchableOpacity>
       </>
     </View>
   );

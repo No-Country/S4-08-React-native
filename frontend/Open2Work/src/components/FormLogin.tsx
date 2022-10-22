@@ -33,7 +33,7 @@ export const FormLogin = ({setIsRegister, navigation}: Props) => {
   useAuthProvider();
 
   const handleOpenUrl = (provider: string) => {
-    Linking.openURL('http://192.168.1.43:8080/auth/' + provider);
+    Linking.openURL('http://192.168.0.88:8080/auth/' + provider);
   };
 
   const handleSubmit = async (values: FormValues) => {

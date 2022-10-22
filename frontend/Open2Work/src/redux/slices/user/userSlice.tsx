@@ -45,10 +45,17 @@ export const userSlice = createSlice({
     clearUser: state => {
       return initialState;
     },
+    setAvatar: ( state, action )=>{
+      return {
+        ...state,
+        avatar: action.payload
+      }
+
+    }
   },
 });
 
-export const {logUser, clearUser} = userSlice.actions;
+export const {logUser, clearUser, setAvatar} = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.user;

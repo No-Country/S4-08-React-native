@@ -20,12 +20,12 @@ export const HomeDev = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={[top, styles.logout]}></View>
+      {/* <View style={[{top}, styles.logout]}></View> */}
       <Image
         style={styles.img}
         source={require('../assets/imgs/istockphoto-1046965704-640x640.jpg')}
       />
-      <Headline style={[top, styles.headline]}>
+      <Headline style={[{top}, styles.headline]}>
         {`${
           !!infoGroup?._id
             ? `Group #${infoGroup._id.slice(-4)}`

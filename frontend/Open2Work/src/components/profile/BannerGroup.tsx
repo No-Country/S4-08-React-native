@@ -42,13 +42,13 @@ const BannerGroup = ({ data }: Props): JSX.Element => {
       <Text style={styles.item}>
         <Icon name="briefcase-outline" size={20} color="white" /> {data.availability}
       </Text>
-      <Text
+      {/* <Text
         style={{
           color: data.working ? 'green' : 'red',
           fontSize: 17,
           textAlignVertical: 'center',
         }}>
-        <Icon name="alert-circle-outline" size={20} color="white" /> {data.working ? 'Working' : 'Not working'}</Text>
+        <Icon name="alert-circle-outline" size={20} color="white" /> {data.working ? 'Working' : 'Not working'}</Text> */}
 
     </View>
   );

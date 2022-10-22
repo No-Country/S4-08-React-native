@@ -2,6 +2,8 @@ import * as React from 'react';
 import { View, Pressable, Modal, Text, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
+import { useAppSelector, useAppDispatch } from '../../redux/hook';
+import { setAvatar } from '../../redux/slices/user/userSlice';
 
 interface Props {
   showModal: boolean;
@@ -12,6 +14,9 @@ interface Props {
 }
 
 const AvatarPicker = ({ showModal, setShowModal, setUri }: Props) => {
+
+  const dispatch = useAppDispatch();
+
   const handlePicker = (picker: string) => {
     switch (picker) {
       case 'image':
@@ -21,6 +26,7 @@ const AvatarPicker = ({ showModal, setShowModal, setUri }: Props) => {
           cropping: true,
         })
           .then(image => {
+              dispatch(setAvatar(image.path))
             setUri({ 
               path: image.path,
               mime: image.mime
@@ -36,6 +42,7 @@ const AvatarPicker = ({ showModal, setShowModal, setUri }: Props) => {
           cropping: true,
         })
           .then(image => {
+            dispatch(setAvatar(image.path))
             setUri({ 
               path: image.path,
               mime: image.mime
