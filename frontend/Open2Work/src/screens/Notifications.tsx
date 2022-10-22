@@ -82,7 +82,7 @@ const Notifications = ({ navigation }: Props) => {
           showsVerticalScrollIndicator={false}
         >
           {ordenes &&
-            ordenes.map((order, index) => {
+            ordenes.map((order) => {
 
               if (isDev) {
                 const state = order.devs_ok.includes(_id) ? 'Accepted' : order.devs_not.includes(_id) ? 'Rejected' : 'Pending';
