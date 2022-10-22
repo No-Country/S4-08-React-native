@@ -11,6 +11,7 @@ import { useGetTeamById } from '../hook/useGetTeamById';
 import { ContactModal } from '../components/ContactModal';
 import { RootStackParamListClientNotifications } from '../navigation/StackNotifications';
 import { ButtonGoBack } from '../components/ButtonGoBack';
+import { useAppSelector } from '../redux/hook';
 
 type Props = StackScreenProps<RootStackParamListClient, 'Group'> | StackScreenProps<RootStackParamListClientNotifications, 'Details'>
 
@@ -22,12 +23,13 @@ export const GroupDetails = ({ navigation, route }: Props) => {
 
     const { top } = useSafeAreaInsets();
 
+    const { _id } = useAppSelector( state => state.user);
+
 
     useEffect(() => {
         getInfoGroup(idTeam)
     }, [idTeam])
-
-
+    
 
     return (
         <ScrollView
@@ -63,7 +65,7 @@ export const GroupDetails = ({ navigation, route }: Props) => {
                     backgroundColor: 'hsla(0,0%,15%,0.65)',
                     textTransform: 'capitalize'
                 }}>
-                {`${!!infoGroup?._id ? `Group #${infoGroup._id.substring(20)}` : 'No group at the moment'}`}
+                {`${!!infoGroup?._id ? `Group #${infoGroup._id.slice(-4)}` : 'No group at the moment'}`}
             </Headline>
             <View>
                 {
@@ -87,7 +89,7 @@ export const GroupDetails = ({ navigation, route }: Props) => {
                 }
 
             </View>
-            <ContactModal teamId={idTeam} />
+            <ContactModal teamId={idTeam} disabled={infoGroup?.orders.some( order => order.client === _id)}/>
         </ScrollView>
     );
 }
