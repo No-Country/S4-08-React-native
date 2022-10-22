@@ -1,17 +1,13 @@
-import axios from 'axios';
 import * as React from 'react';
 import {
-	Modal,
 	ScrollView,
 	Text,
 	View,
-	Pressable,
 	ImageBackground,
 	TouchableOpacity
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Button, Headline } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import { MyInput } from '../components/MyInput';
@@ -36,7 +32,9 @@ const OrgHome = ({ navigation }: Props) => {
 	const dispatch = useAppDispatch();
 
 	const { token } = useAppSelector(state => state.auth);
+
 	const user = useAppSelector(state => state.user);
+	
 
 	React.useEffect(() => {
 		setError('');
