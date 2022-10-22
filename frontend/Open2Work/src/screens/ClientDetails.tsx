@@ -116,13 +116,48 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                             <Text
                                 style={{
                                     color: '#fff',
-                                    fontSize: 30
+                                    fontSize: 30,
+                                    textAlign: 'center',
+                                    padding: 10
                                 }}
                             >
                                 {order.description}
                             </Text>
                             {
-                                (!order.devs_ok.includes(_id) || !order.devs_not.includes(_id)) && (
+                                order.devs_ok.includes(_id) && (
+                                    <View
+                                        style={{
+                                            width: '40%',
+                                            height: 40,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            position: 'absolute',
+                                            bottom: 20,
+                                            right: 20
+                                        }}
+                                    >
+                                    <Text style={{ color: 'green', textAlign: 'center'}}>You already accepted this offer</Text>
+                                    </View>
+                                )
+                            }
+                            {
+                                order.devs_not.includes(_id) && (
+                                    <View
+                                    style={{
+                                        width: '40%',
+                                        height: 40,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        position: 'absolute',
+                                        bottom: 20,
+                                        right: 20
+                                    }}>
+                                    <Text style={{ color: 'red'}}>You already rejected this offer</Text>
+                                    </View>
+                                )
+                            }
+                            {
+                                (!order.devs_ok.includes(_id) && !order.devs_not.includes(_id)) && (
                                     <>
                                         <Text
                                             style={{
@@ -141,11 +176,15 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                                 margin: 10
                                             }}
                                         >
-                                            <TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={()=> handleAccept(true)}
+                                            >
 
                                                 <Icon name='thumbs-up-outline' size={50} color='green' />
                                             </TouchableOpacity>
-                                            <TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={()=> handleAccept(false)}
+                                            >
 
                                                 <Icon name='thumbs-down-outline' size={50} color='red' />
                                             </TouchableOpacity>
@@ -153,6 +192,7 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                     </>
                                 )
                             }
+                           
 
                         </View>
                     </>
