@@ -2,55 +2,67 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, RefreshControl } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Headline } from 'react-native-paper';
-import { InfoPerfilModal } from '../components/InfoPerfilModal';
 import { useGetTeamById } from '../hook/useGetTeamById';
 import { useAppSelector } from '../redux/hook';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamListClientNotifications } from '../navigation/StackNotifications';
 import { useGetClientById } from '../hook/useGetClientById';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<RootStackParamListClientNotifications, 'Notifications'>
 
 const Notifications = ({ navigation }: Props) => {
 
-  const { getInfoGroup, infoGroup, groupLoading } = useGetTeamById();
+  const { getInfoGroup, infoGroup } = useGetTeamById();
 
-  const {getInfoClient, infoClient, clientLoading} = useGetClientById();
+  const { getInfoClient, infoClient } = useGetClientById();
 
   const { isDev, currentTeam, _id } = useAppSelector(state => state.user);
 
-  const refreshOrders = ()=>{
-    if ( isDev ){
-      getInfoGroup(currentTeam) 
-    }else{
+  const { top } = useSafeAreaInsets();
+
+  const refreshOrders = () => {
+    if (isDev) {
+      getInfoGroup(currentTeam)
+    } else {
       getInfoClient(_id)
     }
   }
 
   useEffect(() => {
-    if (isDev) {
-      getInfoGroup(currentTeam)
-    }else{
-      getInfoClient(_id)
-    }
+    refreshOrders();
   }, [])
 
   const ordenes = isDev ? infoGroup?.orders : infoClient?.orders;
-  const isLoading = isDev ? groupLoading : clientLoading;
 
   return (
     <View style={{ backgroundColor: 'rgb(31, 26, 48)', flex: 1 }}>
-      <Headline
+      <View
         style={{
-          color: '#17f1de',
-          marginTop: 40,
-          fontWeight: '700',
-          fontSize: 30,
-          marginLeft: 15,
-        }}>
-        Inbox
-      </Headline>
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          top,
+          zIndex: 10
+        }}
+      >
+        <Text
+          style={{
+            color: '#17f1de',
+            fontWeight: '700',
+            fontSize: 30,
+            marginLeft: 15,
+          }}>
+          Inbox
+        </Text>
+        <TouchableOpacity
+          onPress={() => refreshOrders()}
+        >
+          <Icon name='refresh-outline' size={30} color='white' />
+        </TouchableOpacity>
 
+      </View>
       <View
         style={{
           backgroundColor: 'hsl(0,0%,5%)',
@@ -68,20 +80,12 @@ const Notifications = ({ navigation }: Props) => {
         }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              onRefresh={()=> refreshOrders()
-              }
-              refreshing={ isLoading }
-            />
-          }
         >
-          {/* <InfoPerfilModal idPerfil={'6349e35a800be15732aedd00'} isDev={ false } /> */}
           {ordenes &&
             ordenes.map((order) => {
 
               if (isDev) {
-
+                const state = order.devs_ok.includes(_id) ? 'Accepted' : order.devs_not.includes(_id) ? 'Rejected' : 'Pending';
                 return (
 
                   <View
@@ -93,6 +97,10 @@ const Notifications = ({ navigation }: Props) => {
                       marginVertical: 10,
                     }}>
 
+                    <Text style={{
+                      color: '#17f1de',
+                      fontSize: 18
+                    }}>{`Order number: #${order._id.slice(-6)}`}</Text>
                     <Text style={{
                       color: '#fff',
                       fontSize: 18
@@ -113,25 +121,16 @@ const Notifications = ({ navigation }: Props) => {
                       fontSize: 18
                     }}>{`Message: ${order.description}`}</Text>
                     <Text style={{
-                      color: '#fff',
+                      color: state === 'Accepted' ? 'green' : state === 'Rejected' ? 'red' : 'yellow',
                       fontSize: 18
-                    }}>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
+                    }}>{`State: ${state}`}</Text>
                     <View
                       style={{
                         flexDirection: 'row',
                         justifyContent: 'space-around',
                         marginTop: 10,
                       }}>
-                      {/* <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(200,10,10)'}}>
-                    <Text>Reject</Text>
-                  </Button>
-                  <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(50,225,50)'}}>
-                    <Text>Accept</Text>
-                  </Button> */}
+
                     </View>
                   </View>
                 )
@@ -145,7 +144,10 @@ const Notifications = ({ navigation }: Props) => {
                       padding: 10,
                       marginVertical: 10,
                     }}>
-
+                    <Text style={{
+                      color: '#17f1de',
+                      fontSize: 18
+                    }}>{`Order number: #${order._id.slice(-6)}`}</Text>
                     <Text style={{
                       color: '#fff',
                       fontSize: 18
@@ -166,10 +168,20 @@ const Notifications = ({ navigation }: Props) => {
                       color: '#fff',
                       fontSize: 18
                     }}>{`Message: ${order.description}`}</Text>
-                    <Text style={{
-                      color: '#fff',
-                      fontSize: 18
-                    }}>{`State: ${order.devs_ok.length < 4 ? 'Pending...' : 'approved'}`}</Text>
+                    <View>
+                      <Text style={{
+                        color: '#fff',
+                        fontSize: 18
+                      }}>{`State:`}</Text>
+                      <View style={{ marginLeft: 30}}>
+                        <Text style={{ fontSize: 18, color: 'green' }}>{`${order.devs_ok.length} Accept`}</Text>
+                        <Text style={{ fontSize: 18, color: 'red' }}>{`${order.devs_not.length} Rejection`}</Text>
+                        <Text style={{ fontSize: 18, color: 'yellow' }}>{`${4 - (order.devs_not.length + order.devs_ok.length)} Pending`}</Text>
+
+                      </View>
+                    </View>
+
+
                   </View>
                 )
               }
