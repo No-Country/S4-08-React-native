@@ -12,6 +12,7 @@ export type RootStackParamListClientNotifications = {
     Details: {
         idUser: string,
         order: OrderElement,
+        refreshFunc?: ()=> void ,
     };
 };
 
