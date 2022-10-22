@@ -11,11 +11,11 @@ import Availability from '../register/Availability';
 import Timezones from '../register/Timezones';
 import Languages from '../register/Languages';
 import {logUser} from '../../redux/slices/user/userSlice';
-import { loading, removeLoading } from '../../redux/slices/loading/loadingSlice';
-import { setToken } from '../../redux/slices/auth/authSlice';
-import { setError } from '../../redux/slices/error/errorSlice';
-import { ImageState } from '../../screens/Register';
-import { apiDb } from '../../axios/apiDb';
+import {loading, removeLoading} from '../../redux/slices/loading/loadingSlice';
+import {setToken} from '../../redux/slices/auth/authSlice';
+import {setError} from '../../redux/slices/error/errorSlice';
+import {ImageState} from '../../screens/Register';
+import {apiDb} from '../../axios/apiDb';
 
 interface FormValues {
   languages: string[];
@@ -26,51 +26,50 @@ interface FormValues {
   github: string;
   linkedin: string;
   web: string;
+  stack: string;
 }
 
 interface Props {
-  file: ImageState
+  file: ImageState;
 }
 
-const DevRegister = ({ file }: Props) => {
+const DevRegister = ({file}: Props) => {
+  const formValues = useAppSelector(state => state.register);
 
-	const formValues = useAppSelector(state => state.register);
+  const dispatch = useAppDispatch();
 
-	const dispatch = useAppDispatch();
+  const submitPOST = async (values: FormValues) => {
+    dispatch(loading());
 
-	const submitPOST = async (values: FormValues) => {
-    
-		dispatch(loading());
+    const form = {
+      ...formValues,
+      role: values.role,
+      stack: values.stack,
+      avatar: 'avatar',
+      social: {
+        linkedin: values.linkedin,
+        portfolio: values.web,
+        github: values.github,
+      },
+      info: {
+        time_availability: values.availability,
+        time_zone: values.timezone,
+        experience: values.seniority,
+        language: values.languages,
+      },
+    };
 
-		const form = {
-			...formValues,
-			role: values.role,
-			avatar: "avatar",
-			social: {
-				linkedin: values.linkedin,
-				portfolio: values.web,
-				github: values.github
-			},
-			info: {
-				time_availability: values.availability,
-				time_zone: values.timezone,
-				experience: values.seniority,
-				language: values.languages
-			}
-		}
-
-		try {
-			const { data } = await apiDb.post('/dev/register', form);
-			dispatch(setToken(data.token))
-			dispatch(logUser(data.dev)) 
-			dispatch(removeLoading());
-			dispatch( setError(data.message));
-		} catch (error: any) {
-			dispatch(removeLoading());
-			console.log('error', JSON.stringify(error.response, null, 2))
-		}
-
-	};
+    try {
+      const {data} = await apiDb.post('/dev/register', form);
+      dispatch(setToken(data.token));
+      dispatch(logUser(data.dev));
+      dispatch(removeLoading());
+      dispatch(setError(data.message));
+    } catch (error: any) {
+      dispatch(removeLoading());
+      console.log('error', JSON.stringify(error.response, null, 2));
+    }
+  };
 
   return (
     <>
@@ -84,6 +83,7 @@ const DevRegister = ({ file }: Props) => {
           github: Yup.string().url('Invalid URL format').required('Required'),
           linkedin: Yup.string().url('Invalid URL format').required('Required'),
           web: Yup.string().url('Invalid URL format'),
+          stack: Yup.string().required('Required'),
         })}
         initialValues={{
           languages: [],
@@ -94,6 +94,7 @@ const DevRegister = ({ file }: Props) => {
           github: '',
           linkedin: '',
           web: '',
+          stack: '',
         }}
         onSubmit={values => submitPOST(values)}>
         {({
@@ -110,6 +111,20 @@ const DevRegister = ({ file }: Props) => {
               marginBottom: 25,
               width: '90%',
             }}>
+            <MyInput
+              iconName="briefcase-outline"
+              label={'Tech / Stack'}
+              value={values.stack}
+              placeholder="Your primary programming language"
+              placeholderTextColor={'darkgrey'}
+              error={!!errors.stack && !!touched.stack}
+              onChangeText={handleChange('stack')}
+            />
+            {errors.stack && touched.stack && (
+              <Text style={{color: 'red'}}>
+                <ErrorMessage name="stack" />
+              </Text>
+            )}
             <Languages
               onPress={setFieldValue}
               error={!!errors.languages && !!touched.languages}
@@ -193,27 +208,27 @@ const DevRegister = ({ file }: Props) => {
               </Text>
             )}
 
-						<Button
-							onPress={handleSubmit}
-							mode="contained"
-							style={{
-								width: '60%',
-								alignSelf: 'center',
-								marginTop: 20,
-								borderRadius: 40,
-							}}>
-							<Text
-								style={{
-									fontSize: 25,
-								}}>
-								SUBMIT
-							</Text>
-						</Button>
-					</View>
-				)}
-			</Formik>
-		</>
-	);
+            <Button
+              onPress={handleSubmit}
+              mode="contained"
+              style={{
+                width: '60%',
+                alignSelf: 'center',
+                marginTop: 20,
+                borderRadius: 40,
+              }}>
+              <Text
+                style={{
+                  fontSize: 25,
+                }}>
+                SUBMIT
+              </Text>
+            </Button>
+          </View>
+        )}
+      </Formik>
+    </>
+  );
 };
 
 export default DevRegister;

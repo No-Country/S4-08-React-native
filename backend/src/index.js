@@ -1,11 +1,11 @@
-const dotenv = require("dotenv");
-const express = require("express");
-const mongoose = require("mongoose");
-const routers = require("./routes");
-const cors = require("cors");
-const passport = require("passport");
-const path = require("path");
-const multer = require("multer");
+const dotenv = require('dotenv');
+const express = require('express');
+const mongoose = require('mongoose');
+const routers = require('./routes');
+const cors = require('cors');
+const passport = require('passport');
+const path = require('path');
+const multer = require('multer');
 
 //basic config
 dotenv.config();
@@ -22,25 +22,26 @@ app.use(cors());
 
 //passport
 app.use(passport.initialize());
-require("./middlewares/auth/passport.js");
+require('./middlewares/auth/passport.js');
 
 //multer
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, "public/uploads"),
+  destination: path.join(__dirname, 'public/uploads'),
   filename: (req, file, callback) => {
     callback(null, new Date().getTime() + path.extname(file.originalname));
   },
 });
 
-app.use(multer({ storage }).single("image"));
+app.use(multer({ storage }).single('image'));
 
 //routes
-app.use("/dev", routers.dev);
-app.use("/client", routers.client);
-app.use("/team", routers.team);
-app.use("/order", routers.order);
-app.use("/img", routers.img);
-app.use("/", routers.login);
+app.use('/dev', routers.dev);
+app.use('/client', routers.client);
+app.use('/team', routers.team);
+app.use('/order', routers.order);
+app.use('/img', routers.img);
+app.use('/auth', routers.auth);
+app.use('/', routers.login);
 
 //test home
 app.get('/', (req, res) => {

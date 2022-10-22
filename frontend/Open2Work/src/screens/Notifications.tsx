@@ -10,7 +10,10 @@ import { useGetClientById } from '../hook/useGetClientById';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-type Props = StackScreenProps<RootStackParamListClientNotifications, 'Notifications'>
+type Props = StackScreenProps<
+  RootStackParamListClientNotifications,
+  'Notifications'
+>;
 
 const Notifications = ({ navigation }: Props) => {
 
@@ -28,7 +31,7 @@ const Notifications = ({ navigation }: Props) => {
     } else {
       getInfoClient(_id)
     }
-  }
+  };
 
   useEffect(() => {
     refreshOrders();
@@ -192,5 +195,49 @@ const Notifications = ({ navigation }: Props) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {backgroundColor: 'rgb(31, 26, 48)', flex: 1},
+  headline: {
+    color: '#17f1de',
+    marginTop: 40,
+    fontWeight: '700',
+    fontSize: 30,
+    marginLeft: 15,
+  },
+  line: {
+    backgroundColor: 'hsl(0,0%,5%)',
+    height: 7,
+    marginVertical: 7,
+  },
+  scrollCont: {
+    backgroundColor: 'rgb(57,48,77)',
+    padding: 10,
+    marginHorizontal: 15,
+    borderRadius: 3,
+    height: '83%',
+  },
+  card: {
+    backgroundColor: 'hsla(0, 0%, 65%,0.75)',
+    borderRadius: 5,
+    padding: 10,
+    marginVertical: 10,
+  },
+  btnCont: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+  },
+  reject: {backgroundColor: 'rgb(190,10,10)'},
+  accept: {backgroundColor: 'rgb(50,220,50)'},
+  cardText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+  cardTitle: {
+    color: '#17f1de',
+    fontSize: 18,
+  },
+});
 
 export default Notifications;

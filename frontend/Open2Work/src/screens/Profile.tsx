@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
-import { Image } from 'react-native';
-import { Headline } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {ScrollView, View, StyleSheet} from 'react-native';
+import {Image} from 'react-native';
+import {Headline} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import BannerProfile from '../components/profile/BannerProfile';
-import { useAppSelector } from '../redux/hook';
-import { ButtonLogout } from '../components/ButtonLogout';
+import {useAppSelector} from '../redux/hook';
+import {ButtonLogout} from '../components/ButtonLogout';
 
 // DATAGROUP = {
 //   name: 'Group #023',
@@ -17,47 +17,20 @@ import { ButtonLogout } from '../components/ButtonLogout';
 // };
 
 const Profile = () => {
-
-
   const user = useAppSelector(state => state.user);
 
-  const { top } = useSafeAreaInsets();
+  const {top} = useSafeAreaInsets();
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        backgroundColor: 'rgb(31,26,48)',
-        flex: 1,
-      }}>
-      <View
-        style={{
-          position: 'absolute',
-          left: 10,
-          top,
-          zIndex: 1,
-        }}
-      >
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.logout}>
         <ButtonLogout />
       </View>
       <Image
-        style={{ width: '100%', height: 220 }}
+        style={styles.img}
         source={require('../assets/imgs/laptop-programming-coding-macbook.jpg')}
       />
-      <Headline
-        style={{
-          position: 'absolute',
-          top,
-          right: 10,
-          color: '#17f1de',
-          marginTop: 25,
-          fontWeight: '700',
-          fontSize: 30,
-          paddingVertical: 7,
-          paddingHorizontal: 15,
-          borderRadius: 3,
-          backgroundColor: 'hsla(0,0%,15%,0.65)',
-          textTransform: 'capitalize'
-        }}>
+      <Headline style={styles.headline}>
         {`${user.name} ${user.surname}`}
       </Headline>
 
@@ -65,5 +38,31 @@ const Profile = () => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'rgb(31,26,48)',
+    flex: 1,
+  },
+  logout: {
+    position: 'absolute',
+    left: 10,
+    zIndex: 1,
+  },
+  img: {width: '100%', height: 220},
+  headline: {
+    position: 'absolute',
+    right: 10,
+    color: '#17f1de',
+    marginTop: 25,
+    fontWeight: '700',
+    fontSize: 30,
+    paddingVertical: 7,
+    paddingHorizontal: 15,
+    borderRadius: 3,
+    backgroundColor: 'hsla(0,0%,15%,0.65)',
+    textTransform: 'capitalize',
+  },
+});
 
 export default Profile;
