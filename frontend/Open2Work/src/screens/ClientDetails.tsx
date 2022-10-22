@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, ScrollView, Text, View } from 'react-native'
 import { Headline } from 'react-native-paper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -14,12 +14,14 @@ import { apiDb } from '../axios/apiDb';
 import { AppDispatch } from '../redux/store';
 import { loading, removeLoading } from '../redux/slices/loading/loadingSlice'
 import { setError } from '../redux/slices/error/errorSlice'
+import { useRefreshUser } from '../hook/useRefreshUser';
 
 type Props = StackScreenProps<RootStackParamListClientNotifications, 'Details'>
 
 export const ClientDetails = ({ route, navigation }: Props) => {
 
-    const { idUser, order } = route.params;
+    const { idUser, order, refreshFunc } = route.params;
+
     const { _id } = useAppSelector(state => state.user);
 
     const dispatch = useAppDispatch();
@@ -29,20 +31,26 @@ export const ClientDetails = ({ route, navigation }: Props) => {
     const { getInfoClient, infoClient } = useGetClientById();
 
     const handleAccept = async (value: boolean) => {
+
         dispatch(loading());
-        try {
+        if (order) {
 
-            const body = {
-                dev: _id,
-                ok: value
-            };
+            try {
 
-            const { data } = await apiDb.put(`/order/update/${order._id}`, body);
-            dispatch(setError(data))
-            dispatch(removeLoading())
-        } catch (error: any) {
-            console.log('error.response', JSON.stringify(error.response, null, 2))
-            dispatch(removeLoading())
+                const body = {
+                    dev: _id,
+                    ok: value
+                };
+
+                const { data } = await apiDb.put(`/order/update/${order?._id}`, body);
+                dispatch(setError(data))
+                dispatch(removeLoading())
+                refreshFunc!();
+                navigation.goBack();
+            } catch (error: any) {
+                console.log('error.response', JSON.stringify(error.response, null, 2))
+                dispatch(removeLoading())
+            }
         }
 
 
@@ -121,10 +129,10 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                     padding: 10
                                 }}
                             >
-                                {order.description}
+                                {order?.description}
                             </Text>
                             {
-                                order.devs_ok.includes(_id) && (
+                                order?.devs_ok.includes(_id) && (
                                     <View
                                         style={{
                                             width: '40%',
@@ -136,28 +144,28 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                             right: 20
                                         }}
                                     >
-                                    <Text style={{ color: 'green', textAlign: 'center'}}>You already accepted this offer</Text>
+                                        <Text style={{ color: 'green', textAlign: 'center' }}>You already accepted this offer</Text>
                                     </View>
                                 )
                             }
                             {
-                                order.devs_not.includes(_id) && (
+                                order?.devs_not.includes(_id) && (
                                     <View
-                                    style={{
-                                        width: '40%',
-                                        height: 40,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        position: 'absolute',
-                                        bottom: 20,
-                                        right: 20
-                                    }}>
-                                    <Text style={{ color: 'red'}}>You already rejected this offer</Text>
+                                        style={{
+                                            width: '40%',
+                                            height: 40,
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            position: 'absolute',
+                                            bottom: 20,
+                                            right: 20
+                                        }}>
+                                        <Text style={{ color: 'red' }}>You already rejected this offer</Text>
                                     </View>
                                 )
                             }
                             {
-                                (!order.devs_ok.includes(_id) && !order.devs_not.includes(_id)) && (
+                                (!order?.devs_ok.includes(_id) && !order?.devs_not.includes(_id)) && (
                                     <>
                                         <Text
                                             style={{
@@ -166,7 +174,7 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                           Would you like to accept the job
+                                            Would you like to accept the job
                                         </Text>
                                         <View
                                             style={{
@@ -177,13 +185,13 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                             }}
                                         >
                                             <TouchableOpacity
-                                                onPress={()=> handleAccept(true)}
+                                                onPress={() => handleAccept(true)}
                                             >
 
                                                 <Icon name='thumbs-up-outline' size={50} color='green' />
                                             </TouchableOpacity>
                                             <TouchableOpacity
-                                                onPress={()=> handleAccept(false)}
+                                                onPress={() => handleAccept(false)}
                                             >
 
                                                 <Icon name='thumbs-down-outline' size={50} color='red' />
@@ -192,7 +200,7 @@ export const ClientDetails = ({ route, navigation }: Props) => {
                                     </>
                                 )
                             }
-                           
+
 
                         </View>
                     </>
