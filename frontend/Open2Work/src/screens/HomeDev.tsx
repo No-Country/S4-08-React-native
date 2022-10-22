@@ -10,8 +10,6 @@ import {useGetTeamById} from '../hook/useGetTeamById';
 export const HomeDev = () => {
   const {getInfoGroup, infoGroup} = useGetTeamById();
 
-  const {getInfoGroup, infoGroup} = useGetTeamById();
-
   const {user} = useAppSelector(state => state);
 
   useEffect(() => {

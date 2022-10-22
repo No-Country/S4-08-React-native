@@ -40,14 +40,6 @@ export const FormLogin = ({setIsRegister, navigation}: Props) => {
     dispatch(loading());
     Keyboard.dismiss();
     try {
-      const {data} = await axios.post<UserLogued>(
-        'http://192.168.0.244:8080/login',
-        values,
-      );
-      console.log(
-        `${data.message}: ${data.user.name} ${data.user.surname}, ${data.user.email}`,
-      );
-
       const {data} = await apiDb.post<UserLogued>('/login', values);
       console.log(
         `${data.message}: ${data.user.name} ${data.user.surname}, ${data.user.email}`,
