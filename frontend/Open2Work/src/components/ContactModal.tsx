@@ -9,10 +9,11 @@ import { setError } from '../redux/slices/error/errorSlice';
 import { useSendContact } from '../hook/useSendContact';
 
 interface Props {
-    teamId: string
+    teamId: string,
+    disabled: boolean | undefined
 }
 
-export const ContactModal = ({ teamId }: Props) => {
+export const ContactModal = ({ teamId, disabled }: Props) => {
 
     const { show, message, handleChange, handleSubmit } = useSendContact();
 
@@ -93,6 +94,7 @@ export const ContactModal = ({ teamId }: Props) => {
                     margin: 20,
                     borderRadius: 40
                 }}
+                disabled={disabled}
             >
                 <Text style={{
                     fontSize: 20
