@@ -19,7 +19,7 @@ const Notifications = ({ navigation }: Props) => {
   const { getInfoClient, infoClient } = useGetClientById();
 
   const { isDev, currentTeam, _id } = useAppSelector(state => state.user);
-
+  
   const { top } = useSafeAreaInsets();
 
   const refreshOrders = () => {
@@ -82,7 +82,7 @@ const Notifications = ({ navigation }: Props) => {
           showsVerticalScrollIndicator={false}
         >
           {ordenes &&
-            ordenes.map((order) => {
+            ordenes.map((order, index) => {
 
               if (isDev) {
                 const state = order.devs_ok.includes(_id) ? 'Accepted' : order.devs_not.includes(_id) ? 'Rejected' : 'Pending';
@@ -108,7 +108,8 @@ const Notifications = ({ navigation }: Props) => {
                     <TouchableOpacity
                       onPress={() => navigation.navigate('Details', {
                         idUser: order.client,
-                        order
+                        order,
+                        refreshFunc: refreshOrders
                       })}
                     >
                       <Text style={{
@@ -116,10 +117,6 @@ const Notifications = ({ navigation }: Props) => {
                         fontSize: 18
                       }}>{`From: Client #${order.client.slice(-4)}`}</Text>
                     </TouchableOpacity>
-                    <Text style={{
-                      color: '#fff',
-                      fontSize: 18
-                    }}>{`Message: ${order.description}`}</Text>
                     <Text style={{
                       color: state === 'Accepted' ? 'green' : state === 'Rejected' ? 'red' : 'yellow',
                       fontSize: 18
@@ -135,6 +132,8 @@ const Notifications = ({ navigation }: Props) => {
                   </View>
                 )
               } else {
+
+
                 return (
                   <View
                     key={order._id}
@@ -176,7 +175,7 @@ const Notifications = ({ navigation }: Props) => {
                       <View style={{ marginLeft: 30}}>
                         <Text style={{ fontSize: 18, color: 'green' }}>{`${order.devs_ok.length} Accept`}</Text>
                         <Text style={{ fontSize: 18, color: 'red' }}>{`${order.devs_not.length} Rejection`}</Text>
-                        <Text style={{ fontSize: 18, color: 'yellow' }}>{`${4 - (order.devs_not.length + order.devs_ok.length)} Pending`}</Text>
+                        {/* <Text style={{ fontSize: 18, color: 'yellow' }}>{`${4 - (order.devs_not.length + order.devs_ok.length)} Pending`}</Text> */}
 
                       </View>
                     </View>
