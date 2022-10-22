@@ -1,16 +1,21 @@
-import mongoose from "mongoose";
-import { devInfoSchema } from "./dev-info-schema.js";
-import { devSocialSchema } from "./dev-social-schema.js";
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-export const devSchema = new mongoose.Schema({
+const { devInfoSchema } = require('./dev-info-schema');
+const { devSocialSchema } = require('./dev-social-schema');
+
+const devSchema = new Schema({
   name: {
+    type: String,
+    required: true,
+  },
+  surname: {
     type: String,
     required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true,
   },
   password: {
     type: String,
@@ -22,8 +27,34 @@ export const devSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    required: true,
+  },
+  stack: {
+    type: String,
+  },
+  isDev: {
+    type: Boolean,
+    default: true,
   },
   social: devSocialSchema,
   info: devInfoSchema,
+  isDev: {
+    type: Boolean,
+    default: true,
+  },
+  //validar si dev pertenece a un equipo actualmente
+  currentTeam: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Team',
+    required: false,
+  },
+  //test! equipos a los que anteriormente pertenecio
+  oldTeams: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Team',
+      required: false,
+    },
+  ],
 });
+
+module.exports = { devSchema };
