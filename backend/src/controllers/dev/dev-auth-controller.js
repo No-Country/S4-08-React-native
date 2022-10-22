@@ -1,8 +1,8 @@
-const passport = require("passport");
-const bcryptjs = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { DevModel } = require("../../models/dev/dev-model");
-const teamsIncomplete = require("../../utils/algorithm");
+const passport = require('passport');
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { DevModel } = require('../../models/dev/dev-model');
+const teamsIncomplete = require('../../utils/algorithm');
 
 //register
 const RegisterController = async (req, res) => {
@@ -16,14 +16,16 @@ const RegisterController = async (req, res) => {
       avatar,
       social,
       info,
+      stack,
       //oldTeams,
     } = req.body;
-    
+
     if (!surname || !role || !social || !info)
-      return res.status(400).send("Missing fields");
+      return res.status(400).send('Missing fields');
 
     const checkEmail = await DevModel.find({ email: email });
-    if (checkEmail.length>0) return res.status(400).send("Email is already registered");
+    if (checkEmail.length > 0)
+      return res.status(400).send('Email is already registered');
 
     //hashear password
     const hashPassword = await bcryptjs.hash(password, 8);
@@ -38,10 +40,10 @@ const RegisterController = async (req, res) => {
       avatar,
       social,
       info,
+      stack,
       //oldTeams,
     });
 
-  
     //guardar dev en BBDD
     const dev = await newDev.save();
 
@@ -63,22 +65,22 @@ const RegisterController = async (req, res) => {
     };
 
     const token = jwt.sign({ dev: body }, process.env.JWT_SECRET, {
-      expiresIn: "45m",
+      expiresIn: '45m',
     });
 
     return res.send({
-      message: "Dev registered succesfully",
-      token: "Bearer" + " " + token,
+      message: 'Dev registered succesfully',
+      token: 'Bearer' + ' ' + token,
       dev,
     });
   } catch (error) {
-    return res.status(400).send("Error in register");
+    return res.status(400).send('Error in register');
   }
 };
 
 //login
 const LoginController = async (req, res, next) => {
-  passport.authenticate("login", async (err, user, info) => {
+  passport.authenticate('login', async (err, user, info) => {
     try {
       if (!user) {
         return res.status(404).json(info);
@@ -94,11 +96,11 @@ const LoginController = async (req, res, next) => {
         };
 
         const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {
-          expiresIn: "45m",
+          expiresIn: '45m',
         });
         res.json({
           message: info.message,
-          token: "Bearer" + " " + token,
+          token: 'Bearer' + ' ' + token,
           user,
         });
       });
