@@ -233,7 +233,7 @@ const OrgHome = ({ navigation }: Props) => {
 											<TouchableOpacity
 												key={`button ${item._id}`}
 												onPress={() => navigation.navigate('Group', {
-													id: item._id
+													idUser: item._id
 												})}
 												disabled={haveOrder}
 
