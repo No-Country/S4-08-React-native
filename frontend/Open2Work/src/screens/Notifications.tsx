@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, Text, TouchableOpacity, RefreshControl, StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Headline } from 'react-native-paper';
 import { useGetTeamById } from '../hook/useGetTeamById';
