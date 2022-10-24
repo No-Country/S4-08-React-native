@@ -21,3 +21,15 @@
 - [ ] El cliente/organizacion puede filtrar los grupos segun su requerimiento
 - [ ] El cliente/organizacion puede contactar al grupo de developers que le interese
 
+## Demo
+
+https://user-images.githubusercontent.com/91083824/197594621-9b701330-4580-4d60-8d34-21772a7ce063.mp4
+
+
+https://user-images.githubusercontent.com/91083824/197594645-3e81f63d-3823-467c-97f0-2e8f644f1ed8.mp4
+
+## Integrantes
+
+* Abel Amieva (Front-end)
+* Francisco Nanoia (Back-end)
+* Nahuel Fanego Paz (Front-end)
