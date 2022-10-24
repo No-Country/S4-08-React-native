@@ -42,11 +42,7 @@ const OrgHome = ({navigation}: Props) => {
     setError('');
 
     apiDb
-      .get('/team/profile', {
-        headers: {
-          Authorization: token!,
-        },
-      })
+      .get('/team/profile')
       .then(res => {
         setTeamsData(res.data);
         setResults(res.data);
@@ -55,7 +51,7 @@ const OrgHome = ({navigation}: Props) => {
         setError(err.message);
         console.log(err);
       });
-  }, [timezone, availability, language]);
+  }, [timezone, availability, language, token]);
 
   const handleToggle = () => {
     setShowModal(!showModal);
