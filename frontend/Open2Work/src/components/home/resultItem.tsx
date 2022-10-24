@@ -38,8 +38,8 @@ const ResultItem = ({ data, haveOrder }: Props) => {
 					GROUP #{data._id.slice(-4)}
 				</Text>
 				{
-					haveOrder && (<Text style={{ color: 'red'}}>
-						this group have orders whit you
+					haveOrder && (<Text style={{ color: 'red', fontSize: 15}}>
+						You already have orders with this group
 					</Text>
 					)
 				}

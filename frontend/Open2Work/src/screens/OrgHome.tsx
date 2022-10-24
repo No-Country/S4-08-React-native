@@ -1,18 +1,14 @@
-import axios from 'axios';
 import * as React from 'react';
 import {
-  Modal,
-  ScrollView,
-  Text,
-  View,
-  Pressable,
-  ImageBackground,
-  TouchableOpacity,
-  StyleSheet,
+	ScrollView,
+	Text,
+	View,
+	ImageBackground,
+	TouchableOpacity,
+  StyleSheet
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Button, Headline} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Button, Headline } from 'react-native-paper';
 import FilterModal from '../components/home/filterModal';
 import ResultItem from '../components/home/resultItem';
 import {MyInput} from '../components/MyInput';
@@ -35,8 +31,10 @@ const OrgHome = ({navigation}: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const {token} = useAppSelector(state => state.auth);
-  const user = useAppSelector(state => state.user);
+	const { token } = useAppSelector(state => state.auth);
+
+	const user = useAppSelector(state => state.user);
+	
 
   React.useEffect(() => {
     setError('');
@@ -116,7 +114,7 @@ const OrgHome = ({navigation}: Props) => {
           locations={[0.1, 0.35, 1]}
           useAngle={true}
           angle={180}
-          colors={styles.colors}>
+          colors={ ['rgba(0, 0, 0,0.65)', 'rgba(31, 26, 48,0.8)', 'rgba(31, 26, 48,1)']}>
           <ImageBackground
             resizeMode="cover"
             source={{
@@ -180,52 +178,47 @@ const OrgHome = ({navigation}: Props) => {
                 Reset
                 {/* <Icon name="language-sharp" size={21} />{' '}
                 <Icon name="chevron-down-outline" size={20} color="#17f1de" /> */}
-              </Text>
-            </Button>
-          </View>
-        </View>
-        <View style={styles.line} />
-        <ScrollView contentContainerStyle={{paddingVertical: 7}}>
-          <>
-            {error && <Text style={styles.message}>{error}</Text>}
-            {results && results.length > 0 ? (
-              results.map((item: any, index: number) => {
-                if (item !== null) {
-                  if (user.orders) {
-                    const haveOrder =
-                      user.orders.some(order => order.team === item._id) ||
-                      false;
-                    return (
-                      <TouchableOpacity
-                        key={`button ${item._id}`}
-                        onPress={() =>
-                          navigation.navigate('Group', {
-                            id: item._id,
-                          })
-                        }
-                        disabled={haveOrder}>
-                        <>
-                          <ResultItem
-                            key={item._id}
-                            data={item}
-                            haveOrder={haveOrder}
-                          />
-                        </>
-                      </TouchableOpacity>
-                    );
-                  }
-                } else {
-                  return null;
-                }
-              })
-            ) : (
-              <Text style={styles.message}>No Results</Text>
-            )}
-          </>
-        </ScrollView>
-      </View>
-    </>
-  );
+							</Text>
+						</Button>
+					</View>
+				</View>
+				<View style={{ backgroundColor: 'black', width: '100%', height: 2 }} />
+				<ScrollView contentContainerStyle={{ paddingVertical: 7 }}>
+					<>
+						{error && <Text style={{ color: 'lightgrey' }}>{error}</Text>}
+						{results && results.length > 0 ? (
+							results.map((item: any, index: number) => {
+								if (item !== null) {
+									if (user.orders) {
+
+										const haveOrder = user.orders.some(order => order.team === item._id) || false;
+										return (
+											<TouchableOpacity
+												key={`button ${item._id}`}
+												onPress={() => navigation.navigate('Group', {
+													idUser: item._id
+												})}
+												disabled={haveOrder}
+
+											>
+												<>
+													<ResultItem key={item._id} data={item} haveOrder={haveOrder} />
+												</>
+											</TouchableOpacity>
+										);
+									}
+								} else {
+									return null;
+								}
+							})
+						) : (
+							<Text style={{ color: 'lightgrey' }}>No Results</Text>
+						)}
+					</>
+				</ScrollView>
+			</View>
+		</>
+	);
 };
 
 const styles = StyleSheet.create({
@@ -263,7 +256,6 @@ const styles = StyleSheet.create({
     borderColor: '#17f1de',
   },
   line: {backgroundColor: 'black', width: '100%', height: 2},
-  colors: ['rgba(0, 0, 0,0.65)', 'rgba(31, 26, 48,0.8)', 'rgba(31, 26, 48,1)'],
   message: {color: 'lightgrey', marginLeft: 10},
 });
 

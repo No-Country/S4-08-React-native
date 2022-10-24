@@ -41,7 +41,8 @@ export const LoginScreen = ({navigation}: Props) => {
             fontSize: 40,
             position: 'absolute',
             right: 10,
-            top: 20
+            top: 20,
+            fontWeight: '600'
           }}>
             Open2Work!
           </Text>

@@ -61,10 +61,9 @@ const RegisterController = async (req, res) => {
     const body = {
       _id: dev._id,
       email: dev.email,
-      role: dev.role,
     };
 
-    const token = jwt.sign({ dev: body }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ user: body }, process.env.JWT_SECRET, {
       expiresIn: '45m',
     });
 

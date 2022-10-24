@@ -23,7 +23,7 @@ const Profile = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.logout}>
+      <View style={[{top},styles.logout]}>
         <ButtonLogout />
       </View>
       <Image

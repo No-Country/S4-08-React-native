@@ -1,55 +1,71 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  RefreshControl,
-  StyleSheet,
-} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import {Headline} from 'react-native-paper';
-import {InfoPerfilModal} from '../components/InfoPerfilModal';
-import {useGetTeamById} from '../hook/useGetTeamById';
-import {useAppSelector} from '../redux/hook';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamListClientNotifications} from '../navigation/StackNotifications';
-import {useGetClientById} from '../hook/useGetClientById';
+import React, { useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, RefreshControl, StyleSheet } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Headline } from 'react-native-paper';
+import { useGetTeamById } from '../hook/useGetTeamById';
+import { useAppSelector } from '../redux/hook';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamListClientNotifications } from '../navigation/StackNotifications';
+import { useGetClientById } from '../hook/useGetClientById';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<
   RootStackParamListClientNotifications,
   'Notifications'
 >;
 
-const Notifications = ({navigation}: Props) => {
-  const {getInfoGroup, infoGroup, groupLoading} = useGetTeamById();
+const Notifications = ({ navigation }: Props) => {
 
-  const {getInfoClient, infoClient, clientLoading} = useGetClientById();
+  const { getInfoGroup, infoGroup } = useGetTeamById();
 
-  const {isDev, currentTeam, _id} = useAppSelector(state => state.user);
+  const { getInfoClient, infoClient } = useGetClientById();
+
+  const { isDev, currentTeam, _id } = useAppSelector(state => state.user);
+  
+  const { top } = useSafeAreaInsets();
 
   const refreshOrders = () => {
     if (isDev) {
-      getInfoGroup(currentTeam);
+      getInfoGroup(currentTeam)
     } else {
-      getInfoClient(_id);
+      getInfoClient(_id)
     }
   };
 
   useEffect(() => {
-    if (isDev) {
-      getInfoGroup(currentTeam);
-    } else {
-      getInfoClient(_id);
-    }
-  }, []);
+    refreshOrders();
+  }, [])
 
   const ordenes = isDev ? infoGroup?.orders : infoClient?.orders;
-  const isLoading = isDev ? groupLoading : clientLoading;
 
   return (
-    <View style={styles.container}>
-      <Headline style={styles.headline}>Inbox</Headline>
+    <View style={{ backgroundColor: 'rgb(31, 26, 48)', flex: 1 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          top,
+          zIndex: 10
+        }}
+      >
+        <Text
+          style={{
+            color: '#17f1de',
+            fontWeight: '700',
+            fontSize: 30,
+            marginLeft: 15,
+          }}>
+          Inbox
+        </Text>
+        <TouchableOpacity
+          onPress={() => refreshOrders()}
+        >
+          <Icon name='refresh-outline' size={30} color='white' />
+        </TouchableOpacity>
 
+      </View>
       <View
         style={{
           backgroundColor: 'hsl(0,0%,5%)',
@@ -67,86 +83,113 @@ const Notifications = ({navigation}: Props) => {
         }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              onRefresh={() => refreshOrders()}
-              refreshing={isLoading}
-            />
-          }>
-          {/* <InfoPerfilModal idPerfil={'6349e35a800be15732aedd00'} isDev={ false } /> */}
+        >
           {ordenes &&
-            ordenes
-              .map(order => {
-                if (isDev) {
-                  return (
-                    <View key={order._id} style={styles.card}>
-                      <Text style={styles.cardText}>{`Created: ${new Date(
-                        order.createdAt,
-                      )}`}</Text>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate('Details', {
-                            idUser: order.client,
-                            order,
-                          })
-                        }>
-                        <Text
-                          style={
-                            styles.cardTitle
-                          }>{`From: Client #${order.client.slice(-4)}`}</Text>
-                      </TouchableOpacity>
-                      <Text
-                        style={
-                          styles.cardText
-                        }>{`Message: ${order.description}`}</Text>
-                      <Text style={styles.cardText}>{`State: ${
-                        order.devs_ok.length < 4 ? 'Pending...' : 'approved'
-                      }`}</Text>
-                      <View style={styles.btnCont}>
-                        {/* <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(200,10,10)'}}>
-                    <Text>Reject</Text>
-                  </Button>
-                  <Button
-                    mode="contained"
-                    style={{backgroundColor: 'rgb(50,225,50)'}}>
-                    <Text>Accept</Text>
-                  </Button> */}
+            ordenes.map((order) => {
+
+              if (isDev) {
+                const state = order.devs_ok.includes(_id) ? 'Accepted' : order.devs_not.includes(_id) ? 'Rejected' : 'Pending';
+                return (
+
+                  <View
+                    key={order._id}
+                    style={{
+                      backgroundColor: 'rgb(31, 26, 48)',
+                      borderRadius: 5,
+                      padding: 10,
+                      marginVertical: 10,
+                    }}>
+
+                    <Text style={{
+                      color: '#17f1de',
+                      fontSize: 18
+                    }}>{`Order number: #${order._id.slice(-6)}`}</Text>
+                    <Text style={{
+                      color: '#fff',
+                      fontSize: 18
+                    }}>{`Created: ${new Date(order.createdAt)}`}</Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Details', {
+                        idUser: order.client,
+                        order,
+                        refreshFunc: refreshOrders
+                      })}
+                    >
+                      <Text style={{
+                        color: '#17f1de',
+                        fontSize: 18
+                      }}>{`From: Client #${order.client.slice(-4)}`}</Text>
+                    </TouchableOpacity>
+                    <Text style={{
+                      color: state === 'Accepted' ? 'green' : state === 'Rejected' ? 'red' : 'yellow',
+                      fontSize: 18
+                    }}>{`State: ${state}`}</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                        marginTop: 10,
+                      }}>
+
+                    </View>
+                  </View>
+                )
+              } else {
+
+
+                return (
+                  <View
+                    key={order._id}
+                    style={{
+                      backgroundColor: 'rgb(31, 26, 48)',
+                      borderRadius: 5,
+                      padding: 10,
+                      marginVertical: 10,
+                    }}>
+                    <Text style={{
+                      color: '#17f1de',
+                      fontSize: 18
+                    }}>{`Order number: #${order._id.slice(-6)}`}</Text>
+                    <Text style={{
+                      color: '#fff',
+                      fontSize: 18
+                    }}>{`Created: ${new Date(order.createdAt)}`}</Text>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate('Details', {
+                        idUser: order.team,
+                        order
+                      })}
+                    >
+                      <Text style={{
+                        color: '#17f1de',
+                        fontSize: 18,
+                      }}>{`To: Group #${order.team.slice(-4)}`}</Text>
+                    </TouchableOpacity>
+
+                    <Text style={{
+                      color: '#fff',
+                      fontSize: 18
+                    }}>{`Message: ${order.description}`}</Text>
+                    <View>
+                      <Text style={{
+                        color: '#fff',
+                        fontSize: 18
+                      }}>{`State:`}</Text>
+                      <View style={{ marginLeft: 30}}>
+                        <Text style={{ fontSize: 18, color: 'green' }}>{`${order.devs_ok.length} Accept`}</Text>
+                        <Text style={{ fontSize: 18, color: 'red' }}>{`${order.devs_not.length} Rejection`}</Text>
+                        {/* <Text style={{ fontSize: 18, color: 'yellow' }}>{`${4 - (order.devs_not.length + order.devs_ok.length)} Pending`}</Text> */}
+
                       </View>
                     </View>
-                  );
-                } else {
-                  return (
-                    <View key={order._id} style={styles.card}>
-                      <Text style={styles.cardText}>{`Created: ${new Date(
-                        order.createdAt,
-                      )}`}</Text>
-                      <TouchableOpacity
-                        onPress={() =>
-                          navigation.navigate('Details', {
-                            idUser: order.team,
-                            order,
-                          })
-                        }>
-                        <Text
-                          style={
-                            styles.cardTitle
-                          }>{`To: Group #${order.team.slice(-4)}`}</Text>
-                      </TouchableOpacity>
 
-                      <Text
-                        style={
-                          styles.cardText
-                        }>{`Message: ${order.description}`}</Text>
-                      <Text style={styles.cardText}>{`State: ${
-                        order.devs_ok.length < 4 ? 'Pending...' : 'approved'
-                      }`}</Text>
-                    </View>
-                  );
-                }
-              })
-              .reverse()}
+
+                  </View>
+                )
+              }
+            }).reverse()
+          }
+
         </ScrollView>
       </View>
     </View>

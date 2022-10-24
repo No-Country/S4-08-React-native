@@ -25,7 +25,6 @@ export const StackNavigation = () => {
 
   const { token } = auth;
   const { isDev } = user;
-
   return (
     <Stack.Navigator
       screenOptions={{

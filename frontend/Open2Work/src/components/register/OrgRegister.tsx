@@ -48,10 +48,8 @@ const OrgRegister = ({ file }: Props) => {
 			}
 		}
 		
-		console.log('form', JSON.stringify(form, null, 2))
 		try {
 			const { data }= await apiDb.post('/client/register', form);
-			console.log(data)
 			dispatch( logUser(data.client))
 			dispatch( setError( data.message ))
 			dispatch( setToken(data.token))

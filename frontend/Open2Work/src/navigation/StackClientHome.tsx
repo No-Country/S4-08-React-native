@@ -3,7 +3,6 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import OrgHome from '../screens/OrgHome';
 import { GroupDetails } from '../screens/GroupDetails';
-import { Team } from '../interfaces/teamInterface';
 
 export type RootStackParamListClient = {
     Home: undefined;
